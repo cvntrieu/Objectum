@@ -1,4 +1,5 @@
 package lma.objectum.hello;
 
-public class test {
+public class Test {
+    private String hello;
 }
