@@ -3,17 +3,8 @@ package lma.objectum.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-class Test {
+class hello {
 
-    private int a;
-
-    public int getA() {
-        return a;
-    }
-
-    public void setA(int a) {
-        this.a = a;
-    }
 }
 
 public class HelloController {
