@@ -9,4 +9,6 @@ module lma.objectum {
 
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;
+    exports lma.objectum.Controllers;
+    opens lma.objectum.Controllers to javafx.fxml;
 }

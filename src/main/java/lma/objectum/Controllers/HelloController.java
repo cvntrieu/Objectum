@@ -1,4 +1,4 @@
-package lma.objectum;
+package lma.objectum.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
