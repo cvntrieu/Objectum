@@ -6,6 +6,7 @@ module lma.objectum {
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
 
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;
