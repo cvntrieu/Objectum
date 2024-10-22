@@ -5,23 +5,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
 import lma.objectum.Database.DatabaseConnection;
-import org.controlsfx.control.action.Action;
 
-import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
-
 public class SignUpController implements Initializable {
-
-    @FXML
-    private Label registrationMessageLabel;
 
     @FXML
     private TextField firstnameTextField;
@@ -33,7 +26,13 @@ public class SignUpController implements Initializable {
     private TextField usernameTextField;
 
     @FXML
-    private TextField passwordTextField;
+    private PasswordField passwordTextField;
+
+    @FXML
+    private Button registerButton;
+
+    @FXML
+    private Label registerMessageLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,9 +41,15 @@ public class SignUpController implements Initializable {
 
     public void registerButtonOnAction(ActionEvent event) {
         registerUser();
+        if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()
+                && !firstnameTextField.getText().isBlank() && !lastnameTextField.getText().isBlank()) {
+            registerMessageLabel.setText("Registered successfully!");
+        } else {
+            registerMessageLabel.setText("Please enter full fields!");
+        }
     }
 
-    public void registerUser() {
+    public void registerUser(){
 
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectDB = connectNow.getConnection();
@@ -54,14 +59,14 @@ public class SignUpController implements Initializable {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
-        String insertFields = "INSERT INTO... VALUES ('";
-        String insertValues = firstname + "','" + lastname + "','" + username + "','" + password + " ')";
+        String insertFields = "INSERT INTO user_account(lastname, firstname, username, password) VALUES ('";
+        String insertValues = firstname + "','" + lastname + "','" + username + "','" + password + "')";
         String insertToRegister = insertFields + insertValues;
 
-        try{
+        try {
             Statement statement = connectDB.createStatement();
             statement.executeUpdate(insertToRegister);
-            registrationMessageLabel.setText("Registered successfully!");
+            registerMessageLabel.setText("User has been registered successfully!");
 
         } catch (Exception e) {
             e.printStackTrace();

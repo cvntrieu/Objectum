@@ -1,7 +1,10 @@
+
 package lma.objectum.Database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Executor;
 
 public class DatabaseConnection {
 
@@ -12,12 +15,10 @@ public class DatabaseConnection {
         String databaseName = "";
         String databaseUser = "";
         String databasePassword = "";
-        String url = "";
+        String url = "jdbc..." + databaseName;
 
-        try {
-
-            databaseLink = DriverManager.getConnection(url, databaseUser, databasePassword);
-
+        try{
+            Class.forName("...Driver");
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

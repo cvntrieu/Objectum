@@ -1,7 +1,5 @@
 package lma.objectum.Controllers;
 
-import com.jfoenix.controls.JFXButton;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -37,48 +35,41 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
 
-public class LoginController {
+public class LoginController{
 
     @FXML
-    public Button logInButton;
+    private TextField usernameTextField;
 
     @FXML
-    private Label loginMessageLabel;
+    private PasswordField passwordTextField;
+
+    @FXML
+    private Button logInButton;
 
     @FXML
     private Button registerButton;
 
     @FXML
+    private Label loginMessageLabel;
+
+    @FXML
     private ImageView brandingImageView;
-
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private TextField passwordField;
-
 
     public void initialize(URL url, ResourceBundle rb) {
 
-        File brandingFile = new File("D:\\Objectum\\src\\main\\resources\\lma\\objectum\\images\\MyBook.jpg"); // Absolute Path
+        System.out.println("Initialize method called");
+        File brandingFile = new File("MyBook.jpg");
         Image brandingImage = new Image(brandingFile.toURI().toString());
         brandingImageView.setImage(brandingImage);
 
         // If there are more images, code like above here...
     }
 
-    public void registerButtonOnAction(ActionEvent event) {
-
-        Stage stage = (Stage) registerButton.getScene().getWindow();
-        stage.close();
-        createAccountForm();
-    }
-
     public void loginButtonOnAction(ActionEvent event) {
-        System.out.println("Login button clicked!");
-        if (!usernameField.getText().isBlank() && !passwordField.getText().isBlank()) {
+
+        if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()) {
+            loginMessageLabel.setText("Trying!");
             validateLogin();
-            // loginMessageLabel.setText("You try to login!");
         } else {
             loginMessageLabel.setText("Please enter Username and Password!");
         }
@@ -89,7 +80,7 @@ public class LoginController {
         DatabaseConnection connectNow = new DatabaseConnection();
         Connection connectionDB = connectNow.getConnection();
 
-        String verifyLogin = "SELECT..." + usernameField.getText() + "..." + passwordField.getText();
+        String verifyLogin = "SELECT..." + usernameTextField.getText() + "..." + passwordTextField.getText();
 
         try {
 
@@ -98,10 +89,9 @@ public class LoginController {
 
             while (queryResult.next()) {
                 if (queryResult.getInt(1) == 1) {
-                    loginMessageLabel.setText("Congrats!"); // Main Library methods go here..........................
-                    // createAccountForm();
+                    loginMessageLabel.setText("Congratulations");
                 } else {
-                    loginMessageLabel.setText("Invalid!");
+                    loginMessageLabel.setText("Invalid login. Please try again!");
                 }
             }
 
@@ -111,19 +101,23 @@ public class LoginController {
         }
     }
 
-    public void createAccountForm() {
+    public void registerButtonOnAction(ActionEvent event) {
 
+        Stage stage = (Stage) registerButton.getScene().getWindow();
+        stage.close();
+        createAccountForm();
+    }
+
+    public void createAccountForm() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/SignUp.fxml"));
             Parent root = loader.load();
             Stage registerStage = new Stage();
             registerStage.initStyle(StageStyle.UNDECORATED);
-            registerStage.setScene(new Scene(root,850, 800));
+            registerStage.setScene(new Scene(root, 850, 800));
             registerStage.show();
-
-        } catch(Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            e.getCause();
         }
     }
 }
