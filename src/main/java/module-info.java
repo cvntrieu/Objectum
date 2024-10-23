@@ -6,6 +6,9 @@ module lma.objectum {
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.bootstrapfx.core;
+    requires java.sql;
+    requires mysql.connector.j;
+    requires jbcrypt;
 
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;
