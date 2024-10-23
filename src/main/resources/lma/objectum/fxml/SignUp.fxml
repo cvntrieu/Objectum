@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="566.0" prefWidth="816.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.SignUpController">
+<AnchorPane prefHeight="608.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.SignUpController">
    <children>
-      <AnchorPane prefHeight="79.0" prefWidth="818.0" style="-fx-background-color: #E96151;">
+      <AnchorPane prefHeight="79.0" prefWidth="842.0" style="-fx-background-color: #E96151;">
          <children>
-            <Label layoutX="565.0" layoutY="14.0" prefHeight="51.0" prefWidth="227.0" text="Registration" textFill="#213fb0">
+            <Label layoutX="600.0" layoutY="14.0" prefHeight="51.0" prefWidth="227.0" text="Registration" textFill="#213fb0">
                <font>
                   <Font name="System Bold Italic" size="35.0" />
                </font>
@@ -42,7 +42,7 @@
       <TextField fx:id="lastnameTextField" layoutX="142.0" layoutY="171.0" prefHeight="26.0" prefWidth="662.0" promptText="lastname" />
       <TextField fx:id="usernameTextField" layoutX="142.0" layoutY="227.0" prefHeight="26.0" prefWidth="662.0" promptText="username" />
       <PasswordField fx:id="passwordTextField" layoutX="142.0" layoutY="287.0" prefHeight="26.0" prefWidth="662.0" promptText="password" />
-      <Button fx:id="registerButton" layoutX="362.0" layoutY="357.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="42.0" prefWidth="124.0" text="Register" textFill="#c41616">
+      <Button fx:id="registerButton" layoutX="347.0" layoutY="357.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="42.0" prefWidth="124.0" text="Register" textFill="#c41616">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -52,5 +52,10 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
+      <Button fx:id="backTologinButton" layoutX="347.0" layoutY="447.0" mnemonicParsing="false" onAction="#backToLoginButtonOnAction" prefHeight="42.0" prefWidth="124.0" text="Back" textFill="#c41616">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

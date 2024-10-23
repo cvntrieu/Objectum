@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.LoginController">
    <left>
       <AnchorPane prefHeight="608.0" prefWidth="244.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="brandingImageView" fitHeight="675.0" fitWidth="343.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="brandingImageView" fitHeight="608.0" fitWidth="343.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/MyBooks.jpg" />
                </image>
@@ -48,6 +48,11 @@
                </font>
             </Button>
             <Button fx:id="registerButton" layoutX="194.0" layoutY="447.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffff00;" text="Register" textFill="#cc1717">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="cancelButton" layoutX="194.0" layoutY="526.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffff00;" text="Cancel" textFill="#cc1717">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

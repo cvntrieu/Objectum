@@ -2,27 +2,28 @@
 package lma.objectum.Database;
 
 import java.sql.*;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.Executor;
 
 public class DatabaseConnection {
-
     public Connection databaseLink;
 
+    /**
+     * Establishes a connection to the database.
+     *
+     * @return Connection
+     */
     public Connection getConnection() {
+        String databaseName = "objectum";
+        String databaseUser = "root";
+        String databasePassword = "13082005";
+        String url = "jdbc:mysql://localhost/" + databaseName;
 
-        String databaseName = "";
-        String databaseUser = "";
-        String databasePassword = "";
-        String url = "jdbc..." + databaseName;
-
-        try{
-            Class.forName("...Driver");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            databaseLink = DriverManager.getConnection(url, databaseUser, databasePassword);
         } catch (Exception e) {
             e.printStackTrace();
-            e.getCause();
         }
+
         return databaseLink;
     }
 }

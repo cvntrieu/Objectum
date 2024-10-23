@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -34,8 +35,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
+import org.mindrot.jbcrypt.BCrypt;
 
-public class LoginController{
+public class LoginController {
 
     @FXML
     private TextField usernameTextField;
@@ -48,6 +50,9 @@ public class LoginController{
 
     @FXML
     private Button registerButton;
+
+    @FXML
+    private Button cancelButton;
 
     @FXML
     private Label loginMessageLabel;
@@ -65,8 +70,22 @@ public class LoginController{
         // If there are more images, code like above here...
     }
 
-    public void loginButtonOnAction(ActionEvent event) {
+    /**
+     * Closes the login form.
+     *
+     * @param e ActionEvent
+     */
+    public void cancelButtonOnAction(ActionEvent e) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+    }
 
+    /**
+     * Closes the login form.
+     *
+     * @param event MouseEvent
+     */
+    public void loginButtonOnAction(ActionEvent event) {
         if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()) {
             loginMessageLabel.setText("Trying!");
             validateLogin();
@@ -75,32 +94,9 @@ public class LoginController{
         }
     }
 
-    public void validateLogin() {
-
-        DatabaseConnection connectNow = new DatabaseConnection();
-        Connection connectionDB = connectNow.getConnection();
-
-        String verifyLogin = "SELECT..." + usernameTextField.getText() + "..." + passwordTextField.getText();
-
-        try {
-
-            Statement statement = connectionDB.createStatement();
-            ResultSet queryResult = statement.executeQuery(verifyLogin);
-
-            while (queryResult.next()) {
-                if (queryResult.getInt(1) == 1) {
-                    loginMessageLabel.setText("Congratulations");
-                } else {
-                    loginMessageLabel.setText("Invalid login. Please try again!");
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-        }
-    }
-
+    /**
+     * Go to register form.
+     */
     public void registerButtonOnAction(ActionEvent event) {
 
         Stage stage = (Stage) registerButton.getScene().getWindow();
@@ -108,13 +104,45 @@ public class LoginController{
         createAccountForm();
     }
 
-    public void createAccountForm() {
+    /**
+     * Validates the login credentials.
+     */
+    private void validateLogin() {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        String verifyLogin = "SELECT password FROM useraccount WHERE username = ?";
+
+        try {
+            PreparedStatement preparedStatement = connectDB.prepareStatement(verifyLogin);
+            preparedStatement.setString(1, usernameTextField.getText());
+
+            ResultSet queryResult = preparedStatement.executeQuery();
+
+            if (queryResult.next()) {
+                String hashedPassword = queryResult.getString("password");
+
+                if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
+                    loginMessageLabel.setText("Login successful! Welcome!");
+                } else {
+                    loginMessageLabel.setText("Invalid login. Please try again.");
+                }
+            } else {
+                loginMessageLabel.setText("Username not found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            loginMessageLabel.setText("An error occurred while trying to log in.");
+        }
+    }
+
+    private void createAccountForm() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/SignUp.fxml"));
             Parent root = loader.load();
             Stage registerStage = new Stage();
-            registerStage.initStyle(StageStyle.UNDECORATED);
-            registerStage.setScene(new Scene(root, 850, 800));
+            registerStage.setScene(new Scene(root, 842, 608));
             registerStage.show();
         } catch (IOException e) {
             e.printStackTrace();
