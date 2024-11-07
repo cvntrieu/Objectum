@@ -105,6 +105,26 @@ public class LoginController {
     }
 
     /**
+     * open main page.
+     */
+    private void showHomePage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/home.fxml"));
+            Parent root = loader.load();
+            Stage homeStage = new Stage();
+            homeStage.setScene(new Scene(root));
+            homeStage.setTitle("Main Application");
+            homeStage.show();
+            Stage loginStage = (Stage) logInButton.getScene().getWindow();
+            loginStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            loginMessageLabel.setText("Could not load the main interface.");
+        }
+    }
+
+    /**
      * Validates the login credentials.
      */
     private void validateLogin() {
@@ -124,6 +144,7 @@ public class LoginController {
 
                 if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
                     loginMessageLabel.setText("Login successful! Welcome!");
+                    showHomePage();
                 } else {
                     loginMessageLabel.setText("Invalid login. Please try again.");
                 }
