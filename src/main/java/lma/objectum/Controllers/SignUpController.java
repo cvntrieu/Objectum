@@ -79,7 +79,7 @@ public class SignUpController implements Initializable {
      * @param event ActionEvent
      */
     private void registerUser(ActionEvent event) {
-        DatabaseConnection connectNow = new DatabaseConnection();
+        DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
 
         String firstname = firstnameTextField.getText();

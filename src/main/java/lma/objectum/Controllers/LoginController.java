@@ -108,7 +108,7 @@ public class LoginController {
      * Validates the login credentials.
      */
     private void validateLogin() {
-        DatabaseConnection connectNow = new DatabaseConnection();
+        DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
 
         String verifyLogin = "SELECT password FROM useraccount WHERE username = ?";
