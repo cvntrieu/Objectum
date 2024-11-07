@@ -1,21 +1,20 @@
-
 package lma.objectum.Database;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class DatabaseConnection {
-    public Connection databaseLink;
+    private static DatabaseConnection instance;
+    private Connection databaseLink;
 
     /**
-     * Establishes a connection to the database.
-     *
-     * @return Connection
+     * Constructor for DatabaseConnection.
      */
-    public Connection getConnection() {
+    private DatabaseConnection() {
         String databaseName = "test_db";
         String databaseUser = "root";
-        String databasePassword = "trieu50023080tt";
-        String url = "jdbc:mysql://localhost:3306/" + databaseName;
+        String databasePassword = "080305";
+        String url = "jdbc:mysql://localhost:3307/" + databaseName;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -23,7 +22,30 @@ public class DatabaseConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Returns the singleton instance of DatabaseConnection.
+     *
+     * @return DatabaseConnection instance
+     */
+    public static DatabaseConnection getInstance() {
+        if (instance == null) {
+            synchronized (DatabaseConnection.class) {
+                if (instance == null) {
+                    instance = new DatabaseConnection();
+                }
+            }
+        }
+        return instance;
+    }
+
+    /**
+     * Returns the database connection.
+     *
+     * @return Connection
+     */
+    public Connection getConnection() {
         return databaseLink;
     }
 }
