@@ -12,10 +12,10 @@ public class DatabaseConnection {
      * @return Connection
      */
     public Connection getConnection() {
-        String databaseName = "objectum";
+        String databaseName = "test_db";
         String databaseUser = "root";
-        String databasePassword = "13082005";
-        String url = "jdbc:mysql://localhost/" + databaseName;
+        String databasePassword = "trieu50023080tt";
+        String url = "jdbc:mysql://localhost:3306/" + databaseName;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
