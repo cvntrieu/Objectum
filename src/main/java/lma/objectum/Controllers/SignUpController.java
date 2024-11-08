@@ -43,6 +43,12 @@ public class SignUpController implements Initializable {
     @FXML
     private Button backTologinButton;
 
+    /**
+     * Overriding.
+     *
+     * @param url url of jdbc-localHost
+     * @param resourceBundle resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Any required initialization code goes here
