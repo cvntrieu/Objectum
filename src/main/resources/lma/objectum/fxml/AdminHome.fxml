@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="412.0" prefWidth="588.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Admin">
     <children>
-        <VBox layoutY="94.0" prefHeight="318.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;">
+        <VBox layoutY="94.0" prefHeight="568.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;">
             <children>
                 <Button fx:id="accountButton" contentDisplay="RIGHT" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="97.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Account">
                     <font>
@@ -39,19 +41,21 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="listButton" contentDisplay="RIGHT" graphicTextGap="30.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="97.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="List">
+                <MenuButton fx:id="listButton" prefHeight="47.0" prefWidth="97.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="List">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
-                    <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="37.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../Home/list.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Region prefHeight="147.0" prefWidth="91.0" />
+                    <items>
+                        <MenuItem fx:id="addBooksMenuItem" text="Add Books" />
+                        <MenuItem fx:id="removeBooksMenuItem" text="Remove Books" />
+                        <MenuItem fx:id="editBooksMenuItem" text="Edit Books" />
+                        <MenuItem fx:id="addMembersMenuItem" text="Add Members" />
+                        <MenuItem fx:id="removeMembersMenuItem" text="Remove Members" />
+                        <MenuItem fx:id="editMembersMenuItem" text="Edit Members" />
+                        <MenuItem fx:id="searchBooksMenuItem" text="Search Books" />
+                    </items>
+                </MenuButton>
+                <Region prefHeight="384.0" prefWidth="94.0" />
                 <Button fx:id="settingButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="96.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 15px;" text="Setting" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="12.0" />
@@ -75,19 +79,21 @@
                                 <Image url="@../Home/test-avata.jpg" />
                             </image>
                         </ImageView>
-                    </graphic></Button>
+                    </graphic>
+                </Button>
             </children>
         </HBox>
-        <ImageView fitHeight="397.0" fitWidth="598.0" layoutX="94.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="644.0" fitWidth="809.0" layoutX="94.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../Home/main_background.png" />
             </image>
         </ImageView>
-        <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="592.0" style="-fx-background-color: #FFFFE0;" />
+        <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="922.0" style="-fx-background-color: #FFFFE0;" />
         <Label layoutX="114.0" layoutY="70.0" prefHeight="24.0" prefWidth="144.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Currently reading book">
             <font>
                 <Font name="System Bold" size="12.0" />
-            </font></Label>
+            </font>
+        </Label>
         <HBox layoutX="114.0" layoutY="104.0" prefHeight="86.0" prefWidth="190.0">
             <children>
                 <ImageView fitHeight="91.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
@@ -138,7 +144,8 @@
         <Label layoutX="114.0" layoutY="214.0" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Read books">
             <font>
                 <Font name="System Bold" size="12.0" />
-            </font></Label>
+            </font>
+        </Label>
         <HBox layoutX="115.0" layoutY="250.0" prefHeight="86.0" prefWidth="190.0">
             <children>
                 <ImageView fitHeight="91.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
