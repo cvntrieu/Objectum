@@ -9,6 +9,12 @@ import java.io.IOException;
 
 public class HelloApplication extends Application {
 
+    /**
+     * Getting started.
+     *
+     * @param stage first stage
+     * @throws IOException exception handling
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("fxml/App.fxml"));
