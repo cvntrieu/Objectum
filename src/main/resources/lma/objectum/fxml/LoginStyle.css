@@ -3,5 +3,5 @@
 }
 
 .warning-label {
-    -fx-text-fill: orange;
+    -fx-text-fill: red;
 }

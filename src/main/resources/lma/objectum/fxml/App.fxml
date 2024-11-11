@@ -34,29 +34,29 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="166.0" prefHeight="30.0" prefWidth="85.0" text="Username">
+            <Label layoutX="24.0" layoutY="166.0" prefHeight="30.0" prefWidth="85.0" text="Username" textFill="#36a5ff">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="24.0" layoutY="220.0" prefHeight="30.0" prefWidth="85.0" text="Password">
+            <Label layoutX="24.0" layoutY="220.0" prefHeight="30.0" prefWidth="85.0" text="Password" textFill="#36a5ff">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
             <TextField fx:id="usernameTextField" layoutX="110.0" layoutY="169.0" prefHeight="26.0" prefWidth="377.0" promptText="Username" />
             <PasswordField fx:id="passwordTextField" layoutX="110.0" layoutY="223.0" prefHeight="26.0" prefWidth="379.0" promptText="Password" />
-            <Button fx:id="logInButton" layoutX="194.0" layoutY="340.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="38.0" prefWidth="131.0" style="-fx-background-color: #ffff00;" text="Log In" textFill="#cc1717">
+            <Button fx:id="logInButton" layoutX="194.0" layoutY="340.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="38.0" prefWidth="131.0" style="-fx-background-color: #33ccff;" text="Log In" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="registerButton" layoutX="196.0" layoutY="437.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffff00;" text="Register" textFill="#cc1717">
+            <Button fx:id="registerButton" layoutX="196.0" layoutY="437.0" mnemonicParsing="false" onAction="#registerButtonOnAction" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #33ccff;" text="Register" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="cancelButton" layoutX="194.0" layoutY="526.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffff00;" text="Cancel" textFill="#cc1717">
+            <Button fx:id="cancelButton" layoutX="194.0" layoutY="526.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #33ccff;" text="Cancel" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

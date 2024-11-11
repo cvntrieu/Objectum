@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class App extends Application {
+public class HelloApplication extends Application {
 
     /**
      * Getting started.
@@ -17,10 +17,9 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("fxml/App.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 842, 608);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("fxml/App.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 850, 650);
+        stage.setTitle("Objectum Library");
         stage.setScene(scene);
         stage.show();
     }

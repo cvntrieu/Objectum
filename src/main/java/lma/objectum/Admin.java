@@ -1,12 +1,20 @@
 package lma.objectum;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import lma.objectum.Controllers.User;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import lma.objectum.Database.DatabaseConnection;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Admin extends User {
 
@@ -52,17 +60,6 @@ public class Admin extends User {
     @FXML
     public void initialize() {
 
-        addBooksMenuItem.setOnAction(event -> handleAddBooks());
-
-        removeBooksMenuItem.setOnAction(event -> handleRemoveBooks());
-
-        editBooksMenuItem.setOnAction(event -> handleEditBooks());
-
-        addMembersMenuItem.setOnAction(event -> handleAddMembers());
-
-        removeMembersMenuItem.setOnAction(event -> handleRemoveMembers());
-
-        editMembersMenuItem.setOnAction(event -> handleEditMembers());
     }
 
     /**
@@ -92,29 +89,49 @@ public class Admin extends User {
     /**
      * Handing added members.
      */
-    private void handleAddMembers() {
-        showAlert("Add Members", "You have selected to add members.");
+    public void handleAddMembers() {
+        // showAlert("Add Members", "You have selected to add members.");
         // Thêm logic thực hiện hành động thêm thành viên
     }
 
     /**
      * Handing removed members.
      */
-    private void handleRemoveMembers() {
-        showAlert("Remove Members", "You have selected to remove members.");
-        // Thêm logic thực hiện hành động xóa thành viên
+    public void handleRemoveMembers() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/RemoveMembers.fxml"));
+            Parent root = loader.load();
+            Stage removeMemberStage = new Stage();
+            removeMemberStage.setScene(new Scene(root, 842, 608));
+            accountButton.getScene().getWindow().hide();
+            removeMemberStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Handling edited members.
      */
-    private void handleEditMembers() {
-        showAlert("Edit Members", "You have selected to edit members.");
-        // Thêm logic thực hiện hành động chỉnh sửa thành viên
+    public void handleEditMembers() { // Member <-> Admin
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/EditMembers.fxml"));
+            Parent root = loader.load();
+            Stage removeMemberStage = new Stage();
+            removeMemberStage.setScene(new Scene(root, 842, 608));
+            accountButton.getScene().getWindow().hide();
+            removeMemberStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private void showAlert(String title, String message) {
+    public void showAlert(String title, String message) {
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
