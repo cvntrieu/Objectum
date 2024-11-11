@@ -1,0 +1,7 @@
+.success-label {
+    -fx-text-fill: green;
+}
+
+.warning-label {
+    -fx-text-fill: red;
+}
