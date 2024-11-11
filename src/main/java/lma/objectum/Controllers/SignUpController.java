@@ -18,6 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
@@ -43,47 +44,51 @@ public class SignUpController implements Initializable {
     @FXML
     private Button backTologinButton;
 
-    /**
-     * Overriding.
-     *
-     * @param url url of jdbc-localHost
-     * @param resourceBundle resource bundle
-     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Any required initialization code goes here
     }
 
-    /**
-     * Registers a user.
-     *
-     * @param event ActionEvent
-     */
     public void registerButtonOnAction(ActionEvent event) {
         if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()
                 && !firstnameTextField.getText().isBlank() && !lastnameTextField.getText().isBlank()) {
-            registerUser(event);
-            registerMessageLabel.setText("Registered successfully!");
+
+            if (!isUsernameExists(usernameTextField.getText())) {
+                registerUser(event);
+                registerMessageLabel.setText("Registered successfully!");
+            } else {
+                registerMessageLabel.setText("Username already exists. Please choose a different username.");
+            }
 
         } else {
             registerMessageLabel.setText("Please enter full fields!");
         }
     }
 
-    /**
-     * Handles the Back to Login button action.
-     *
-     * @param event ActionEvent
-     */
     public void backToLoginButtonOnAction(ActionEvent event) {
         redirectToLogin(event);
     }
 
-    /**
-     * Registers a user.
-     *
-     * @param event ActionEvent
-     */
+    private boolean isUsernameExists(String username) {
+        DatabaseConnection connectNow = DatabaseConnection.getInstance();
+        Connection connectDB = connectNow.getConnection();
+
+        String checkUsernameQuery = "SELECT username FROM useraccount WHERE username = ?";
+        try {
+            PreparedStatement preparedStatement = connectDB.prepareStatement(checkUsernameQuery);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Trả về true nếu tìm thấy username đã tồn tại
+            return resultSet.next();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+            return false;
+        }
+    }
+
     private void registerUser(ActionEvent event) {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -113,11 +118,6 @@ public class SignUpController implements Initializable {
         }
     }
 
-    /**
-     * Redirects to the login page.
-     *
-     * @param event ActionEvent
-     */
     private void redirectToLogin(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/App.fxml"));
@@ -129,7 +129,4 @@ public class SignUpController implements Initializable {
             e.getCause();
         }
     }
-
 }
-
-

@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
    <children>
-      <VBox layoutY="94.0" prefHeight="568.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;">
+      <VBox layoutY="94.0" prefHeight="706.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;">
          <children>
             <Button fx:id="accountButton" contentDisplay="RIGHT" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="97.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Account">
                <font>
@@ -51,7 +51,7 @@
                   <MenuItem fx:id="checkBorrowStatusItem" text="Return Books" />
                </items>
             </MenuButton>
-            <Region prefHeight="384.0" prefWidth="94.0" />
+            <Region prefHeight="525.0" prefWidth="94.0" />
             <Button fx:id="settingButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="96.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 15px;" text="Setting" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -79,12 +79,12 @@
             </Button>
          </children>
       </HBox>
-      <ImageView fitHeight="644.0" fitWidth="809.0" layoutX="94.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="786.0" fitWidth="1012.0" layoutX="94.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Home/main_background.png" />
          </image>
       </ImageView>
-      <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="922.0" style="-fx-background-color: #FFFFE0;" />
+      <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="1200.0" style="-fx-background-color: #FFFFE0;" />
       <Label layoutX="114.0" layoutY="70.0" prefHeight="24.0" prefWidth="144.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Currently reading book">
          <font>
             <Font name="System Bold" size="12.0" />
