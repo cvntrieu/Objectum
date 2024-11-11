@@ -11,10 +11,10 @@ public class DatabaseConnection {
      * Constructor for DatabaseConnection.
      */
     private DatabaseConnection() {
-        String databaseName = "test_db";
+        String databaseName = "objectum";
         String databaseUser = "root";
-        String databasePassword = "080305";
-        String url = "jdbc:mysql://localhost:3307/" + databaseName;
+        String databasePassword = "13082005";
+        String url = "jdbc:mysql://localhost/" + databaseName;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
