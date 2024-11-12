@@ -1,0 +1,122 @@
+/* Root Pane */
+.root-pane {
+    -fx-background-color: #f9f9f9; /* Light background */
+    -fx-border-radius: 10px;  /* Bo góc cho toàn bộ cửa sổ */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 0, 4); /* Hiệu ứng đổ bóng nhẹ */
+}
+
+/* Search Field */
+.search-field {
+    -fx-font-size: 14px;
+    -fx-padding: 8px 20px 8px 10px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #4a90e2; /* Viền xanh dương sáng */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-background-repeat: no-repeat;
+}
+
+.search-field:focused {
+    -fx-border-color: #0078d4; /* Đổi màu viền khi focus (xanh dương đậm) */
+}
+
+/* Table Styling */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-padding: 5;
+    -fx-border-radius: 10;
+    -fx-selection-bar: #a8d0e6; /* Màu xanh dương nhạt khi chọn dòng */
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e6f7ff; /* Màu nền khi hover (xanh nhạt) */
+    -fx-cursor: hand;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #cce5ff; /* Màu nền khi chọn dòng (xanh dương) */
+}
+
+/* Dynamic Island (Book Details Panel) */
+.dynamic-island {
+    -fx-background-color: #28a745; /* Màu nền */
+    -fx-border-radius: 20px; /* Bo góc lớn hơn để mềm mại hơn */
+    -fx-padding: 20px 25px; /* Thêm padding */
+    -fx-opacity: 0;
+    -fx-transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 15, 0.5, 0, 10);
+}
+
+/* Khi phần Dynamic Island được hiển thị */
+.dynamic-island.visible {
+    -fx-opacity: 1;
+    -fx-translate-y: 0; /* Đảm bảo không gian động mượt mà */
+}
+
+/* Các Label trong Dynamic Island */
+.dynamic-label {
+    -fx-font-size: 16px; /* Cỡ chữ vừa đủ để dễ đọc */
+    -fx-font-weight: bold; /* Làm đậm font chữ để nổi bật */
+    -fx-text-fill: #ffffff; /* Chữ màu trắng để tạo độ tương phản với nền xanh lá */
+    -fx-text-alignment: center;
+}
+
+/* Separator giữa các phần trong Dynamic Island */
+.separator {
+    -fx-background-color: #ffffff; /* Màu trắng cho separator */
+    -fx-opacity: 0.5; /* Giảm độ đậm của separator để không gây mất tập trung */
+}
+
+/* Hiệu ứng của phần Label và Separator khi Dynamic Island có thể nhìn thấy */
+.dynamic-island .dynamic-label {
+    -fx-transition: color 0.3s ease; /* Hiệu ứng chuyển màu khi xuất hiện */
+}
+
+.dynamic-island .separator {
+    -fx-transition: opacity 0.3s ease;
+}
+
+/* Image zoom effect */
+.image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 0, 4);
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-transition: transform 0.3s ease-in-out;
+}
+
+.image-view:hover {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+/* Hyperlink (Liên kết mượn sách) */
+#buyLink {
+    -fx-text-fill: #ffcc00; /* Màu vàng sáng để làm nổi bật liên kết */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+#buyLink:hover {
+    -fx-text-fill: #f8b400; /* Màu vàng đậm hơn khi hover */
+    -fx-underline: true; /* Gạch chân khi hover */
+}
+
+/* ComboBox (Chọn tiêu chí tìm kiếm) */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+}
+
+.combo-box:focused {
+    -fx-border-color: #0078d4; /* Viền xanh dương khi focus */
+}
+
+/* ComboBox Menu Styling */
+.combo-box-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5;
+}
