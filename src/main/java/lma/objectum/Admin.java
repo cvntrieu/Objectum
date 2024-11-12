@@ -8,13 +8,8 @@ import javafx.stage.Stage;
 import lma.objectum.Controllers.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
-import lma.objectum.Database.DatabaseConnection;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Admin extends User {
 
@@ -57,9 +52,31 @@ public class Admin extends User {
     @FXML
     private MenuItem editMembersMenuItem;
 
+    /**
+     * Initializing methods.
+     */
     @FXML
     public void initialize() {
 
+    }
+
+    /**
+     * Handing account viewing button.
+     */
+    @Override
+    public void handleAccountButton() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AccountView.fxml"));
+            Parent root = loader.load();
+            Stage removeMemberStage = new Stage();
+            removeMemberStage.setScene(new Scene(root, 842, 608));
+            accountButton.getScene().getWindow().hide();
+            removeMemberStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -130,7 +147,12 @@ public class Admin extends User {
         }
     }
 
-
+    /**
+     * Showing an alert if necessary.
+     *
+     * @param title
+     * @param message
+     */
     public void showAlert(String title, String message) {
 
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -140,3 +162,4 @@ public class Admin extends User {
         alert.showAndWait();
     }
 }
+
