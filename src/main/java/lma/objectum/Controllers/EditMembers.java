@@ -46,10 +46,16 @@ public class EditMembers {
     @FXML
     public Button backButton;
 
+    /**
+     * Initializing method.
+     */
     @FXML
     public void initialize() {
     }
 
+    /**
+     * Member to Admin.
+     */
     public void toAdminButtonOnAction() {
 
         String username = editTextField.getText();
@@ -107,7 +113,9 @@ public class EditMembers {
         }
     }
 
-
+    /**
+     * Admin to Member.
+     */
     public void toMemberButtonOnAction() {
 
         String username = editTextField.getText();
@@ -162,12 +170,16 @@ public class EditMembers {
         }
     }
 
-
+    /**
+     * Back Button on action.
+     *
+     * @param event e
+     */
     public void redirectToHome(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
             Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            loginStage.setScene(new Scene(root, 842, 608));
+            loginStage.setScene(new Scene(root, 1200, 800));
             loginStage.show();
         } catch (Exception e) {
             e.printStackTrace();
