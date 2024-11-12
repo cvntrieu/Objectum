@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -60,15 +61,21 @@ public class LoginController {
     @FXML
     private ImageView brandingImageView;
 
-    public void initialize(URL url, ResourceBundle rb) {
-
-        System.out.println("Initialize method called");
-        File brandingFile = new File("MyBook.jpg");
-        Image brandingImage = new Image(brandingFile.toURI().toString());
-        brandingImageView.setImage(brandingImage);
-
-        // If there are more images, code like above here...
-    }
+    /**
+     * Initializing Sign-In for members.
+     *
+     * @param url url of jdbc-local host
+     * @param rb resource bundle
+     */
+//    public void initialize(URL url, ResourceBundle rb) {
+//
+//        System.out.println("Initialize method called");
+//        File brandingFile = new File("MyBook.jpg");
+//        Image brandingImage = new Image(brandingFile.toURI().toString());
+//        brandingImageView.setImage(brandingImage);
+//
+//        // If there are more images, code like above here...
+//    }
 
     /**
      * Closes the login form.
@@ -108,8 +115,9 @@ public class LoginController {
      * open main page.
      */
     private void showHomePage() {
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/home.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Home.fxml"));
             Parent root = loader.load();
             Stage homeStage = new Stage();
             homeStage.setScene(new Scene(root));
@@ -125,13 +133,34 @@ public class LoginController {
     }
 
     /**
+     * Admin homepage.
+     */
+    private void showAdminHomePage() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
+            Parent root = loader.load();
+            Stage adminStage = new Stage();
+            adminStage.setScene(new Scene(root));
+            adminStage.setTitle("Admin interface");
+            adminStage.show();
+            Stage loginStage = (Stage) logInButton.getScene().getWindow();
+            loginStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            loginMessageLabel.setText("Could not load the admin interface.");
+        }
+    }
+
+    /**
      * Validates the login credentials.
      */
     private void validateLogin() {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
 
-        String verifyLogin = "SELECT password FROM useraccount WHERE username = ?";
+        String verifyLogin = "SELECT password, role FROM useraccount WHERE username = ?";
 
         try {
             PreparedStatement preparedStatement = connectDB.prepareStatement(verifyLogin);
@@ -140,24 +169,49 @@ public class LoginController {
             ResultSet queryResult = preparedStatement.executeQuery();
 
             if (queryResult.next()) {
+
                 String hashedPassword = queryResult.getString("password");
+                String role = queryResult.getString("role");
 
                 if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
-                    loginMessageLabel.setText("Login successful! Welcome!");
-                    showHomePage();
+
+                    if (("member".equalsIgnoreCase(role))) {
+                        loginMessageLabel.setText("Login Member successful! Welcome!");
+                        loginMessageLabel.getStyleClass().clear();
+                        loginMessageLabel.getStyleClass().add("success-label");
+                        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                        pause.setOnFinished(event -> showHomePage());
+                        pause.play();
+                    } else {
+                        loginMessageLabel.setText("Login Admin successful! Welcome!");
+                        loginMessageLabel.getStyleClass().clear();
+                        loginMessageLabel.getStyleClass().add("success-label");
+                        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+                        pause.setOnFinished(event -> showAdminHomePage());
+                        pause.play();
+                    }
                 } else {
                     loginMessageLabel.setText("Invalid login. Please try again.");
+                    loginMessageLabel.getStyleClass().clear();
+                    loginMessageLabel.getStyleClass().add("warning-label");
                 }
             } else {
                 loginMessageLabel.setText("Username not found.");
+                loginMessageLabel.getStyleClass().clear();
+                loginMessageLabel.getStyleClass().add("warning-label");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             loginMessageLabel.setText("An error occurred while trying to log in.");
+            loginMessageLabel.getStyleClass().clear();
+            loginMessageLabel.getStyleClass().add("warning-label");
         }
     }
 
+    /**
+     * Creating an account form.
+     */
     private void createAccountForm() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/SignUp.fxml"));
