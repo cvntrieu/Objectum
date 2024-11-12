@@ -157,15 +157,15 @@ public class LoginController {
      * Validates the login credentials.
      */
     private void validateLogin() {
+
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
-
         String verifyLogin = "SELECT password, role FROM useraccount WHERE username = ?";
 
         try {
+
             PreparedStatement preparedStatement = connectDB.prepareStatement(verifyLogin);
             preparedStatement.setString(1, usernameTextField.getText());
-
             ResultSet queryResult = preparedStatement.executeQuery();
 
             if (queryResult.next()) {
@@ -175,6 +175,9 @@ public class LoginController {
 
                 if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
 
+                    SessionManager.getInstance().setCurrentUsername(passwordTextField.getText());
+                    // getInstance() of Singleton
+
                     if (("member".equalsIgnoreCase(role))) {
                         loginMessageLabel.setText("Login Member successful! Welcome!");
                         loginMessageLabel.getStyleClass().clear();
@@ -182,6 +185,7 @@ public class LoginController {
                         PauseTransition pause = new PauseTransition(Duration.seconds(3));
                         pause.setOnFinished(event -> showHomePage());
                         pause.play();
+
                     } else {
                         loginMessageLabel.setText("Login Admin successful! Welcome!");
                         loginMessageLabel.getStyleClass().clear();
