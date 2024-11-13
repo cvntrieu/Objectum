@@ -36,19 +36,24 @@ public class SignUpController implements Initializable {
     private PasswordField passwordTextField;
 
     @FXML
-    private Button registerButton;
-
-    @FXML
     private Label registerMessageLabel;
 
-    @FXML
-    private Button backTologinButton;
-
+    /**
+     * Intializing methods.
+     *
+     * @param url url
+     * @param resourceBundle rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Any required initialization code goes here
     }
 
+    /**
+     * Register a new member.
+     *
+     * @param event event
+     */
     public void registerButtonOnAction(ActionEvent event) {
         if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()
                 && !firstnameTextField.getText().isBlank() && !lastnameTextField.getText().isBlank()) {
@@ -57,7 +62,7 @@ public class SignUpController implements Initializable {
                 registerUser(event);
                 registerMessageLabel.setText("Registered successfully!");
             } else {
-                registerMessageLabel.setText("Username already exists. Please choose a different username.");
+                registerMessageLabel.setText("Username has already existed. Please choose a different username.");
             }
 
         } else {
@@ -65,10 +70,21 @@ public class SignUpController implements Initializable {
         }
     }
 
+    /**
+     * Back to Login.
+     *
+     * @param event event
+     */
     public void backToLoginButtonOnAction(ActionEvent event) {
         redirectToLogin(event);
     }
 
+    /**
+     * Is username existed.
+     *
+     * @param username username
+     * @return true or false
+     */
     private boolean isUsernameExists(String username) {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -89,6 +105,11 @@ public class SignUpController implements Initializable {
         }
     }
 
+    /**
+     * Register a new member.
+     *
+     * @param event event
+     */
     private void registerUser(ActionEvent event) {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -118,6 +139,11 @@ public class SignUpController implements Initializable {
         }
     }
 
+    /**
+     * Back button on action
+     *
+     * @param event event
+     */
     private void redirectToLogin(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/App.fxml"));

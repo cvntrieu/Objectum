@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.RemoveMembers">
     <stylesheets>
-        <String fx:value="@LoginStyle.css" />
+        <String fx:value="@../css/LoginStyle.css" />
     </stylesheets>
     <children>
         <VBox layoutY="94.0" prefHeight="568.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;" />
@@ -52,7 +52,7 @@
             <Font name="Calibri Bold" size="28.0" />
          </font>
       </Button>
-      <Label fx:id="deleteMemberMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="280.0" prefHeight="38.0" prefWidth="564.0" stylesheets="@LoginStyle.css">
+      <Label fx:id="deleteMemberMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="280.0" prefHeight="38.0" prefWidth="564.0" stylesheets="@../css/LoginStyle.css">
          <font>
             <Font name="System Bold" size="20.0" />
          </font></Label>

@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="608.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.LoginController">
    <stylesheets>
-      <String fx:value="@LoginStyle.css" />
+      <String fx:value="@../css/LoginStyle.css" />
    </stylesheets>
    <left>
       <AnchorPane prefHeight="608.0" prefWidth="244.0" BorderPane.alignment="CENTER">
@@ -29,7 +29,7 @@
    <center>
       <AnchorPane prefHeight="608.0" prefWidth="497.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="12.0" layoutY="287.0" prefHeight="34.0" prefWidth="474.0" stylesheets="@LoginStyle.css" textFill="#d45e31">
+            <Label fx:id="loginMessageLabel" alignment="CENTER" layoutX="12.0" layoutY="287.0" prefHeight="34.0" prefWidth="474.0" stylesheets="@../css/LoginStyle.css" textFill="#d45e31">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

@@ -42,10 +42,16 @@ public class RemoveMembers {
     @FXML
     public TextField deleteTextField;
 
+    /**
+     * Initializing method.
+     */
     @FXML
     public void initialize() {
     }
 
+    /**
+     * Deleting a member.
+     */
     public void deleteButtonOnAction() {
 
         String username = deleteTextField.getText();
@@ -57,7 +63,7 @@ public class RemoveMembers {
             String deleteUserQuery = "DELETE FROM useraccount WHERE username = ?";
 
             try {
-                // Kiểm tra xem username có tồn tại trong cơ sở dữ liệu không
+                // Kiểm tra xem username có tồn tại trong cơ sở dữ liệu không?
                 PreparedStatement checkUserStatement = connectDB.prepareStatement(checkUserQuery);
                 checkUserStatement.setString(1, username);
                 ResultSet userResult = checkUserStatement.executeQuery();
@@ -66,7 +72,7 @@ public class RemoveMembers {
                     String role = userResult.getString("role");
 
                     if ("admin".equalsIgnoreCase(role)) {
-
+                    // Ko đc xoá admin!
                         deleteMemberMessageLabel.setText("Cannot delete an admin!");
                         deleteMemberMessageLabel.getStyleClass().clear();
                         deleteMemberMessageLabel.getStyleClass().add("warning-label");
@@ -106,12 +112,17 @@ public class RemoveMembers {
     }
 
 
+    /**
+     * Back Button on Action.
+     *
+     * @param event e
+     */
     public void redirectToHome(ActionEvent event) { // BackButtonOnAction
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
             Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            loginStage.setScene(new Scene(root, 842, 608));
+            loginStage.setScene(new Scene(root, 1200, 800));
             loginStage.show();
         } catch (Exception e) {
             e.printStackTrace();
