@@ -42,6 +42,9 @@ public class Member extends User {
     @FXML
     public MenuItem checkBorrowStatusItem;
 
+    @FXML
+    public Button APIButton;
+
     /**
      * Initializing methods.
      */
@@ -77,6 +80,22 @@ public class Member extends User {
             Stage removeMemberStage = new Stage();
             Scene scene = new Scene(root, 1151, 622);
             scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
+            removeMemberStage.setScene(scene);
+            accountButton.getScene().getWindow().hide();
+            removeMemberStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void APIButtonOnAction () {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/API.fxml"));
+            Parent root = loader.load();
+            Stage removeMemberStage = new Stage();
+            Scene scene = new Scene(root, 1132, 836);
             removeMemberStage.setScene(scene);
             accountButton.getScene().getWindow().hide();
             removeMemberStage.show();
