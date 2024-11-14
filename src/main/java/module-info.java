@@ -9,7 +9,8 @@ module lma.objectum {
     requires java.sql;
     requires jbcrypt;
     requires com.google.gson; // Thêm thư viện Gson
-    requires okhttp3;         // Thêm thư viện OkHttp
+    requires okhttp3;
+    requires java.desktop;         // Thêm thư viện OkHttp
 
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;
