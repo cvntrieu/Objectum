@@ -8,6 +8,9 @@ module lma.objectum {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
     requires jbcrypt;
+    requires com.google.gson;
+    requires okhttp3;
+    requires java.desktop;
 
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;
