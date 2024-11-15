@@ -12,8 +12,8 @@ module lma.objectum {
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;
     exports lma.objectum.Controllers;
+    exports lma.objectum.Models;
+    exports lma.objectum.Utils;
     opens lma.objectum.Controllers to javafx.fxml;
-
-    // Open Models package to both javafx.fxml and javafx.base
     opens lma.objectum.Models to javafx.fxml, javafx.base;
 }

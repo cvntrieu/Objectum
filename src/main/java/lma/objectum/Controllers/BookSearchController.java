@@ -1,8 +1,5 @@
 package lma.objectum.Controllers;
 
-import lma.objectum.Database.DatabaseConnection;
-import lma.objectum.Models.Book;
-import lma.objectum.Utils.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -12,18 +9,17 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
+import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Models.Book;
+import lma.objectum.Utils.*;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -58,33 +54,16 @@ public class BookSearchController implements Initializable {
     private Hyperlink buyLink;
     @FXML
     private ComboBox<String> searchCriteriaComboBox;
+    private SearchContext searchContext = new SearchContext();
 
     ObservableList<Book> bookList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         loadBooksFromDatabase();
-        // Initialize the search context and strategies
-        SearchContext searchContext = new SearchContext();
 
-        // Add listener to ComboBox to change search strategy based on selection
         searchCriteriaComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) return;
-
-            switch (newValue) {
-                case "Title":
-                    searchContext.setStrategy(new TitleSearchStrategy());
-                    break;
-                case "Author":
-                    searchContext.setStrategy(new AuthorSearchStrategy());
-                    break;
-                case "ISBN":
-                    searchContext.setStrategy(new IsbnSearchStrategy());
-                    break;
-                case "Year":
-                    searchContext.setStrategy(new DateSearchStrategy());
-                    break;
-            }
+            updateSearchStrategy();
         });
 
         // Setup for the filtered and sorted list
@@ -214,7 +193,171 @@ public class BookSearchController implements Initializable {
         });
     }
 
-    private void loadBooksFromDatabase() {
+    public TableView<Book> getTableView() {
+        return tableView;
+    }
+
+    public void setTableView(TableView<Book> tableView) {
+        this.tableView = tableView;
+    }
+
+    public TableColumn<Book, String> getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(TableColumn<Book, String> isbn) {
+        this.isbn = isbn;
+    }
+
+    public TableColumn<Book, String> getTitle() {
+        return title;
+    }
+
+    public void setTitle(TableColumn<Book, String> title) {
+        this.title = title;
+    }
+
+    public TableColumn<Book, String> getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(TableColumn<Book, String> author) {
+        this.author = author;
+    }
+
+    public TableColumn<Book, String> getDate() {
+        return date;
+    }
+
+    public void setDate(TableColumn<Book, String> date) {
+        this.date = date;
+    }
+
+    public TableColumn<Book, String> getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(TableColumn<Book, String> publisher) {
+        this.publisher = publisher;
+    }
+
+    public TableColumn<Book, String> getImage() {
+        return image;
+    }
+
+    public void setImage(TableColumn<Book, String> image) {
+        this.image = image;
+    }
+
+    public TableColumn<Book, Long> getIsbn_13() {
+        return isbn_13;
+    }
+
+    public void setIsbn_13(TableColumn<Book, Long> isbn_13) {
+        this.isbn_13 = isbn_13;
+    }
+
+    public TableColumn<Book, Double> getRating() {
+        return rating;
+    }
+
+    public void setRating(TableColumn<Book, Double> rating) {
+        this.rating = rating;
+    }
+
+    public TextField getKeyWordTextField() {
+        return keyWordTextField;
+    }
+
+    public void setKeyWordTextField(TextField keyWordTextField) {
+        this.keyWordTextField = keyWordTextField;
+    }
+
+    public AnchorPane getDynamicIsland() {
+        return dynamicIsland;
+    }
+
+    public void setDynamicIsland(AnchorPane dynamicIsland) {
+        this.dynamicIsland = dynamicIsland;
+    }
+
+    public Label getTitleLabel() {
+        return titleLabel;
+    }
+
+    public void setTitleLabel(Label titleLabel) {
+        this.titleLabel = titleLabel;
+    }
+
+    public Label getAuthorLabel() {
+        return authorLabel;
+    }
+
+    public void setAuthorLabel(Label authorLabel) {
+        this.authorLabel = authorLabel;
+    }
+
+    public Label getRatingLabel() {
+        return ratingLabel;
+    }
+
+    public void setRatingLabel(Label ratingLabel) {
+        this.ratingLabel = ratingLabel;
+    }
+
+    public Hyperlink getBuyLink() {
+        return buyLink;
+    }
+
+    public void setBuyLink(Hyperlink buyLink) {
+        this.buyLink = buyLink;
+    }
+
+    public ComboBox<String> getSearchCriteriaComboBox() {
+        return searchCriteriaComboBox;
+    }
+
+    public void setSearchCriteriaComboBox(ComboBox<String> searchCriteriaComboBox) {
+        this.searchCriteriaComboBox = searchCriteriaComboBox;
+    }
+
+    public ObservableList<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(ObservableList<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public SearchContext getSearchContext() {
+        return searchContext;
+    }
+
+    public void setSearchContext(SearchContext searchContext) {
+        this.searchContext = searchContext;
+    }
+
+    public void updateSearchStrategy() {
+        String selectedCriteria = searchCriteriaComboBox.getSelectionModel().getSelectedItem();
+        if (selectedCriteria != null) {
+            switch (selectedCriteria) {
+                case "Title":
+                    searchContext.setStrategy(new TitleSearchStrategy());
+                    break;
+                case "Author":
+                    searchContext.setStrategy(new AuthorSearchStrategy());
+                    break;
+                case "ISBN":
+                    searchContext.setStrategy(new IsbnSearchStrategy());
+                    break;
+                case "Year":
+                    searchContext.setStrategy(new DateSearchStrategy());
+                    break;
+            }
+        }
+    }
+
+    void loadBooksFromDatabase() {
         String query = "SELECT ISBN, ISBN13, Title, Author, Rating, PublicationYear, Publisher, ImageUrlS FROM books";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              Statement stmt = conn.createStatement();
