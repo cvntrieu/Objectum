@@ -10,10 +10,7 @@ import javafx.scene.image.ImageView;
 import lma.objectum.Database.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class AccountView {
 
@@ -44,7 +41,7 @@ public class AccountView {
     /**
      * Intializing the view interface.
      */
-    public void initialize() {
+    public void initialize() throws SQLException {
         // Các phương thức dùng trực tiếp hoặc gắn liền nút bấm, sự kịiện phải để public để file fxml còn đọc
         loadUserInfo();
     }
@@ -52,7 +49,7 @@ public class AccountView {
     /**
      * Loading users' personal infomation.
      */
-    private void loadUserInfo() {
+    private void loadUserInfo() throws SQLException {
 
         String currentUsername = SessionManager.getInstance().getCurrentUsername();
         if (currentUsername == null) { return; }
@@ -86,7 +83,7 @@ public class AccountView {
      * @param username the username to change its password
      * @param newPassword the new password
      */
-    private void updatePassword(String username, String newPassword) {
+    private void updatePassword(String username, String newPassword) throws SQLException {
 
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -110,7 +107,7 @@ public class AccountView {
     /**
      * Handling the changing password process.
      */
-    public void handleApplyPassword() {
+    public void handleApplyPassword() throws SQLException {
 
         String currentUsername = SessionManager.getInstance().getCurrentUsername();
         // getInstance() of Singleton

@@ -92,7 +92,7 @@ public class LoginController {
      *
      * @param event MouseEvent
      */
-    public void loginButtonOnAction(ActionEvent event) {
+    public void loginButtonOnAction(ActionEvent event) throws SQLException {
         if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()) {
             loginMessageLabel.setText("Trying!");
             validateLogin();
@@ -156,7 +156,7 @@ public class LoginController {
     /**
      * Validates the login credentials.
      */
-    private void validateLogin() {
+    private void validateLogin() throws SQLException {
 
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -175,7 +175,7 @@ public class LoginController {
 
                 if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
 
-                    SessionManager.getInstance().setCurrentUsername(passwordTextField.getText());
+                    SessionManager.getInstance().setCurrentUsername(usernameTextField.getText());
                     // getInstance() of Singleton
 
                     if (("member".equalsIgnoreCase(role))) {

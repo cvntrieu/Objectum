@@ -19,6 +19,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
@@ -54,7 +55,7 @@ public class SignUpController implements Initializable {
      *
      * @param event event
      */
-    public void registerButtonOnAction(ActionEvent event) {
+    public void registerButtonOnAction(ActionEvent event) throws SQLException {
         if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()
                 && !firstnameTextField.getText().isBlank() && !lastnameTextField.getText().isBlank()) {
 
@@ -85,7 +86,7 @@ public class SignUpController implements Initializable {
      * @param username username
      * @return true or false
      */
-    private boolean isUsernameExists(String username) {
+    private boolean isUsernameExists(String username) throws SQLException {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
 
@@ -110,7 +111,7 @@ public class SignUpController implements Initializable {
      *
      * @param event event
      */
-    private void registerUser(ActionEvent event) {
+    private void registerUser(ActionEvent event) throws SQLException {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
 

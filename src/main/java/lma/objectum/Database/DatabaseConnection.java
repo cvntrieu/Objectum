@@ -3,6 +3,7 @@ package lma.objectum.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static DatabaseConnection instance;
@@ -30,10 +31,10 @@ public class DatabaseConnection {
      *
      * @return DatabaseConnection instance
      */
-    public static DatabaseConnection getInstance() {
-        if (instance == null) {
+    public static DatabaseConnection getInstance() throws SQLException {
+        if (instance == null || instance.databaseLink == null || instance.databaseLink.isClosed()) {
             synchronized (DatabaseConnection.class) {
-                if (instance == null) {
+                if (instance == null || instance.databaseLink == null || instance.databaseLink.isClosed()) {
                     instance = new DatabaseConnection();
                 }
             }

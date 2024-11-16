@@ -56,7 +56,7 @@ public class EditMembers {
     /**
      * Member to Admin.
      */
-    public void toAdminButtonOnAction() {
+    public void toAdminButtonOnAction() throws SQLException {
 
         String username = editTextField.getText();
         if (!username.isBlank()) {
@@ -116,7 +116,7 @@ public class EditMembers {
     /**
      * Admin to Member.
      */
-    public void toMemberButtonOnAction() {
+    public void toMemberButtonOnAction() throws SQLException {
 
         String username = editTextField.getText();
         if (!username.isBlank()) {

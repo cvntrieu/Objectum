@@ -9,25 +9,27 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Models.Book;
 import lma.objectum.Utils.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class BookSearchController implements Initializable {
@@ -54,7 +56,10 @@ public class BookSearchController implements Initializable {
     private Hyperlink buyLink;
     @FXML
     private ComboBox<String> searchCriteriaComboBox;
+    @FXML
+    private Button homeButton;
     private SearchContext searchContext = new SearchContext();
+
 
     ObservableList<Book> bookList = FXCollections.observableArrayList();
 
@@ -337,6 +342,26 @@ public class BookSearchController implements Initializable {
         this.searchContext = searchContext;
     }
 
+    @FXML
+    public void handleHomeButton() {
+        try {
+            boolean isAdmin = checkIfAdmin();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    isAdmin ? "/lma/objectum/fxml/AdminHome.fxml" : "/lma/objectum/fxml/Home.fxml"
+            ));
+            Parent root = loader.load();
+            Stage stage = (Stage) homeButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void updateSearchStrategy() {
         String selectedCriteria = searchCriteriaComboBox.getSelectionModel().getSelectedItem();
         if (selectedCriteria != null) {
@@ -377,5 +402,27 @@ public class BookSearchController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean checkIfAdmin() throws SQLException {
+        DatabaseConnection connectNow = DatabaseConnection.getInstance();
+        Connection connectDB = connectNow.getConnection();
+        String username = SessionManager.getInstance().getCurrentUsername();
+        String query = "SELECT role FROM useraccount WHERE username = ?";
+
+        try {
+            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            ResultSet queryResult = preparedStatement.executeQuery();
+
+            if (queryResult.next()) {
+                String role = queryResult.getString("role");
+                return "admin".equalsIgnoreCase(role);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
