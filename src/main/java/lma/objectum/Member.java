@@ -9,6 +9,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import lma.objectum.Controllers.TransactionController;
 import lma.objectum.Controllers.User;
 
 import java.io.IOException;
@@ -72,6 +73,9 @@ public class Member extends User {
         }
     }
 
+    /**
+     * Handling borrow button.
+     */
     public void handleBorrowBooksItem() {
 
         try {
@@ -84,6 +88,22 @@ public class Member extends User {
             accountButton.getScene().getWindow().hide();
             removeMemberStage.show();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleReturnBooksItem() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Transaction.fxml"));
+            Parent root = loader.load();
+            Stage removeMemberStage = new Stage();
+            Scene scene = new Scene(root, 478.4, 600);
+            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/TransactionStyle.css").toExternalForm());
+            removeMemberStage.setScene(scene);
+            accountButton.getScene().getWindow().hide();
+            removeMemberStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

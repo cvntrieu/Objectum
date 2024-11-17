@@ -70,132 +70,9 @@ public class BookSearchController implements Initializable {
         searchCriteriaComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             updateSearchStrategy();
         });
-
-        // Setup for the filtered and sorted list
-        FilteredList<Book> filteredData = new FilteredList<>(bookList, b -> true);
-        keyWordTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(book -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true; // No filter applied
-                }
-                return searchContext.executeSearch(book, newValue);
-            });
-        });
-
-        SortedList<Book> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-        tableView.setItems(sortedData);
-
-        // Setup table columns
-        isbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        isbn_13.setCellValueFactory(new PropertyValueFactory<>("isbn_13"));
-        title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        author.setCellValueFactory(new PropertyValueFactory<>("authors"));
-        rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        publisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
-        image.setCellValueFactory(new PropertyValueFactory<>("imageUrl"));
-
-        // Handle table row click event to show book details
-        tableView.setOnMouseClicked(event -> {
-            Book selectedBook = tableView.getSelectionModel().getSelectedItem();
-            if (selectedBook != null) {
-                titleLabel.setText("Title: " + selectedBook.getTitle());
-                authorLabel.setText("Author: " + selectedBook.getAuthors());
-                ratingLabel.setText("Rating: " + selectedBook.getRating());
-
-                // Add fade-in effect to Dynamic Island
-                FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), dynamicIsland);
-                fadeIn.setFromValue(0);
-                fadeIn.setToValue(1);
-                fadeIn.play();
-                dynamicIsland.setVisible(true);
-
-                // Handle buy link click event to show book borrow dialog
-
-//                buyLink.setOnAction(e -> {
-//                    try {
-//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/BookBorrow.fxml"));
-//                        AnchorPane borrowPane = loader.load();
-//
-//                        BookBorrowController borrowController = loader.getController();
-//                        borrowController.setBookDetails(selectedBook.getTitle(), selectedBook.getAuthors());
-//
-//                        Stage borrowStage = new Stage();
-//                        borrowStage.setTitle("Borrow Book");
-//                        borrowStage.setScene(new Scene(borrowPane));
-//                        borrowStage.show();
-//                    } catch (IOException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                });
-            }
-        });
-
-        // Set up custom cell factory for image column with zoom effect
-        image.setCellFactory(column -> new TableCell<>() {
-            private final ImageView imageView = new ImageView();
-            {
-                imageView.setFitHeight(100);
-                imageView.setFitWidth(80);
-                imageView.setPreserveRatio(true);
-                // Apply scale transition for image zoom effect
-                imageView.setOnMouseEntered(e -> {
-                    ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.3), imageView);
-                    scaleTransition.setToX(1.2);
-                    scaleTransition.setToY(1.2);
-                    scaleTransition.play();
-                });
-                imageView.setOnMouseExited(e -> {
-                    ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.3), imageView);
-                    scaleTransition.setToX(1);
-                    scaleTransition.setToY(1);
-                    scaleTransition.play();
-                });
-            }
-            @Override
-            protected void updateItem(String imageUrl, boolean empty) {
-                super.updateItem(imageUrl, empty);
-                if (empty || imageUrl == null) {
-                    setGraphic(null);
-                } else {
-                    String finalImageUrl = imageUrl.startsWith("http://") ? imageUrl.replace("http://", "https://") : imageUrl;
-                    Task<Image> imageTask = new Task<>() {
-                        @Override
-                        protected Image call() throws Exception {
-                            try {
-                                URI uri = new URI(finalImageUrl);
-                                URL url = uri.toURL();
-                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36");
-                                connection.setRequestProperty("Referer", "https://www.amazon.com/");
-                                connection.connect();
-
-                                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                                    InputStream inputStream = connection.getInputStream();
-                                    return new Image(inputStream);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            return null;
-                        }
-                    };
-                    imageTask.setOnSucceeded(event -> {
-                        Image image = imageTask.getValue();
-                        Platform.runLater(() -> {
-                            if (image != null) {
-                                imageView.setImage(image);
-                                setGraphic(imageView);
-                            } else {
-                                setGraphic(null);
-                            }
-                        });
-                    });
-                    new Thread(imageTask).start();
-                }
-            }
-        });
+        
+        setupFilteringAndSorting();
+        configureTableColumns();
     }
 
     public TableView<Book> getTableView() {
@@ -362,7 +239,7 @@ public class BookSearchController implements Initializable {
     }
 
 
-    public void updateSearchStrategy() {
+    void updateSearchStrategy() {
         String selectedCriteria = searchCriteriaComboBox.getSelectionModel().getSelectedItem();
         if (selectedCriteria != null) {
             switch (selectedCriteria) {
@@ -402,6 +279,148 @@ public class BookSearchController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setupFilteringAndSorting() {
+        FilteredList<Book> filteredData = new FilteredList<>(bookList, b -> true);
+        keyWordTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(book -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                return searchContext.executeSearch(book, newValue);
+            });
+        });
+
+        SortedList<Book> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+        tableView.setItems(sortedData);
+    }
+
+    private void setupTableClickHandler() {
+        tableView.setOnMouseClicked(event -> {
+            Book selectedBook = tableView.getSelectionModel().getSelectedItem();
+            if (selectedBook != null) {
+                displayBookDetails(selectedBook);
+            }
+        });
+    }
+
+    private void displayBookDetails(Book selectedBook) {
+        titleLabel.setText("Title: " + selectedBook.getTitle());
+        authorLabel.setText("Author: " + selectedBook.getAuthors());
+        ratingLabel.setText("Rating: " + selectedBook.getRating());
+
+        applyFadeTransition(dynamicIsland, 0, 1);
+        dynamicIsland.setVisible(true);
+
+        buyLink.setOnAction(e -> navigateToTransactionPage(selectedBook));
+    }
+
+    private void applyFadeTransition(AnchorPane pane, double fromValue, double toValue) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), pane);
+        fadeIn.setFromValue(fromValue);
+        fadeIn.setToValue(toValue);
+        fadeIn.play();
+    }
+
+    private void navigateToTransactionPage(Book book) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Transaction.fxml"));
+            Parent root = loader.load();
+
+            TransactionController transactionController = loader.getController();
+            transactionController.prefillData(book.getIsbn_13());
+
+            Stage stage = (Stage) buyLink.getScene().getWindow();
+            stage.setTitle("Transaction");
+            Scene scene = new Scene(root, 478.8, 600);
+            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/TransactionStyle.css").toExternalForm());
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void setupImageViewEffects(ImageView imageView) {
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(80);
+        imageView.setPreserveRatio(true);
+        imageView.setOnMouseEntered(e -> applyScaleTransition(imageView, 1.2));
+        imageView.setOnMouseExited(e -> applyScaleTransition(imageView, 1.0));
+    }
+
+    private void applyScaleTransition(ImageView imageView, double scale) {
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.3), imageView);
+        scaleTransition.setToX(scale);
+        scaleTransition.setToY(scale);
+        scaleTransition.play();
+    }
+
+    private void configureTableColumns() {
+        isbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        isbn_13.setCellValueFactory(new PropertyValueFactory<>("isbn_13"));
+        title.setCellValueFactory(new PropertyValueFactory<>("title"));
+        author.setCellValueFactory(new PropertyValueFactory<>("authors"));
+        rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        publisher.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        image.setCellValueFactory(new PropertyValueFactory<>("imageUrl"));
+
+        setupTableClickHandler();
+        setupImageColumnWithZoomEffect();
+    }
+
+    private void setupImageColumnWithZoomEffect() {
+        image.setCellFactory(column -> new TableCell<>() {
+            private final ImageView imageView = new ImageView();
+            {
+                setupImageViewEffects(imageView);
+            }
+            @Override
+            protected void updateItem(String imageUrl, boolean empty) {
+                super.updateItem(imageUrl, empty);
+                if (empty || imageUrl == null) {
+                    setGraphic(null);
+                } else {
+                    String finalImageUrl = imageUrl.startsWith("http://") ? imageUrl.replace("http://", "https://") : imageUrl;
+                    Task<Image> imageTask = new Task<>() {
+                        @Override
+                        protected Image call() throws Exception {
+                            try {
+                                URI uri = new URI(finalImageUrl);
+                                URL url = uri.toURL();
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36");
+                                connection.setRequestProperty("Referer", "https://www.amazon.com/");
+                                connection.connect();
+
+                                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                                    InputStream inputStream = connection.getInputStream();
+                                    return new Image(inputStream);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return null;
+                        }
+                    };
+                    imageTask.setOnSucceeded(event -> {
+                        Image image = imageTask.getValue();
+                        Platform.runLater(() -> {
+                            if (image != null) {
+                                imageView.setImage(image);
+                                setGraphic(imageView);
+                            } else {
+                                setGraphic(null);
+                            }
+                        });
+                    });
+                    new Thread(imageTask).start();
+                }
+            }
+        });
     }
 
     private boolean checkIfAdmin() throws SQLException {

@@ -5,15 +5,22 @@ public class SessionManager { // Singleton: Lưu trữ thông tin toàn cục
 
     private static SessionManager instance;
     private String currentUsername;
+    private int currentUserId;
 
     private SessionManager() {}
 
     public String getCurrentUsername() {
         return currentUsername;
     }
+    public int getCurrentUserId() {
+        return currentUserId;
+    }
 
     public void setCurrentUsername(String username) {
         this.currentUsername = username;
+    }
+    public void setCurrentUserId(int userId) {
+        this.currentUserId = userId;
     }
 
     /**
