@@ -1,15 +1,27 @@
 package lma.objectum;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import lma.objectum.Controllers.SessionManager;
 import lma.objectum.Controllers.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
+import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Models.BorrowedBook;
+import lma.objectum.Models.FinedBook;
+import lma.objectum.Models.ReadBook;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Admin extends User {
 
@@ -51,14 +63,6 @@ public class Admin extends User {
 
     @FXML
     private MenuItem editMembersMenuItem;
-
-    /**
-     * Initializing methods.
-     */
-    @FXML
-    public void initialize() {
-
-    }
 
     /**
      * Handing account viewing button.
