@@ -9,14 +9,16 @@ public class Transaction {
     private Date borrowDate;
     private Date returnDate;
     private String status;
+    private double fine;
 
-    public Transaction(int id, int userId, int bookId, Date borrowDate, Date returnDate, String status) {
+    public Transaction(int id, int userId, int bookId, Date borrowDate, Date returnDate, String status, double fine) {
         this.id = id;
         this.userId = userId;
         this.bookId = bookId;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
         this.status = status;
+        this.fine = fine;
     }
 
     // Getters and setters
@@ -66,5 +68,13 @@ public class Transaction {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public double getFine() {
+        return fine;
+    }
+
+    public void setFine(double fine) {
+        this.fine = fine;
     }
 }

@@ -9,12 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.BasicFine;
+import lma.objectum.Utils.FineStrategy;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class TransactionController {
 
@@ -55,7 +54,6 @@ public class TransactionController {
 
             int bookId = getBookIdByIsbn13(isbn13);
 
-            // Kiểm tra tình trạng sách
             if (!checkBookAvailability(isbn13)) {
                 showAlert("Error", "This book is currently out of stock.");
                 return;
@@ -65,7 +63,6 @@ public class TransactionController {
                 return;
             }
 
-            // Thực hiện giao dịch
             createTransaction(userId, bookId);
             updateBookQuantity(isbn13, -1);
             showAlert("Success", "Book borrowed successfully!");
@@ -106,9 +103,20 @@ public class TransactionController {
                 return;
             }
 
-            updateTransactionStatus(transactionId);
+            Date dueDate = getDueDate(transactionId);
+
+            FineStrategy fineStrategy = new BasicFine();
+            Date returnDate = new Date(System.currentTimeMillis());
+            double fine = fineStrategy.calculateFine(dueDate, returnDate);
+
+            updateTransactionStatus(transactionId, fine);
             updateBookQuantity(isbn13, 1);
-            showAlert("Success", "Book returned successfully!");
+
+            if (fine > 0) {
+                showAlert("Success", "Book returned successfully! Late return fine: $" + fine);
+            } else {
+                showAlert("Success", "Book returned successfully!");
+            }
         } catch (SQLException e) {
             showAlert("Error", "Database error: " + e.getMessage());
             e.printStackTrace();
@@ -200,11 +208,11 @@ public class TransactionController {
     }
 
     /**
-     * Create a new transaction for borrowing a book.
+     * Create a new transaction for borrowing a book with a due date.
      */
     private void createTransaction(int userId, int bookId) throws SQLException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
-        String query = "INSERT INTO transactions (user_id, book_id, borrow_date, status) VALUES (?, ?, CURDATE(), 'BORROWED')";
+        String query = "INSERT INTO transactions (user_id, book_id, borrow_date, due_date, status) VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 DAY), 'BORROWED')";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
@@ -230,12 +238,13 @@ public class TransactionController {
     /**
      * Update the status of a transaction to 'RETURNED'.
      */
-    private void updateTransactionStatus(int transactionId) throws SQLException {
+    private void updateTransactionStatus(int transactionId, double fine) throws SQLException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
-        String query = "UPDATE transactions SET status = 'RETURNED', return_date = CURDATE() WHERE id = ?";
+        String query = "UPDATE transactions SET status = 'RETURNED', return_date = CURDATE(), fine = ? WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, transactionId);
+            statement.setDouble(1, fine);
+            statement.setInt(2, transactionId);
             statement.executeUpdate();
         }
     }
@@ -274,6 +283,25 @@ public class TransactionController {
         }
         throw new SQLException("Book not found.");
     }
+
+    /**
+     * Get the due date of a transaction.
+     */
+    private Date getDueDate(int transactionId) throws SQLException {
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+        String query = "SELECT due_date FROM transactions WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, transactionId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getDate("due_date");
+            }
+        }
+
+        throw new SQLException("Due date not found for transaction ID: " + transactionId);
+    }
+
 
     /**
      * Show an alert dialog with a given title and message.
