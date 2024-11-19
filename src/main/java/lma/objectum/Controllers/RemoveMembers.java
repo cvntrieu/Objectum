@@ -52,7 +52,7 @@ public class RemoveMembers {
     /**
      * Deleting a member.
      */
-    public void deleteButtonOnAction() {
+    public void deleteButtonOnAction() throws SQLException {
 
         String username = deleteTextField.getText();
         if (!username.isBlank()) {

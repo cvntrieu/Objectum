@@ -1,0 +1,51 @@
+/* Global styles */
+.primary-button {
+    -fx-font-size: 16px;
+    -fx-background-color: #1E90FF;
+    -fx-text-fill: white;
+    -fx-background-radius: 25px;
+    -fx-padding: 10px 30px;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #1C86EE;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #1874CD;
+}
+
+/* Home button */
+.home-button {
+    -fx-font-size: 14px;
+    -fx-background-color: #FF6F61;
+    -fx-text-fill: white;
+    -fx-background-radius: 25px;
+    -fx-padding: 8px 25px;
+    -fx-cursor: hand;
+}
+
+.home-button:hover {
+    -fx-background-color: #E65A4F;
+}
+
+.home-button:pressed {
+    -fx-background-color: #CC4F44;
+}
+
+/* TextField styling */
+.custom-textfield {
+    -fx-font-size: 14px;
+    -fx-background-color: #F9F9F9;
+    -fx-padding: 10px;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.custom-textfield:focused {
+    -fx-border-color: #1E90FF;
+    -fx-effect: dropshadow(gaussian, #1E90FF, 5, 0.5, 0, 0);
+}
