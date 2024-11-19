@@ -90,9 +90,22 @@ public class Admin extends User {
     /**
      * Handling removed books.
      */
+    @FXML
     private void handleRemoveBooks() {
-        showAlert("Remove Books", "You have selected to remove books.");
-        // Thêm logic thực hiện hành động xóa sách
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/DeleteBooks.fxml"));
+            Parent root = loader.load();
+            Stage removeMemberStage = new Stage();
+            Scene scene = new Scene(root, 1151, 622);
+            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
+            removeMemberStage.setScene(scene);
+            accountButton.getScene().getWindow().hide();
+            removeMemberStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

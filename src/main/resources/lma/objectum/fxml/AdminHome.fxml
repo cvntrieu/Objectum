@@ -47,7 +47,7 @@
                     </font>
                     <items>
                         <MenuItem fx:id="addBooksMenuItem" text="Add Books" />
-                        <MenuItem fx:id="removeBooksMenuItem" text="Remove Books" />
+                        <MenuItem fx:id="removeBooksMenuItem" onAction="#handleRemoveBooks" text="Remove Books" />
                         <MenuItem fx:id="editBooksMenuItem" text="Edit Books" />
                         <MenuItem fx:id="addMembersMenuItem" text="Add Members" />
                         <MenuItem fx:id="removeMembersMenuItem" onAction="#handleRemoveMembers" text="Remove Members" />
