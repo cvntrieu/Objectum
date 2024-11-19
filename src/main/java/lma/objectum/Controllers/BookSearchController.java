@@ -228,9 +228,12 @@ public class BookSearchController implements Initializable {
                     isAdmin ? "/lma/objectum/fxml/AdminHome.fxml" : "/lma/objectum/fxml/Home.fxml"
             ));
             Parent root = loader.load();
-            Stage stage = (Stage) homeButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage homeStage = new Stage();
+            homeStage.setScene(new Scene(root));
+            homeStage.show();
+            Stage searchStage = (Stage) homeButton.getScene().getWindow();
+            searchStage.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -332,12 +335,15 @@ public class BookSearchController implements Initializable {
             TransactionController transactionController = loader.getController();
             transactionController.prefillData(book.getIsbn_13());
 
-            Stage stage = (Stage) buyLink.getScene().getWindow();
-            stage.setTitle("Transaction");
-            Scene scene = new Scene(root, 478.8, 600);
+            Stage transactionStage = new Stage();
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/TransactionStyle.css").toExternalForm());
-            stage.setScene(scene);
-            stage.show();
+            transactionStage.setScene(scene);
+            transactionStage.show();
+
+            Stage searchStage = (Stage) buyLink.getScene().getWindow();
+            searchStage.close();
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -98,12 +98,15 @@ public class Member extends User {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Transaction.fxml"));
             Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 478.4, 600);
+            Stage returnStage = new Stage();
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/TransactionStyle.css").toExternalForm());
-            removeMemberStage.setScene(scene);
-            accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
+            returnStage.setScene(scene);
+            returnStage.show();
+
+            Stage homeStage = (Stage) accountButton.getScene().getWindow();
+            homeStage.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,11 +117,13 @@ public class Member extends User {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/API.fxml"));
             Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 1132, 836);
-            removeMemberStage.setScene(scene);
-            accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
+            Stage apiStage = new Stage();
+            Scene scene = new Scene(root);
+            apiStage.setScene(scene);
+            apiStage.show();
+
+            Stage homeStage = (Stage) accountButton.getScene().getWindow();
+            homeStage.close();
 
         } catch (IOException e) {
             e.printStackTrace();

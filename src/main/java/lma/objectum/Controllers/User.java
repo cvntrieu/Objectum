@@ -12,6 +12,7 @@ import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Models.BorrowedBook;
 import lma.objectum.Models.FinedBook;
 import lma.objectum.Models.ReadBook;
+import javafx.scene.chart.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,6 +61,21 @@ public abstract class User {
 
     protected ObservableList<FinedBook> fines = FXCollections.observableArrayList();
 
+    @FXML
+    protected BarChart<String, Number> topBorrowedBooksChart;
+
+    @FXML
+    protected LineChart<String, Number> finesOverTimeChart;
+
+    @FXML
+    protected CategoryAxis xAxisBorrowed;
+    @FXML
+    protected NumberAxis yAxisBorrowed;
+    @FXML
+    protected CategoryAxis xAxisFines;
+    @FXML
+    protected NumberAxis yAxisFines;
+
     public abstract void handleAccountButton();
 
     @FXML
@@ -79,6 +95,8 @@ public abstract class User {
         loadBorrowedBooks();
         loadReadBooks();
         loadFines();
+        loadTopBorrowedBooks();
+        loadFinesOverTime();
     }
 
     protected void loadBorrowedBooks() {
@@ -164,4 +182,60 @@ public abstract class User {
         }
     }
 
+    protected void loadTopBorrowedBooks() {
+        String query = "SELECT b.title, COUNT(t.book_id) AS borrow_count " +
+                "FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "GROUP BY t.book_id " +
+                "ORDER BY borrow_count DESC " +
+                "LIMIT 3";
+
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Top Borrowed Books");
+
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                int borrowCount = resultSet.getInt("borrow_count");
+                series.getData().add(new XYChart.Data<>(title, borrowCount));
+            }
+
+            topBorrowedBooksChart.getData().clear();
+            topBorrowedBooksChart.getData().add(series);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void loadFinesOverTime() {
+        String query = "SELECT DATE_FORMAT(t.return_date, '%b %Y') AS month, SUM(t.fine) AS total_fine " +
+                "FROM transactions t " +
+                "WHERE t.fine > 0 " +
+                "GROUP BY DATE_FORMAT(t.return_date, '%Y-%m') " +
+                "ORDER BY DATE_FORMAT(t.return_date, '%Y-%m') ASC";
+
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = statement.executeQuery();
+            XYChart.Series<String, Number> fineSeries = new XYChart.Series<>();
+            fineSeries.setName("Fines Collected Over Time");
+
+            while (resultSet.next()) {
+                String month = resultSet.getString("month");
+                double totalFine = resultSet.getDouble("total_fine");
+                fineSeries.getData().add(new XYChart.Data<>(month, totalFine));
+            }
+
+            finesOverTimeChart.getData().clear();
+            finesOverTimeChart.getData().add(fineSeries);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

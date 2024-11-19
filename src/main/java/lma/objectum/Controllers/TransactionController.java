@@ -142,9 +142,13 @@ public class TransactionController {
                     isAdmin ? "/lma/objectum/fxml/AdminHome.fxml" : "/lma/objectum/fxml/Home.fxml"
             ));
             Parent root = loader.load();
-            Stage stage = (Stage) homeButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage homeStage = new Stage();
+            homeStage.setScene(new Scene(root));
+            homeStage.show();
+
+            Stage transacionStage = (Stage) homeButton.getScene().getWindow();
+            transacionStage.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {
