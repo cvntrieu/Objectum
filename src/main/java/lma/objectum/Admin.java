@@ -171,8 +171,8 @@ public class Admin extends User {
     /**
      * Showing an alert if necessary.
      *
-     * @param title
-     * @param message
+     * @param title  title of the alert
+     * @param message message of the alert
      */
     public void showAlert(String title, String message) {
 

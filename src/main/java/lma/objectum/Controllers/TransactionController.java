@@ -2,12 +2,16 @@ package lma.objectum.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Utils.BasicFine;
 import lma.objectum.Utils.FineStrategy;
@@ -39,7 +43,7 @@ public class TransactionController {
     public void borrowBook() {
         try {
             if (ISBN13_borrow.getText().isEmpty()) {
-                showAlert("Error", "Please enter a valid ISBN13.");
+                showCustomAlert("Error", "Please enter a valid ISBN13.", false);
                 return;
             }
 
@@ -48,30 +52,30 @@ public class TransactionController {
             try {
                 isbn13 = Long.parseLong(ISBN13_borrow.getText());
             } catch (NumberFormatException e) {
-                showAlert("Error", "Invalid ISBN13 format.");
+                showCustomAlert("Error", "Invalid ISBN13 format.", false);
                 return;
             }
 
             int bookId = getBookIdByIsbn13(isbn13);
 
             if (!checkBookAvailability(isbn13)) {
-                showAlert("Error", "This book is currently out of stock.");
+                showCustomAlert("Error", "This book is currently out of stock.", false);
                 return;
             }
             if (hasBorrowedBook(userId, bookId)) {
-                showAlert("Error", "You have already borrowed this book.");
+                showCustomAlert("Error", "You have already borrowed this book.", false);
                 return;
             }
 
             createTransaction(userId, bookId);
             updateBookQuantity(isbn13, -1);
-            showAlert("Success", "Book borrowed successfully!");
+            showCustomAlert("Success", "Book borrowed successfully!", true);
 
         } catch (SQLException e) {
-            showAlert("Error", "Database error: " + e.getMessage());
+            showCustomAlert("Error", "Database error: " + e.getMessage(), false);
             e.printStackTrace();
         } catch (Exception e) {
-            showAlert("Error", "An unexpected error occurred.");
+            showCustomAlert("Error", "An unexpected error occurred.", false);
             e.printStackTrace();
         }
     }
@@ -83,7 +87,7 @@ public class TransactionController {
     public void returnBook() {
         try {
             if (ISBN13_return.getText().isEmpty()) {
-                showAlert("Error", "Please enter a valid ISBN13.");
+                showCustomAlert("Error", "Please enter a valid ISBN13.", false);
                 return;
             }
 
@@ -91,7 +95,7 @@ public class TransactionController {
             try {
                 isbn13 = Long.parseLong(ISBN13_return.getText());
             } catch (NumberFormatException e) {
-                showAlert("Error", "Invalid ISBN13 format.");
+                showCustomAlert("Error", "Invalid ISBN13 format.", false);
                 return;
             }
 
@@ -99,7 +103,7 @@ public class TransactionController {
             int transactionId = getTransactionId(isbn13, userId);
 
             if (transactionId == -1) {
-                showAlert("Error", "No active transaction found for this book.");
+                showCustomAlert("Error", "No active transaction found for this book.", false);
                 return;
             }
 
@@ -113,15 +117,15 @@ public class TransactionController {
             updateBookQuantity(isbn13, 1);
 
             if (fine > 0) {
-                showAlert("Success", "Book returned successfully! Late return fine: $" + fine);
+                showCustomAlert("Success", "Book returned successfully! Late return fine: $" + fine, true);
             } else {
-                showAlert("Success", "Book returned successfully!");
+                showCustomAlert("Success", "Book returned successfully!", true);
             }
         } catch (SQLException e) {
-            showAlert("Error", "Database error: " + e.getMessage());
+            showCustomAlert("Error", "Database error: " + e.getMessage(), false);
             e.printStackTrace();
         } catch (Exception e) {
-            showAlert("Error", "An unexpected error occurred: " + e.getMessage());
+            showCustomAlert("Error", "An unexpected error occurred: " + e.getMessage(), false);
             e.printStackTrace();
         }
     }
@@ -307,13 +311,32 @@ public class TransactionController {
     }
 
 
-    /**
-     * Show an alert dialog with a given title and message.
-     */
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void showCustomAlert(String title, String message, boolean isSuccess) {
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle(title);
+        dialog.initStyle(StageStyle.UNDECORATED);
+
+        ImageView icon = new ImageView(
+                new Image(getClass().getResourceAsStream(
+                        isSuccess ? "/lma/objectum/images/success_icon.png" : "/lma/objectum/images/error_icon.png"
+                ))
+        );
+        icon.setFitWidth(50);
+        icon.setFitHeight(50);
+
+        Text text = new Text(message);
+        text.setStyle("-fx-font-size: 16px; -fx-fill: #555; -fx-text-alignment: center;");
+
+        VBox content = new VBox(icon, text);
+        content.setSpacing(20);
+        content.setPadding(new Insets(20));
+        content.setStyle("-fx-alignment: center;");
+
+        dialog.getDialogPane().setContent(content);
+
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource("/lma/objectum/css/DiaglogStyle.css").toExternalForm());
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.showAndWait();
     }
 }
