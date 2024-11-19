@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.MusicPlayer;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginController {
@@ -119,10 +120,15 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Home.fxml"));
             Parent root = loader.load();
+
+            String musicPath = getClass().getResource("/lma/objectum/music/music.mp3").toString();
+            MusicPlayer.playMusic(musicPath);
+
             Stage homeStage = new Stage();
             homeStage.setScene(new Scene(root));
             homeStage.setTitle("Main Application");
             homeStage.show();
+
             Stage loginStage = (Stage) logInButton.getScene().getWindow();
             loginStage.close();
 

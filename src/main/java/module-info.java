@@ -11,6 +11,7 @@ module lma.objectum {
     requires com.google.gson;
     requires okhttp3;
     requires java.desktop;
+    requires javafx.media;
 
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;

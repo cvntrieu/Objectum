@@ -1,0 +1,17 @@
+.home-button {
+    -fx-font-size: 14px;
+    -fx-background-color: #ff6f61;
+    -fx-text-fill: white;
+    -fx-background-radius: 20px;
+    -fx-padding: 5px 20px;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+}
+
+.home-button:hover {
+    -fx-background-color: #e65a4f;
+}
+
+.home-button:pressed {
+    -fx-background-color: #cc4f44;
+}

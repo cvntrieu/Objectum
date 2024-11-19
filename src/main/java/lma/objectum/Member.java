@@ -15,6 +15,7 @@ import lma.objectum.Controllers.TransactionController;
 import lma.objectum.Controllers.User;
 import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Models.*;
+import lma.objectum.Utils.MusicPlayer;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -93,6 +94,9 @@ public class Member extends User {
         }
     }
 
+    /**
+     * Handling return button.
+     */
     public void handleReturnBooksItem() {
 
         try {
@@ -129,4 +133,25 @@ public class Member extends User {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void handleSettingButton() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Setting.fxml"));
+            Parent root = loader.load();
+            Stage settingStage = new Stage();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/SettingStyle.css").toExternalForm());
+            settingStage.setScene(scene);
+            settingStage.setTitle("Settings");
+            settingStage.show();
+
+            Stage homeStage = (Stage) accountButton.getScene().getWindow();
+            homeStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

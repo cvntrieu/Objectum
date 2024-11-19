@@ -57,7 +57,7 @@
                </graphic>
             </Button>
             <Region VBox.vgrow="ALWAYS" />
-            <Button fx:id="settingButton" prefHeight="30.0" prefWidth="86.0" styleClass="sidebar-button" text="Setting">
+            <Button fx:id="settingButton" onAction="#handleSettingButton" prefHeight="30.0" prefWidth="86.0" styleClass="sidebar-button" text="Setting">
                <graphic>
                   <ImageView fitHeight="20" fitWidth="20">
                      <image>
@@ -149,5 +149,6 @@
             </HBox>
          </children>
       </VBox>
+
    </children>
 </AnchorPane>

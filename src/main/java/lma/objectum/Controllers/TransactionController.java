@@ -160,6 +160,9 @@ public class TransactionController {
         }
     }
 
+    /**
+     * Check if the current user is an admin.
+     */
     private boolean checkIfAdmin() throws SQLException {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -310,7 +313,9 @@ public class TransactionController {
         throw new SQLException("Due date not found for transaction ID: " + transactionId);
     }
 
-
+    /**
+     * Show a custom alert dialog with a title and message.
+     */
     private void showCustomAlert(String title, String message, boolean isSuccess) {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle(title);
