@@ -211,12 +211,15 @@ public abstract class User {
         }
     }
 
+    /**
+     * Handling load fines over time.
+     */
     protected void loadFinesOverTime() {
-        String query = "SELECT DATE_FORMAT(t.return_date, '%b %Y') AS month, SUM(t.fine) AS total_fine " +
+        String query = "SELECT DATE(t.return_date) AS day, SUM(t.fine) AS total_fine " +
                 "FROM transactions t " +
                 "WHERE t.fine > 0 " +
-                "GROUP BY DATE_FORMAT(t.return_date, '%Y-%m') " +
-                "ORDER BY DATE_FORMAT(t.return_date, '%Y-%m') ASC";
+                "GROUP BY DATE(t.return_date) " +
+                "ORDER BY DATE(t.return_date) ASC";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -226,9 +229,9 @@ public abstract class User {
             fineSeries.setName("Fines Collected Over Time");
 
             while (resultSet.next()) {
-                String month = resultSet.getString("month");
+                String day = resultSet.getString("day");
                 double totalFine = resultSet.getDouble("total_fine");
-                fineSeries.getData().add(new XYChart.Data<>(month, totalFine));
+                fineSeries.getData().add(new XYChart.Data<>(day, totalFine));
             }
 
             finesOverTimeChart.getData().clear();
