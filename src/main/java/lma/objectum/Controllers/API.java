@@ -79,6 +79,7 @@ public class API {
             return "{\"error\": \"An error occurred: " + e.getMessage() + "\"}";
         }
     }
+
     /**
      * Updates the suggestion list in the ListView with book information retrieved from the Google Books API.
      *
@@ -124,6 +125,7 @@ public class API {
             suggestionsBox.setVisible(false);
         }
     }
+
     /**
      * Shows the detailed information of a selected book in the book detail box.
      *
@@ -186,6 +188,7 @@ public class API {
         bookDetailBox.getChildren().addAll(bookCover, titleText, authorsText, publisherText, publishedDateText,
                 pageCountText, categoriesText, languageText, averageRatingText, ratingsCountText, printTypeText, previewLinkText, bookDescriptionTextArea);
     }
+
     /**
      * Updates the suggestions list based on the text currently present in the search field.
      *
@@ -201,6 +204,7 @@ public class API {
             suggestionsBox.setVisible(false);
         }
     }
+
     /**
      * Performs a search operation when the search button is clicked.
      *
@@ -214,6 +218,7 @@ public class API {
             updateSuggestionList(resultsJson);
         }
     }
+
     /**
      * Initializes the necessary UI components and sets the event handlers for the text field and book detail view.
      * This method is automatically called after the FXML file is loaded.

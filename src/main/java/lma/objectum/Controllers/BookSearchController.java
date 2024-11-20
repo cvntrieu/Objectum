@@ -9,10 +9,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -29,7 +26,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class BookSearchController implements Initializable {
@@ -70,7 +70,7 @@ public class BookSearchController implements Initializable {
         searchCriteriaComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             updateSearchStrategy();
         });
-        
+
         setupFilteringAndSorting();
         configureTableColumns();
     }
@@ -219,25 +219,22 @@ public class BookSearchController implements Initializable {
         this.searchContext = searchContext;
     }
 
+    /**
+     * Handle the home button click event.
+     */
     @FXML
     public void handleHomeButton() {
         try {
-            boolean isAdmin = checkIfAdmin();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    isAdmin ? "/lma/objectum/fxml/AdminHome.fxml" : "/lma/objectum/fxml/Home.fxml"
-            ));
-            Parent root = loader.load();
-            Stage homeStage = new Stage();
-            homeStage.setScene(new Scene(root));
+            Stage homeStage = StageUtils.loadRoleBasedStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "/lma/objectum/fxml/Home.fxml",
+                    "Home"
+            );
             homeStage.show();
-            Stage searchStage = (Stage) homeButton.getScene().getWindow();
-            searchStage.close();
-
-        } catch (IOException e) {
+            Stage currentStage = (Stage) homeButton.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -309,7 +306,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Setup the table click handler.
+     * Set up the table click handler.
      */
     private void setupTableClickHandler() {
         tableView.setOnMouseClicked(event -> {
@@ -357,16 +354,12 @@ public class BookSearchController implements Initializable {
      */
     private void navigateToTransactionPage(Book book) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Transaction.fxml"));
-            Parent root = loader.load();
-
-            TransactionController transactionController = loader.getController();
-            transactionController.prefillData(book.getIsbn_13());
-
-            Stage transactionStage = new Stage();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/TransactionStyle.css").toExternalForm());
-            transactionStage.setScene(scene);
+            Stage transactionStage = StageUtils.loadFXMLStageWithPrefillData(
+                    "/lma/objectum/fxml/Transaction.fxml",
+                    "/lma/objectum/css/TransactionStyle.css",
+                    "Transaction",
+                    book
+            );
             transactionStage.show();
 
             Stage searchStage = (Stage) buyLink.getScene().getWindow();
@@ -426,9 +419,11 @@ public class BookSearchController implements Initializable {
     private void setupImageColumnWithZoomEffect() {
         image.setCellFactory(column -> new TableCell<>() {
             private final ImageView imageView = new ImageView();
+
             {
                 setupImageViewEffects(imageView);
             }
+
             @Override
             protected void updateItem(String imageUrl, boolean empty) {
                 super.updateItem(imageUrl, empty);
@@ -472,33 +467,5 @@ public class BookSearchController implements Initializable {
                 }
             }
         });
-    }
-
-    /**
-     * Check if the current user is an admin.
-     *
-     * @return true if the user is an admin, false otherwise
-     * @throws SQLException exception handling
-     */
-    private boolean checkIfAdmin() throws SQLException {
-        DatabaseConnection connectNow = DatabaseConnection.getInstance();
-        Connection connectDB = connectNow.getConnection();
-        String username = SessionManager.getInstance().getCurrentUsername();
-        String query = "SELECT role FROM useraccount WHERE username = ?";
-
-        try {
-            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            ResultSet queryResult = preparedStatement.executeQuery();
-
-            if (queryResult.next()) {
-                String role = queryResult.getString("role");
-                return "admin".equalsIgnoreCase(role);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 }

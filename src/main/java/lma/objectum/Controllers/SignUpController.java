@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.StageUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.URL;
@@ -72,7 +73,7 @@ public class SignUpController implements Initializable {
     }
 
     /**
-     * Back to Login.
+     * Back to Log in.
      *
      * @param event event
      */
@@ -147,10 +148,14 @@ public class SignUpController implements Initializable {
      */
     private void redirectToLogin(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/App.fxml"));
-            Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            loginStage.setScene(new Scene(root, 842, 608));
+            Stage loginStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/App.fxml",
+                    "Login"
+            );
+
+            lastnameTextField.getScene().getWindow().hide();
             loginStage.show();
+
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

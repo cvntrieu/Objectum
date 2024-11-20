@@ -1,59 +1,48 @@
 
 package lma.objectum;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import lma.objectum.Controllers.SessionManager;
-import lma.objectum.Controllers.TransactionController;
 import lma.objectum.Controllers.User;
-import lma.objectum.Database.DatabaseConnection;
-import lma.objectum.Models.*;
-import lma.objectum.Utils.MusicPlayer;
+import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Member extends User {
 
     @FXML
-    public Button accountButton;
+    private Button accountButton;
 
     @FXML
-    public Button homeButton;
+    private Button homeButton;
 
     @FXML
-    public MenuButton listButton;
+    private MenuButton listButton;
 
     @FXML
-    public Button settingButton;
+    private Button settingButton;
 
     @FXML
-    public Button avataButton;
+    private Button avataButton;
 
     @FXML
-    public ImageView avataImage;
+    private ImageView avataImage;
 
     @FXML
-    public MenuItem borrowBooksItem;
+    private MenuItem borrowBooksItem;
 
     @FXML
-    public MenuItem returnBooksItem;
+    private MenuItem returnBooksItem;
 
     @FXML
-    public MenuItem checkBorrowStatusItem;
+    private MenuItem checkBorrowStatusItem;
 
     @FXML
-    public Button APIButton;
+    private Button APIButton;
 
     /**
      * Handling account viewing button.
@@ -62,12 +51,12 @@ public class Member extends User {
     public void handleAccountButton() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AccountView.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
+            Stage accountStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AccountView.fxml",
+                    "Account View"
+            );
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
+            accountStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,14 +69,13 @@ public class Member extends User {
     public void handleBorrowBooksItem() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/BookSearch.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 1151, 622);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
-            removeMemberStage.setScene(scene);
+            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/BookSearch.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Borrow Books"
+            );
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
+            borrowBooksStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,54 +88,50 @@ public class Member extends User {
     public void handleReturnBooksItem() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Transaction.fxml"));
-            Parent root = loader.load();
-            Stage returnStage = new Stage();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/TransactionStyle.css").toExternalForm());
-            returnStage.setScene(scene);
+            Stage returnStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/Transaction.fxml",
+                    "/lma/objectum/css/TransactionStyle.css",
+                    "Return Books"
+            );
+            accountButton.getScene().getWindow().hide();
             returnStage.show();
 
-            Stage homeStage = (Stage) accountButton.getScene().getWindow();
-            homeStage.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Handling api button.
+     */
     @FXML
-    public void APIButtonOnAction () {
+    public void handleAPIButtonAction() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/API.fxml"));
-            Parent root = loader.load();
-            Stage apiStage = new Stage();
-            Scene scene = new Scene(root);
-            apiStage.setScene(scene);
+            Stage apiStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/API.fxml",
+                    "API View"
+            );
+            accountButton.getScene().getWindow().hide();
             apiStage.show();
 
-            Stage homeStage = (Stage) accountButton.getScene().getWindow();
-            homeStage.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Handling setting button.
+     */
     @FXML
     public void handleSettingButton() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Setting.fxml"));
-            Parent root = loader.load();
-            Stage settingStage = new Stage();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/SettingStyle.css").toExternalForm());
-            settingStage.setScene(scene);
-            settingStage.setTitle("Settings");
+            Stage settingStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/Setting.fxml",
+                    "/lma/objectum/css/SettingStyle.css",
+                    "Settings"
+            );
+            accountButton.getScene().getWindow().hide();
             settingStage.show();
-
-            Stage homeStage = (Stage) accountButton.getScene().getWindow();
-            homeStage.close();
 
         } catch (IOException e) {
             e.printStackTrace();

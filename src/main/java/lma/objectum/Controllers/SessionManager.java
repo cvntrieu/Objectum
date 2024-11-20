@@ -1,17 +1,19 @@
 
 package lma.objectum.Controllers;
 
-public class SessionManager { // Singleton: Lưu trữ thông tin toàn cục
+public class SessionManager {
 
     private static SessionManager instance;
     private String currentUsername;
     private int currentUserId;
 
-    private SessionManager() {}
+    private SessionManager() {
+    }
 
     public String getCurrentUsername() {
         return currentUsername;
     }
+
     public int getCurrentUserId() {
         return currentUserId;
     }
@@ -19,6 +21,7 @@ public class SessionManager { // Singleton: Lưu trữ thông tin toàn cục
     public void setCurrentUsername(String username) {
         this.currentUsername = username;
     }
+
     public void setCurrentUserId(int userId) {
         this.currentUserId = userId;
     }

@@ -1,14 +1,12 @@
 package lma.objectum.Controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
 import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Utils.MusicPlayer;
+import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -62,17 +60,15 @@ public class SettingsController {
     @FXML
     public void handleHomeButton() {
         try {
-            boolean isAdmin = checkIfAdmin();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    isAdmin ? "/lma/objectum/fxml/AdminHome.fxml" : "/lma/objectum/fxml/Home.fxml"
-            ));
-            Parent root = loader.load();
-            Stage homeStage = new Stage();
-            homeStage.setScene(new Scene(root));
+            Stage homeStage = StageUtils.loadRoleBasedStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "/lma/objectum/fxml/Home.fxml",
+                    "Home"
+            );
             homeStage.show();
-            Stage searchStage = (Stage) homeButton.getScene().getWindow();
-            searchStage.close();
+
+            Stage settingStage = (Stage) homeButton.getScene().getWindow();
+            settingStage.close();
 
         } catch (IOException e) {
             e.printStackTrace();

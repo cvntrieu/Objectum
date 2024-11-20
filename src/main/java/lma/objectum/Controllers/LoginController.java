@@ -37,6 +37,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Utils.MusicPlayer;
+import lma.objectum.Utils.StageUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginController {
@@ -62,12 +63,6 @@ public class LoginController {
     @FXML
     private ImageView brandingImageView;
 
-    /**
-     * Initializing Sign-In for members.
-     *
-     * @param url url of jdbc-local host
-     * @param rb resource bundle
-     */
 //    public void initialize(URL url, ResourceBundle rb) {
 //
 //        System.out.println("Initialize method called");
@@ -115,27 +110,14 @@ public class LoginController {
     /**
      * open main page.
      */
-    private void showHomePage() {
+    private void showHomePage() throws IOException {
+        String fxmlPath = "/lma/objectum/fxml/Home.fxml";
+        String musicPath = getClass().getResource("/lma/objectum/music/music.mp3").toString();
+        Stage homeStage = StageUtils.loadStageWithMusic(fxmlPath, "Main Application", musicPath);
+        homeStage.show();
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/Home.fxml"));
-            Parent root = loader.load();
-
-            String musicPath = getClass().getResource("/lma/objectum/music/music.mp3").toString();
-            MusicPlayer.playMusic(musicPath);
-
-            Stage homeStage = new Stage();
-            homeStage.setScene(new Scene(root));
-            homeStage.setTitle("Main Application");
-            homeStage.show();
-
-            Stage loginStage = (Stage) logInButton.getScene().getWindow();
-            loginStage.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            loginMessageLabel.setText("Could not load the main interface.");
-        }
+        Stage loginStage = (Stage) logInButton.getScene().getWindow();
+        loginStage.close();
     }
 
     /**
@@ -144,12 +126,12 @@ public class LoginController {
     private void showAdminHomePage() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
-            Parent root = loader.load();
-            Stage adminStage = new Stage();
-            adminStage.setScene(new Scene(root));
-            adminStage.setTitle("Admin interface");
+            Stage adminStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "Admin Home"
+            );
             adminStage.show();
+
             Stage loginStage = (Stage) logInButton.getScene().getWindow();
             loginStage.close();
 
@@ -191,7 +173,13 @@ public class LoginController {
                         loginMessageLabel.getStyleClass().clear();
                         loginMessageLabel.getStyleClass().add("success-label");
                         PauseTransition pause = new PauseTransition(Duration.seconds(3));
-                        pause.setOnFinished(event -> showHomePage());
+                        pause.setOnFinished(event -> {
+                            try {
+                                showHomePage();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                         pause.play();
 
                     } else {
@@ -226,11 +214,14 @@ public class LoginController {
      */
     private void createAccountForm() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/SignUp.fxml"));
-            Parent root = loader.load();
-            Stage registerStage = new Stage();
-            registerStage.setScene(new Scene(root, 842, 608));
-            registerStage.show();
+            Stage signUpStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/SignUp.fxml",
+                    "Sign Up"
+            );
+            signUpStage.show();
+
+            Stage loginStage = (Stage) logInButton.getScene().getWindow();
+            loginStage.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

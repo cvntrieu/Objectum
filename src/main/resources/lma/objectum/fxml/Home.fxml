@@ -47,7 +47,7 @@
                   <MenuItem text="Check Status" />
                </items>
             </MenuButton>
-            <Button fx:id="APIButton" onAction="#APIButtonOnAction" prefHeight="30.0" prefWidth="82.0" styleClass="sidebar-button" text="API">
+            <Button fx:id="APIButton" onAction="#handleAPIButtonAction" prefHeight="30.0" prefWidth="82.0" styleClass="sidebar-button" text="API">
                <graphic>
                   <ImageView fitHeight="20" fitWidth="20">
                      <image>

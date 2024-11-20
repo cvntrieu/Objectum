@@ -72,7 +72,7 @@ public class RemoveMembers {
                     String role = userResult.getString("role");
 
                     if ("admin".equalsIgnoreCase(role)) {
-                    // Ko đc xoá admin!
+                        // Ko đc xoá admin!
                         deleteMemberMessageLabel.setText("Cannot delete an admin!");
                         deleteMemberMessageLabel.getStyleClass().clear();
                         deleteMemberMessageLabel.getStyleClass().add("warning-label");
@@ -117,7 +117,7 @@ public class RemoveMembers {
      *
      * @param event e
      */
-    public void redirectToHome(ActionEvent event) { // BackButtonOnAction
+    public void redirectToHome(ActionEvent event) {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));

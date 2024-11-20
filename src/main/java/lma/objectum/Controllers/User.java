@@ -101,7 +101,11 @@ public abstract class User {
 
     protected void loadBorrowedBooks() {
         int userId = SessionManager.getInstance().getCurrentUserId();
-        String query = "SELECT b.title, b.author, t.due_date FROM transactions t JOIN books b ON t.book_id = b.id WHERE t.user_id = ? AND t.status = 'BORROWED' ORDER BY t.due_date";
+        String query = "SELECT b.title, b.author, t.due_date " +
+                "FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "WHERE t.user_id = ? AND t.status = 'BORROWED' " +
+                "ORDER BY t.due_date";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -129,7 +133,11 @@ public abstract class User {
      */
     protected void loadReadBooks() {
         int userId = SessionManager.getInstance().getCurrentUserId();
-        String query = "SELECT b.title, b.author FROM transactions t JOIN books b ON t.book_id = b.id WHERE t.user_id = ? AND t.status = 'RETURNED' ORDER BY t.return_date";
+        String query = "SELECT b.title, b.author " +
+                "FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "WHERE t.user_id = ? AND t.status = 'RETURNED' " +
+                "ORDER BY t.return_date";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -156,7 +164,11 @@ public abstract class User {
      */
     protected void loadFines() {
         int userId = SessionManager.getInstance().getCurrentUserId();
-        String query = "SELECT b.title, t.fine FROM transactions t JOIN books b ON t.book_id = b.id WHERE t.user_id = ? AND t.fine > 0 ORDER BY t.fine DESC";
+        String query = "SELECT b.title, t.fine " +
+                "FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "WHERE t.user_id = ? AND t.fine > 0 " +
+                "ORDER BY t.fine DESC";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
