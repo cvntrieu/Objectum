@@ -1,5 +1,10 @@
 package lma.objectum.Controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -17,6 +22,8 @@ import lma.objectum.Utils.BasicFine;
 import lma.objectum.Utils.FineStrategy;
 import lma.objectum.Utils.StageUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.*;
 
@@ -36,6 +43,12 @@ public class TransactionController {
 
     @FXML
     private Button returnButton;
+
+    @FXML
+    private Button scanQRButton;
+
+    @FXML
+    private ImageView qrImageView;
 
     /**
      * Borrow a book for a user.
@@ -127,6 +140,39 @@ public class TransactionController {
             e.printStackTrace();
         } catch (Exception e) {
             showCustomAlert("Error", "An unexpected error occurred: " + e.getMessage(), false);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void scanQRCode() {
+        try {
+            // Lấy thông tin ISBN từ TextField
+            String isbn = ISBN13_borrow.getText();
+
+            // Kiểm tra nếu ISBN rỗng
+            if (isbn == null || isbn.trim().isEmpty()) {
+                System.out.println("ISBN is empty. Please enter an ISBN to generate QR.");
+                return;
+            }
+
+            // Tạo mã QR từ ISBN
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(isbn, BarcodeFormat.QR_CODE, 200, 200);
+
+            // Chuyển đổi mã QR thành ảnh
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
+
+            // Hiển thị ảnh QR trong ImageView
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            Image qrImage = new Image(inputStream);
+            qrImageView.setImage(qrImage);
+
+            // Hiển thị ImageView
+            qrImageView.setVisible(true);
+
+        } catch (WriterException | IOException e) {
             e.printStackTrace();
         }
     }

@@ -4,44 +4,41 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane style="-fx-background-color: linear-gradient(to bottom, #E4EBF5, #FFFFFF);" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.TransactionController">
+<AnchorPane prefHeight="640.0" prefWidth="480.0" style="-fx-background-color: linear-gradient(to bottom, #F0F4F8, #FFFFFF);" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.TransactionController">
     <!-- Main Container -->
-    <VBox alignment="CENTER" layoutY="40" prefHeight="600" prefWidth="478" spacing="30">
+    <VBox alignment="CENTER" layoutX="0" layoutY="0" prefHeight="640.0" prefWidth="480.0" spacing="20">
         <!-- Header -->
         <VBox alignment="CENTER" spacing="10">
-            <Label style="-fx-font-size: 28px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;" text="Library Management" />
-            <Label style="-fx-font-size: 18px; -fx-text-fill: #5A5A5A;" text="Borrow &amp; Return Books with Ease" />
+            <Label style="-fx-font-size: 30px; -fx-text-fill: #2C3E50; -fx-font-weight: bold;" text="📚 Library Manager" />
+            <Label style="-fx-font-size: 16px; -fx-text-fill: #64748B;" text="Efficiently Borrow &amp; Return Books" />
         </VBox>
 
         <!-- Borrow Section -->
-        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #FFFFFF; -fx-padding: 20px; -fx-border-color: #D1D5DB; -fx-border-width: 1px; -fx-border-radius: 15px; -fx-background-radius: 15px;">
-            <Label style="-fx-font-size: 18px; -fx-text-fill: #1E90FF; -fx-font-weight: bold;" text="Borrow Book" />
+        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #FFFFFF; -fx-padding: 20px; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 0);">
+            <Label style="-fx-font-size: 18px; -fx-text-fill: #3B82F6; -fx-font-weight: bold;" text="Borrow Book" />
             <TextField fx:id="ISBN13_borrow" promptText="Enter ISBN13 of the book" styleClass="custom-textfield" />
-            <Button fx:id="borrowButton" onAction="#borrowBook" styleClass="primary-button" text="Borrow">
-                <effect>
-                    <DropShadow radius="5" />
-                </effect>
-            </Button>
+            <HBox spacing="10">
+                <Button fx:id="borrowButton" onAction="#borrowBook" styleClass="primary-button" text="Borrow" />
+                <Button fx:id="scanQRButton" onAction="#scanQRCode" styleClass="secondary-button" text="Scan QR" />
+            </HBox>
+            <ImageView fx:id="qrImageView" fitHeight="100" fitWidth="100" visible="false" />
         </VBox>
 
         <!-- Return Section -->
-        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #FFFFFF; -fx-padding: 20px; -fx-border-color: #D1D5DB; -fx-border-width: 1px; -fx-border-radius: 15px; -fx-background-radius: 15px;">
-            <Label style="-fx-font-size: 18px; -fx-text-fill: #1E90FF; -fx-font-weight: bold;" text="Return Book" />
+        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #FFFFFF; -fx-padding: 20px; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 15px; -fx-background-radius: 15px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.5, 0, 0);">
+            <Label style="-fx-font-size: 18px; -fx-text-fill: #3B82F6; -fx-font-weight: bold;" text="Return Book" />
             <TextField fx:id="ISBN13_return" promptText="Enter ISBN13 of the book" styleClass="custom-textfield" />
-            <Button fx:id="returnButton" onAction="#returnBook" styleClass="primary-button" text="Return">
-                <effect>
-                    <DropShadow radius="5" />
-                </effect>
-            </Button>
+            <Button fx:id="returnButton" onAction="#returnBook" styleClass="primary-button" text="Return" />
         </VBox>
 
         <!-- Footer -->
-        <HBox alignment="CENTER" spacing="20">
-            <Button fx:id="homeButton" onAction="#handleHomeButton" styleClass="home-button" text="Home" />
+        <HBox alignment="CENTER" spacing="20" style="-fx-padding: 10px 0 30px 0;"> <!-- Thêm padding phía dưới -->
+            <Button fx:id="homeButton" onAction="#handleHomeButton" styleClass="home-button" text="🏠 Home" />
         </HBox>
     </VBox>
 </AnchorPane>
