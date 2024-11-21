@@ -133,11 +133,11 @@ public abstract class User {
      */
     protected void loadReadBooks() {
         int userId = SessionManager.getInstance().getCurrentUserId();
-        String query = "SELECT b.title, b.author " +
+        String query = "SELECT DISTINCT b.title, b.author " +
                 "FROM transactions t " +
                 "JOIN books b ON t.book_id = b.id " +
                 "WHERE t.user_id = ? AND t.status = 'RETURNED' " +
-                "ORDER BY t.return_date";
+                "ORDER BY b.title";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {

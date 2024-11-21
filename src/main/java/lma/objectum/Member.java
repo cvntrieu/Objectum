@@ -8,6 +8,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import lma.objectum.Controllers.User;
+import lma.objectum.Utils.MusicPlayer;
 import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
@@ -19,6 +20,9 @@ public class Member extends User {
 
     @FXML
     private Button homeButton;
+
+    @FXML
+    private Button logoutButton;
 
     @FXML
     private MenuButton listButton;
@@ -113,6 +117,22 @@ public class Member extends User {
             );
             accountButton.getScene().getWindow().hide();
             apiStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleLogOutButton() {
+        try {
+            Stage loginStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/App.fxml",
+                    "Main Application"
+            );
+            accountButton.getScene().getWindow().hide();
+            MusicPlayer.stopMusic();
+            loginStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();

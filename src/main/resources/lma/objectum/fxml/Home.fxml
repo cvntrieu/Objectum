@@ -57,6 +57,15 @@
                </graphic>
             </Button>
             <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="logoutButton" onAction="#handleLogOutButton" prefHeight="30.0" prefWidth="86.0" styleClass="sidebar-button" text="Sign out">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/logout-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Button fx:id="settingButton" onAction="#handleSettingButton" prefHeight="30.0" prefWidth="86.0" styleClass="sidebar-button" text="Setting">
                <graphic>
                   <ImageView fitHeight="20" fitWidth="20">
