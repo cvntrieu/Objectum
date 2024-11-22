@@ -16,24 +16,6 @@
     -fx-background-color: #1D4ED8;
 }
 
-/* Secondary button (e.g., Scan QR) */
-.secondary-button {
-    -fx-font-size: 16px;
-    -fx-background-color: #E5E7EB;
-    -fx-text-fill: #3B82F6;
-    -fx-background-radius: 20px;
-    -fx-padding: 10px 25px;
-    -fx-cursor: hand;
-}
-
-.secondary-button:hover {
-    -fx-background-color: #D1D5DB;
-}
-
-.secondary-button:pressed {
-    -fx-background-color: #9CA3AF;
-}
-
 /* Home button */
 .home-button {
     -fx-font-size: 14px;

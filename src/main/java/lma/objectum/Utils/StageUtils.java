@@ -111,6 +111,7 @@ public class StageUtils {
 
         TransactionController transactionController = loader.getController();
         transactionController.prefillData(book.getIsbn_13());
+        transactionController.scanQRCode(book);
 
         Stage stage = new Stage();
         Scene scene = new Scene(root);

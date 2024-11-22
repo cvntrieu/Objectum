@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Models.Book;
 import lma.objectum.Utils.BasicFine;
 import lma.objectum.Utils.FineStrategy;
 import lma.objectum.Utils.StageUtils;
@@ -26,6 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 
 public class TransactionController {
 
@@ -43,9 +45,6 @@ public class TransactionController {
 
     @FXML
     private Button returnButton;
-
-    @FXML
-    private Button scanQRButton;
 
     @FXML
     private ImageView qrImageView;
@@ -144,33 +143,46 @@ public class TransactionController {
         }
     }
 
-    @FXML
-    public void scanQRCode() {
+    /**
+     * Generate a QR code for a book.
+     */
+    public void scanQRCode(Book book) {
         try {
-            // Lấy thông tin ISBN từ TextField
-            String isbn = ISBN13_borrow.getText();
-
-            // Kiểm tra nếu ISBN rỗng
-            if (isbn == null || isbn.trim().isEmpty()) {
-                System.out.println("ISBN is empty. Please enter an ISBN to generate QR.");
+            if (book == null) {
+                System.out.println("Book object is null. Please provide a valid book.");
                 return;
             }
 
-            // Tạo mã QR từ ISBN
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(isbn, BarcodeFormat.QR_CODE, 200, 200);
+            String bookInfo = String.format(
+                    "ISBN: %s\nISBN13: %s\nTitle: %s\nAuthor: %s\nRating: %.1f\nDate: %s\nPublisher: %s",
+                    Objects.requireNonNullElse(book.getIsbn(), "N/A"),
+                    Objects.requireNonNullElse(book.getIsbn_13(), "N/A"),
+                    Objects.requireNonNullElse(book.getTitle(), "N/A"),
+                    Objects.requireNonNullElse(book.getAuthors(), "N/A"),
+                    book.getRating(),
+                    Objects.requireNonNullElse(book.getDate(), "N/A"),
+                    Objects.requireNonNullElse(book.getPublisher(), "N/A")
+            );
 
-            // Chuyển đổi mã QR thành ảnh
+            if (bookInfo.trim().isEmpty()) {
+                System.out.println("Book information is empty. Cannot generate QR code.");
+                return;
+            }
+
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(bookInfo, BarcodeFormat.QR_CODE, 400, 400);
+
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
 
-            // Hiển thị ảnh QR trong ImageView
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-            Image qrImage = new Image(inputStream);
-            qrImageView.setImage(qrImage);
-
-            // Hiển thị ImageView
-            qrImageView.setVisible(true);
+            if (qrImageView != null) {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+                Image qrImage = new Image(inputStream);
+                qrImageView.setImage(qrImage);
+                qrImageView.setVisible(true);
+            } else {
+                System.out.println("ImageView is not initialized.");
+            }
 
         } catch (WriterException | IOException e) {
             e.printStackTrace();
