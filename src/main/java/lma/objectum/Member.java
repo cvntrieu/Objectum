@@ -25,34 +25,34 @@ import java.sql.SQLException;
 public class Member extends User {
 
     @FXML
-    public Button accountButton;
+    private Button accountButton;
 
     @FXML
-    public Button homeButton;
+    protected Button homeButton;
 
     @FXML
-    public MenuButton listButton;
+    protected MenuButton listButton;
 
     @FXML
-    public Button settingButton;
+    protected Button settingButton;
 
     @FXML
-    public Button avataButton;
+    protected Button avataButton;
 
     @FXML
-    public ImageView avataImage;
+    protected ImageView avataImage;
 
     @FXML
-    public MenuItem borrowBooksItem;
+    protected MenuItem borrowBooksItem;
 
     @FXML
-    public MenuItem returnBooksItem;
+    protected MenuItem returnBooksItem;
 
     @FXML
-    public MenuItem checkBorrowStatusItem;
+    protected MenuItem checkBorrowStatusItem;
 
     @FXML
-    public Button APIButton;
+    protected Button APIButton;
 
     /**
      * Handling account viewing button.

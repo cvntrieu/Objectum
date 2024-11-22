@@ -16,49 +16,46 @@ import java.io.IOException;
 public class Admin extends User {
 
     @FXML
-    public Button accountButton;
+    private Button accountButton;
 
     @FXML
-    public Button homeButton;
+    protected Button homeButton;
 
     @FXML
-    public MenuButton listButton;
+    protected MenuButton listButton;
 
     @FXML
-    public Button settingButton;
+    protected Button avataButton;
 
     @FXML
-    public Button avataButton;
+    protected ImageView avataImage;
 
     @FXML
-    public ImageView avataImage;
+    protected MenuItem searchBooksMenuItem;
 
     @FXML
-    public MenuItem searchBooksMenuItem;
+    protected MenuItem addBooksMenuItem;
 
     @FXML
-    public MenuItem addBooksMenuItem;
+    protected MenuItem removeBooksMenuItem;
 
     @FXML
-    public MenuItem removeBooksMenuItem;
+    protected MenuItem editBooksMenuItem;
 
     @FXML
-    public MenuItem editBooksMenuItem;
+    protected MenuItem APIButton;
 
     @FXML
-    public MenuItem APIButton;
+    protected MenuItem removeMembersMenuItem;
 
     @FXML
-    public MenuItem removeMembersMenuItem;
+    protected MenuItem editMembersMenuItem;
 
     @FXML
-    public MenuItem editMembersMenuItem;
+    protected Region leftRegion;
 
     @FXML
-    public Region leftRegion;
-
-    @FXML
-    public Button logoutButton;
+    protected Button logoutButton;
 
     /**
      * Handing account viewing button.
@@ -133,7 +130,7 @@ public class Admin extends User {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/EditBook.fxml"));
             Parent root = loader.load();
             Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 930, 700);
+            Scene scene = new Scene(root, 920, 670);
             scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
             removeMemberStage.setScene(scene);
             accountButton.getScene().getWindow().hide();
@@ -240,7 +237,7 @@ public class Admin extends User {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/App.fxml"));
                 Parent root = loader.load();
                 Stage stage = (Stage) logoutButton.getScene().getWindow();
-                stage.setScene(new Scene(root, 850, 650));
+                stage.setScene(new Scene(root, 842, 608));
                 stage.show();
 
             } catch (IOException e) {

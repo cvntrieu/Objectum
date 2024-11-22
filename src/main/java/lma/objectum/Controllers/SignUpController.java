@@ -28,25 +28,25 @@ import java.util.ResourceBundle;
 public class SignUpController implements Initializable {
 
     @FXML
-    public Button registerButton;
+    protected Button registerButton;
 
     @FXML
-    private Button backTologinButton;
+    protected Button backTologinButton;
 
     @FXML
-    private TextField firstnameTextField;
+    protected TextField firstnameTextField;
 
     @FXML
-    private TextField lastnameTextField;
+    protected TextField lastnameTextField;
 
     @FXML
-    private TextField usernameTextField;
+    protected TextField usernameTextField;
 
     @FXML
-    private PasswordField passwordTextField;
+    protected PasswordField passwordTextField;
 
     @FXML
-    private Label registerMessageLabel;
+    protected Label registerMessageLabel;
 
     /**
      * Intializing methods.

@@ -22,43 +22,43 @@ import java.sql.SQLException;
 public class EditBookController {
 
     @FXML
-    public ImageView avataImage;
+    protected ImageView avataImage;
 
     @FXML
-    public Button avataButton;
+    protected Button avataButton;
 
     @FXML
-    public Button backButton;
+    protected Button backButton;
 
     @FXML
-    public TextField imageTextField;
+    protected TextField imageTextField;
 
     @FXML
-    public Button editButton;
+    protected Button editButton;
 
     @FXML
-    public TextField titleTextField;
+    protected TextField titleTextField;
 
     @FXML
-    public TextField authorTextField;
+    protected TextField authorTextField;
 
     @FXML
-    public TextField publicationYearTextField;
+    protected TextField publicationYearTextField;
 
     @FXML
-    public TextField publisherTextField;
+    protected TextField publisherTextField;
 
     @FXML
-    public TextField quantityTextField;
+    protected TextField quantityTextField;
 
     @FXML
-    public TextField ratingTextField;
+    protected TextField ratingTextField;
 
     @FXML
-    public Label editBookMessageLabel;
+    protected Label editBookMessageLabel;
 
     @FXML
-    public TextField isbn13TextField;
+    protected TextField isbn13TextField;
 
     @FXML
     public void initialize() {

@@ -147,9 +147,10 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
             Parent root = loader.load();
             Stage adminStage = new Stage();
-            adminStage.setScene(new Scene(root));
+            adminStage.setScene(new Scene(root, 1080, 790));
             adminStage.setTitle("Admin interface");
             adminStage.show();
+
             Stage loginStage = (Stage) logInButton.getScene().getWindow();
             loginStage.close();
 

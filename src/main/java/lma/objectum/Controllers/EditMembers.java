@@ -26,28 +26,28 @@ import java.sql.SQLException;
 public class EditMembers {
 
     @FXML
-    public ImageView avataImage;
+    protected ImageView avataImage;
 
     @FXML
-    public Button avataButton;
+    protected Button avataButton;
 
     @FXML
-    public Label guideLabel;
+    protected Label guideLabel;
 
     @FXML
-    public TextField editTextField;
+    protected TextField editTextField;
 
     @FXML
-    public Label editMessageLabel;
+    protected Label editMessageLabel;
 
     @FXML
-    public Button toAdminButton;
+    protected Button toAdminButton;
 
     @FXML
-    public Button toMemberButton;
+    protected Button toMemberButton;
 
     @FXML
-    public Button backButton;
+    protected Button backButton;
 
     /**
      * Initializing method.
