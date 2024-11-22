@@ -5,6 +5,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,13 +16,23 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import lma.objectum.Database.DatabaseConnection;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class API {
+
+    @FXML
+    private Button homeButton;
+
     @FXML
     private TextField searchField;
 
@@ -33,7 +47,6 @@ public class API {
 
     @FXML
     private TextArea bookDescriptionTextArea;
-
 
     private final String apiKey = "AIzaSyCUB7PSg_v5EqFrzdC13A644v30JhDNT9Q";
     private final OkHttpClient client = new OkHttpClient();
@@ -79,6 +92,7 @@ public class API {
             return "{\"error\": \"An error occurred: " + e.getMessage() + "\"}";
         }
     }
+
     /**
      * Updates the suggestion list in the ListView with book information retrieved from the Google Books API.
      *
@@ -124,6 +138,7 @@ public class API {
             suggestionsBox.setVisible(false);
         }
     }
+
     /**
      * Shows the detailed information of a selected book in the book detail box.
      *
@@ -186,6 +201,7 @@ public class API {
         bookDetailBox.getChildren().addAll(bookCover, titleText, authorsText, publisherText, publishedDateText,
                 pageCountText, categoriesText, languageText, averageRatingText, ratingsCountText, printTypeText, previewLinkText, bookDescriptionTextArea);
     }
+
     /**
      * Updates the suggestions list based on the text currently present in the search field.
      *
@@ -201,6 +217,7 @@ public class API {
             suggestionsBox.setVisible(false);
         }
     }
+
     /**
      * Performs a search operation when the search button is clicked.
      *
@@ -214,6 +231,7 @@ public class API {
             updateSuggestionList(resultsJson);
         }
     }
+
     /**
      * Initializes the necessary UI components and sets the event handlers for the text field and book detail view.
      * This method is automatically called after the FXML file is loaded.
@@ -227,5 +245,52 @@ public class API {
             bookDetailBox.setVisible(false);
             suggestionsBox.setVisible(true);
         });
+    }
+
+    /**
+     * Home Button on Action.
+     *
+     * @param event event
+     */
+    public void redirectToHome(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource((checkIfAdmin()) ?
+                    "/lma/objectum/fxml/AdminHome.fxml" : "/lma/objectum/fxml/Home.fxml"));
+            Stage homeStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            homeStage.setScene(new Scene(root, 1200, 800));
+            homeStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+    }
+
+    /**
+     * Checking role.
+     *
+     * @return true or false
+     * @throws SQLException dtb exception
+     */
+    private boolean checkIfAdmin() throws SQLException {
+
+        DatabaseConnection connectNow = DatabaseConnection.getInstance();
+        Connection connectDB = connectNow.getConnection();
+        String username = SessionManager.getInstance().getCurrentUsername();
+        String query = "SELECT role FROM useraccount WHERE username = ?";
+
+        try {
+            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            ResultSet queryResult = preparedStatement.executeQuery();
+
+            if (queryResult.next()) {
+                String role = queryResult.getString("role");
+                return "admin".equalsIgnoreCase(role);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

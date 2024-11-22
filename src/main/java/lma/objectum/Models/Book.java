@@ -11,7 +11,22 @@ public class Book {
     private String imageUrl;
 
     // Constructors, getters and setters
-    public Book(String isbn, Long isbn_13, String title, String authors, Double rating, String date, String publisher, String imageUrl) {
+
+    /**
+     * Constructors.
+     *
+     * @param isbn isbn
+     * @param isbn_13 isbn13
+     * @param title title
+     * @param authors authors
+     * @param rating rating
+     * @param date date
+     * @param publisher publisher
+     * @param imageUrl imageUrl
+     */
+    public Book(String isbn, Long isbn_13, String title, String authors,
+                Double rating, String date, String publisher, String imageUrl) {
+
         this.isbn = isbn;
         this.isbn_13 = isbn_13;
         this.title = title;

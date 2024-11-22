@@ -1,27 +1,17 @@
 package lma.objectum;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import lma.objectum.Controllers.SessionManager;
 import lma.objectum.Controllers.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
-import lma.objectum.Database.DatabaseConnection;
-import lma.objectum.Models.BorrowedBook;
-import lma.objectum.Models.FinedBook;
-import lma.objectum.Models.ReadBook;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Admin extends User {
 
@@ -47,22 +37,28 @@ public class Admin extends User {
     public MenuItem searchBooksMenuItem;
 
     @FXML
-    private MenuItem addBooksMenuItem;
+    public MenuItem addBooksMenuItem;
 
     @FXML
-    private MenuItem removeBooksMenuItem;
+    public MenuItem removeBooksMenuItem;
 
     @FXML
-    private MenuItem editBooksMenuItem;
+    public MenuItem editBooksMenuItem;
 
     @FXML
-    private MenuItem addMembersMenuItem;
+    public MenuItem APIButton;
 
     @FXML
-    private MenuItem removeMembersMenuItem;
+    public MenuItem removeMembersMenuItem;
 
     @FXML
-    private MenuItem editMembersMenuItem;
+    public MenuItem editMembersMenuItem;
+
+    @FXML
+    public Region leftRegion;
+
+    @FXML
+    public Button logoutButton;
 
     /**
      * Handing account viewing button.
@@ -74,7 +70,7 @@ public class Admin extends User {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AccountView.fxml"));
             Parent root = loader.load();
             Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
+            removeMemberStage.setScene(new Scene(root, 930, 650));
             accountButton.getScene().getWindow().hide();
             removeMemberStage.show();
 
@@ -86,9 +82,24 @@ public class Admin extends User {
     /**
      * Handling added books.
      */
+    @FXML
     private void handleAddBooks() {
-        showAlert("Add Books", "You have selected to add books.");
-        // Thêm logic thực hiện hành động thêm sách
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AddBooks.fxml"));
+            Parent root = loader.load();
+            Stage addBooksStage = new Stage();
+            Scene scene = new Scene(root, 950, 700);
+            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
+            addBooksStage.setScene(scene);
+
+            addBooksStage.setResizable(true); // Cho phép co giãn cửa sổ
+            accountButton.getScene().getWindow().hide();
+            addBooksStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -101,7 +112,7 @@ public class Admin extends User {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/DeleteBooks.fxml"));
             Parent root = loader.load();
             Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 1151, 622);
+            Scene scene = new Scene(root, 1150, 650);
             scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
             removeMemberStage.setScene(scene);
             accountButton.getScene().getWindow().hide();
@@ -115,17 +126,22 @@ public class Admin extends User {
     /**
      * Handling edited books.
      */
+    @FXML
     private void handleEditBooks() {
-        showAlert("Edit Books", "You have selected to edit books.");
-        // Thêm logic thực hiện hành động chỉnh sửa sách
-    }
 
-    /**
-     * Handing added members.
-     */
-    public void handleAddMembers() {
-        // showAlert("Add Members", "You have selected to add members.");
-        // Thêm logic thực hiện hành động thêm thành viên
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/EditBook.fxml"));
+            Parent root = loader.load();
+            Stage removeMemberStage = new Stage();
+            Scene scene = new Scene(root, 930, 700);
+            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
+            removeMemberStage.setScene(scene);
+            accountButton.getScene().getWindow().hide();
+            removeMemberStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -137,7 +153,7 @@ public class Admin extends User {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/RemoveMembers.fxml"));
             Parent root = loader.load();
             Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
+            removeMemberStage.setScene(new Scene(root, 930, 700));
             accountButton.getScene().getWindow().hide();
             removeMemberStage.show();
 
@@ -155,7 +171,7 @@ public class Admin extends User {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/EditMembers.fxml"));
             Parent root = loader.load();
             Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
+            removeMemberStage.setScene(new Scene(root, 930, 700));
             accountButton.getScene().getWindow().hide();
             removeMemberStage.show();
 
@@ -164,6 +180,9 @@ public class Admin extends User {
         }
     }
 
+    /**
+     * Handling borrowed books item.
+     */
     public void handleBorrowBooksItem() {
 
         try {
@@ -182,6 +201,55 @@ public class Admin extends User {
     }
 
     /**
+     * API Button on action.
+     */
+    @FXML
+    public void APIButtonOnAction() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/API.fxml"));
+            Parent root = loader.load();
+            Stage apiStage = new Stage();
+            Scene scene = new Scene(root);
+            apiStage.setScene(scene);
+            apiStage.show();
+            // Đóng màn hình cũ
+            Stage homeStage = (Stage) accountButton.getScene().getWindow();
+            homeStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Logging out.
+     */
+    @FXML
+    public void handleLogoutButton() {
+
+        Alert logoutConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        logoutConfirmation.setTitle("Confirm Logout");
+        logoutConfirmation.setHeaderText("Are you sure you want to log out?");
+        logoutConfirmation.setContentText("You will need to log in again to access your account.");
+
+        if (logoutConfirmation.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+
+            SessionManager.getInstance().clearSession(); // Xóa thông tin phiên đăng nhập
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/App.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) logoutButton.getScene().getWindow();
+                stage.setScene(new Scene(root, 850, 650));
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Showing an alert if necessary.
      *
      * @param title  title of the alert
@@ -196,4 +264,3 @@ public class Admin extends User {
         alert.showAndWait();
     }
 }
-

@@ -24,6 +24,11 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    /**
+     * Main methods.
+     *
+     * @param args arguments.
+     */
     public static void main(String[] args) {
         launch();
     }

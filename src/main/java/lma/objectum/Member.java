@@ -64,7 +64,7 @@ public class Member extends User {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AccountView.fxml"));
             Parent root = loader.load();
             Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
+            removeMemberStage.setScene(new Scene(root, 930, 650));
             accountButton.getScene().getWindow().hide();
             removeMemberStage.show();
 
@@ -93,6 +93,9 @@ public class Member extends User {
         }
     }
 
+    /**
+     * Handling return books item.
+     */
     public void handleReturnBooksItem() {
 
         try {
@@ -112,6 +115,9 @@ public class Member extends User {
         }
     }
 
+    /**
+     * API Button on action.
+     */
     @FXML
     public void APIButtonOnAction () {
         try {
@@ -122,7 +128,7 @@ public class Member extends User {
             apiStage.setScene(scene);
             apiStage.show();
 
-            Stage homeStage = (Stage) accountButton.getScene().getWindow();
+            Stage homeStage = (Stage) APIButton.getScene().getWindow();
             homeStage.close();
 
         } catch (IOException e) {

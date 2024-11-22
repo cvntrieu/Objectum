@@ -7,6 +7,9 @@ public class SessionManager { // Singleton: Lưu trữ thông tin toàn cục
     private String currentUsername;
     private int currentUserId;
 
+    /**
+     * Default constr of Singleton.
+     */
     private SessionManager() {}
 
     public String getCurrentUsername() {
@@ -33,5 +36,16 @@ public class SessionManager { // Singleton: Lưu trữ thông tin toàn cục
             instance = new SessionManager();
         }
         return instance;
+    }
+
+    /**
+     * Clearing the info when logging out. Reset user-related session data to null or default values.
+     */
+    public void clearSession() {
+
+        this.currentUsername = null;
+        this.currentUserId = 0; // 0 is typically used as a default invalid ID
+        // Các thông tin phiên đã bị xóa, ngăn ngừa việc truy cập trái phép.
+        // Nhưng đối tượng SessionManager vẫn tồn tại để sử dụng cho lần đăng nhập sau.
     }
 }

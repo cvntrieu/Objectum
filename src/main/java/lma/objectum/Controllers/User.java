@@ -21,7 +21,6 @@ import java.sql.SQLException;
 
 public abstract class User {
 
-
     @FXML
     protected TableView<BorrowedBook> borrowedBooksTable;
 
@@ -69,15 +68,24 @@ public abstract class User {
 
     @FXML
     protected CategoryAxis xAxisBorrowed;
+
     @FXML
     protected NumberAxis yAxisBorrowed;
+
     @FXML
     protected CategoryAxis xAxisFines;
+
     @FXML
     protected NumberAxis yAxisFines;
 
+    /**
+     * Handling account button.
+     */
     public abstract void handleAccountButton();
 
+    /**
+     * Initializing necessary components for a User.
+     */
     @FXML
     public void initialize() {
         // Setup common columns
@@ -99,6 +107,9 @@ public abstract class User {
         loadFinesOverTime();
     }
 
+    /**
+     * Loading borrowed books.
+     */
     protected void loadBorrowedBooks() {
         int userId = SessionManager.getInstance().getCurrentUserId();
         String query = "SELECT b.title, b.author, t.due_date FROM transactions t JOIN books b ON t.book_id = b.id WHERE t.user_id = ? AND t.status = 'BORROWED' ORDER BY t.due_date";
@@ -182,6 +193,9 @@ public abstract class User {
         }
     }
 
+    /**
+     * Loading top borrowed books.
+     */
     protected void loadTopBorrowedBooks() {
         String query = "SELECT b.title, COUNT(t.book_id) AS borrow_count " +
                 "FROM transactions t " +
@@ -211,6 +225,9 @@ public abstract class User {
         }
     }
 
+    /**
+     * Loading fines overtime (miss the deadline / due date).
+     */
     protected void loadFinesOverTime() {
         String query = "SELECT DATE_FORMAT(t.return_date, '%b %Y') AS month, SUM(t.fine) AS total_fine " +
                 "FROM transactions t " +

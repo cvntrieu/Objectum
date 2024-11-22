@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="673.0" prefWidth="932.0" style="-fx-background-image: url('@../Home/main_background.png');                    -fx-background-size: cover;                    -fx-background-repeat: no-repeat;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.AddBooksController">
+    <stylesheets>
+        <String fx:value="@../css/LoginStyle.css" />
+    </stylesheets>
+    <children>
+        <!-- Thanh bên trái -->
+        <VBox prefWidth="94.0" style="-fx-background-color: #2c3e50;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Button fx:id="avataButton" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" style="-fx-background-radius: 50%;">
+                    <graphic>
+                        <ImageView fx:id="avataImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../Home/test-avata.jpg" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </children>
+        </VBox>
+
+        <!-- Header -->
+        <Label fx:id="guideLabel" prefHeight="40.0" style="-fx-background-color: #33ccff;" text="Please enter the new Book's information:" textFill="WHITE" AnchorPane.leftAnchor="94.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <font>
+                <Font name="Calibri Bold Italic" size="16.0" />
+            </font>
+        </Label>
+
+        <!-- Form nhập liệu -->
+        <VBox prefHeight="434.0" prefWidth="692.0" spacing="10.0" AnchorPane.bottomAnchor="179.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="60.0">
+            <children>
+                <TextField fx:id="imageTextField" promptText="ImageURL (Not required)" />
+                <TextField fx:id="titleTextField" promptText="Title" />
+                <TextField fx:id="isbnTextField" promptText="ISBN" />
+                <TextField fx:id="isbn13TextField" promptText="ISBN13" />
+                <TextField fx:id="authorTextField" promptText="Author" />
+                <TextField fx:id="publicationYearTextField" promptText="Publication Year" />
+                <TextField fx:id="publisherTextField" promptText="Publisher" />
+                <TextField fx:id="ratingTextField" promptText="Rating" />
+                <TextField fx:id="quantityTextField" promptText="Quantity" />
+            </children>
+        </VBox>
+
+        <!-- Các nút -->
+        <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonOnAction" prefWidth="120.0" style="-fx-background-color: #33ccff;" text="Add" textFill="WHITE">
+                    <font>
+                        <Font name="Calibri Bold" size="16.0" />
+                    </font>
+                </Button>
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#redirectToHome" prefWidth="120.0" style="-fx-background-color: #33ccff;" text="Back" textFill="WHITE">
+                    <font>
+                        <Font name="Calibri Bold" size="16.0" />
+                    </font>
+                </Button>
+            </children>
+        </VBox>
+
+        <!-- Nhãn hiển thị thông báo -->
+        <Label fx:id="addBookMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="540.0" stylesheets="@../css/LoginStyle.css" AnchorPane.bottomAnchor="107.39999999999998" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

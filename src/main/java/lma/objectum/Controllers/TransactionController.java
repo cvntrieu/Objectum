@@ -311,6 +311,13 @@ public class TransactionController {
     }
 
 
+    /**
+     * Show custom alert.
+     *
+     * @param title title
+     * @param message message
+     * @param isSuccess is success
+     */
     private void showCustomAlert(String title, String message, boolean isSuccess) {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle(title);
@@ -318,8 +325,7 @@ public class TransactionController {
 
         ImageView icon = new ImageView(
                 new Image(getClass().getResourceAsStream(
-                        isSuccess ? "/lma/objectum/images/success_icon.png" : "/lma/objectum/images/error_icon.png"
-                ))
+                        isSuccess ? "/lma/objectum/images/success_icon.png" : "/lma/objectum/images/error_icon.png"))
         );
         icon.setFitWidth(50);
         icon.setFitHeight(50);

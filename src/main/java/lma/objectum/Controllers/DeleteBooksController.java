@@ -10,29 +10,33 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Models.Book;
 import lma.objectum.Utils.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class DeleteBooksController implements Initializable {
 
+    @FXML
+    public Button HomeButton;
     @FXML
     private TableView<Book> tableView;
     @FXML
@@ -52,13 +56,19 @@ public class DeleteBooksController implements Initializable {
     @FXML
     private Label ratingLabel;
     @FXML
-    private Hyperlink buyLink;
+    private Hyperlink deleteLink;
     @FXML
     private ComboBox<String> searchCriteriaComboBox;
     private SearchContext searchContext = new SearchContext();
 
     ObservableList<Book> bookList = FXCollections.observableArrayList();
 
+    /**
+     * Initializing the necessary components for Book Searching.
+     *
+     * @param url url
+     * @param resource resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         loadBooksFromDatabase();
@@ -107,24 +117,18 @@ public class DeleteBooksController implements Initializable {
                 fadeIn.play();
                 dynamicIsland.setVisible(true);
 
-                // Handle buy link click event to show book borrow dialog
+                deleteLink.setOnAction(e -> {
 
-//                buyLink.setOnAction(e -> {
-//                    try {
-//                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/BookBorrow.fxml"));
-//                        AnchorPane borrowPane = loader.load();
-//
-//                        BookBorrowController borrowController = loader.getController();
-//                        borrowController.setBookDetails(selectedBook.getTitle(), selectedBook.getAuthors());
-//
-//                        Stage borrowStage = new Stage();
-//                        borrowStage.setTitle("Borrow Book");
-//                        borrowStage.setScene(new Scene(borrowPane));
-//                        borrowStage.show();
-//                    } catch (IOException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                });
+                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmationAlert.setTitle("Confirm Delete");
+                    confirmationAlert.setHeaderText("Are you sure you want to delete this book?");
+                    confirmationAlert.setContentText("This action cannot be undone.");
+
+                    if (confirmationAlert.showAndWait().get() == ButtonType.OK) {
+                        deleteBook(selectedBook.getIsbn_13());
+                        dynamicIsland.setVisible(false);
+                    }
+                });
             }
         });
 
@@ -149,9 +153,17 @@ public class DeleteBooksController implements Initializable {
                     scaleTransition.play();
                 });
             }
+
+            /**
+             * Updating items.
+             *
+             * @param imageUrl the url of image
+             * @param empty Does the cell contain valid data to show?
+             */
             @Override
             protected void updateItem(String imageUrl, boolean empty) {
-                super.updateItem(imageUrl, empty);
+
+                super.updateItem(imageUrl, empty); // updateItem trong Cell.class
                 if (empty || imageUrl == null) {
                     setGraphic(null);
                 } else {
@@ -307,11 +319,11 @@ public class DeleteBooksController implements Initializable {
     }
 
     public Hyperlink getBuyLink() {
-        return buyLink;
+        return deleteLink;
     }
 
     public void setBuyLink(Hyperlink buyLink) {
-        this.buyLink = buyLink;
+        this.deleteLink = buyLink;
     }
 
     public ComboBox<String> getSearchCriteriaComboBox() {
@@ -338,7 +350,11 @@ public class DeleteBooksController implements Initializable {
         this.searchContext = searchContext;
     }
 
+    /**
+     * Updating the searching strategy.
+     */
     public void updateSearchStrategy() {
+
         String selectedCriteria = searchCriteriaComboBox.getSelectionModel().getSelectedItem();
         if (selectedCriteria != null) {
             switch (selectedCriteria) {
@@ -358,6 +374,9 @@ public class DeleteBooksController implements Initializable {
         }
     }
 
+    /**
+     * Loading books from database.
+     */
     void loadBooksFromDatabase() {
         String query = "SELECT ISBN, ISBN13, Title, Author, Rating, PublicationYear, Publisher, ImageUrlS FROM books";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -376,6 +395,72 @@ public class DeleteBooksController implements Initializable {
                 ));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Deleting a book.
+     *
+     * @param isbn13 the isbn13 attribute
+     */
+    private void deleteBook(Long isbn13) {
+        if (isbn13 == null) {
+            return;
+        }
+
+        String deleteBookQuery = "DELETE FROM books WHERE ISBN13 = ?";
+
+        try (Connection connectDB = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement preparedStatement = connectDB.prepareStatement(deleteBookQuery)) {
+            preparedStatement.setLong(1, isbn13);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Thay vì removeIf(), hãy xóa trực tiếp khỏi bookList
+                bookList.removeIf(book -> book.getIsbn_13().equals(isbn13));
+                tableView.setItems(bookList); // Cập nhật lại TableView với danh sách đã thay đổi
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Book deleted successfully!");
+                successAlert.show();
+            } else {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("Failed to delete the book. Please try again.");
+                errorAlert.show();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("An error occurred while trying to delete the book.");
+            errorAlert.show();
+        }
+    }
+
+    /**
+     * Handling home button.
+     */
+    @FXML
+    public void handleHomeButton() {
+        
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
+            Parent root = loader.load();
+            Stage homeStage = new Stage();
+            homeStage.setScene(new Scene(root));
+            homeStage.show();
+
+            Stage searchStage = (Stage) HomeButton.getScene().getWindow();
+            searchStage.close();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

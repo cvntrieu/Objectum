@@ -63,6 +63,12 @@ public class BookSearchController implements Initializable {
 
     ObservableList<Book> bookList = FXCollections.observableArrayList();
 
+    /**
+     * Initializing the necessary components for Book Searching.
+     *
+     * @param url url
+     * @param resource resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         loadBooksFromDatabase();
@@ -219,6 +225,9 @@ public class BookSearchController implements Initializable {
         this.searchContext = searchContext;
     }
 
+    /**
+     * Handing Home button.
+     */
     @FXML
     public void handleHomeButton() {
         try {
@@ -241,7 +250,9 @@ public class BookSearchController implements Initializable {
         }
     }
 
-
+    /**
+     * Updating searching strategy.
+     */
     void updateSearchStrategy() {
         String selectedCriteria = searchCriteriaComboBox.getSelectionModel().getSelectedItem();
         if (selectedCriteria != null) {
@@ -262,6 +273,9 @@ public class BookSearchController implements Initializable {
         }
     }
 
+    /**
+     * Loading books from database.
+     */
     void loadBooksFromDatabase() {
         String query = "SELECT ISBN, ISBN13, Title, Author, Rating, PublicationYear, Publisher, ImageUrlS FROM books";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -284,6 +298,9 @@ public class BookSearchController implements Initializable {
         }
     }
 
+    /**
+     * Setting up filtering and sorting.
+     */
     private void setupFilteringAndSorting() {
         FilteredList<Book> filteredData = new FilteredList<>(bookList, b -> true);
         keyWordTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -300,6 +317,9 @@ public class BookSearchController implements Initializable {
         tableView.setItems(sortedData);
     }
 
+    /**
+     * Handling table click.
+     */
     private void setupTableClickHandler() {
         tableView.setOnMouseClicked(event -> {
             Book selectedBook = tableView.getSelectionModel().getSelectedItem();
@@ -309,6 +329,11 @@ public class BookSearchController implements Initializable {
         });
     }
 
+    /**
+     * Displaying books' details.
+     *
+     * @param selectedBook the book to be selected
+     */
     private void displayBookDetails(Book selectedBook) {
         titleLabel.setText("Title: " + selectedBook.getTitle());
         authorLabel.setText("Author: " + selectedBook.getAuthors());
@@ -320,6 +345,13 @@ public class BookSearchController implements Initializable {
         buyLink.setOnAction(e -> navigateToTransactionPage(selectedBook));
     }
 
+    /**
+     * Applying fade transition.
+     *
+     * @param pane pane
+     * @param fromValue from value
+     * @param toValue to value
+     */
     private void applyFadeTransition(AnchorPane pane, double fromValue, double toValue) {
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), pane);
         fadeIn.setFromValue(fromValue);
@@ -349,6 +381,11 @@ public class BookSearchController implements Initializable {
         }
     }
 
+    /**
+     * Setting up image view effects.
+     *
+     * @param imageView the imageView
+     */
     private void setupImageViewEffects(ImageView imageView) {
         imageView.setFitHeight(100);
         imageView.setFitWidth(80);
@@ -357,6 +394,12 @@ public class BookSearchController implements Initializable {
         imageView.setOnMouseExited(e -> applyScaleTransition(imageView, 1.0));
     }
 
+    /**
+     * Applying scale transition.
+     *
+     * @param imageView imageView
+     * @param scale the scale of transition
+     */
     private void applyScaleTransition(ImageView imageView, double scale) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.3), imageView);
         scaleTransition.setToX(scale);
@@ -364,7 +407,11 @@ public class BookSearchController implements Initializable {
         scaleTransition.play();
     }
 
+    /**
+     * Configuring table columns.
+     */
     private void configureTableColumns() {
+
         isbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         isbn_13.setCellValueFactory(new PropertyValueFactory<>("isbn_13"));
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -378,7 +425,11 @@ public class BookSearchController implements Initializable {
         setupImageColumnWithZoomEffect();
     }
 
+    /**
+     * Setting up image column with zoom effect.
+     */
     private void setupImageColumnWithZoomEffect() {
+
         image.setCellFactory(column -> new TableCell<>() {
             private final ImageView imageView = new ImageView();
             {
@@ -429,6 +480,12 @@ public class BookSearchController implements Initializable {
         });
     }
 
+    /**
+     * Checking role.
+     *
+     * @return true or false
+     * @throws SQLException dtb exception
+     */
     private boolean checkIfAdmin() throws SQLException {
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -447,7 +504,6 @@ public class BookSearchController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 }

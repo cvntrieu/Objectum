@@ -36,7 +36,7 @@
             </image>
         </ImageView>
         <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="922.0" style="-fx-background-color: #FFFFE0;" />
-        <Label fx:id="editMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="579.0" prefHeight="38.0" prefWidth="498.0">
+        <Label fx:id="editMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="579.0" prefHeight="38.0" prefWidth="498.0" stylesheets="@../css/LoginStyle.css">
             <font>
                 <Font name="System Bold" size="20.0" />
             </font></Label>

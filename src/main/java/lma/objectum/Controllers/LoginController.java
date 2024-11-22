@@ -10,10 +10,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.PauseTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -67,15 +64,15 @@ public class LoginController {
      * @param url url of jdbc-local host
      * @param rb resource bundle
      */
-//    public void initialize(URL url, ResourceBundle rb) {
-//
-//        System.out.println("Initialize method called");
-//        File brandingFile = new File("MyBook.jpg");
-//        Image brandingImage = new Image(brandingFile.toURI().toString());
-//        brandingImageView.setImage(brandingImage);
-//
-//        // If there are more images, code like above here...
-//    }
+    public void initialize(URL url, ResourceBundle rb) {
+
+        System.out.println("Initialize method called");
+        File brandingFile = new File("MyBook.jpg");
+        Image brandingImage = new Image(brandingFile.toURI().toString());
+        brandingImageView.setImage(brandingImage);
+
+        // If there are more images, code like above here...
+    }
 
     /**
      * Closes the login form.
@@ -95,9 +92,15 @@ public class LoginController {
     public void loginButtonOnAction(ActionEvent event) throws SQLException {
         if (!usernameTextField.getText().isBlank() && !passwordTextField.getText().isBlank()) {
             loginMessageLabel.setText("Trying!");
+            loginMessageLabel.getStyleClass().clear();
+            loginMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
             validateLogin();
         } else {
             loginMessageLabel.setText("Please enter Username and Password!");
+            loginMessageLabel.getStyleClass().clear();
+            loginMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
         }
     }
 
@@ -129,6 +132,9 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
             loginMessageLabel.setText("Could not load the main interface.");
+            loginMessageLabel.getStyleClass().clear();
+            loginMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
         }
     }
 
@@ -150,6 +156,9 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
             loginMessageLabel.setText("Could not load the admin interface.");
+            loginMessageLabel.getStyleClass().clear();
+            loginMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
         }
     }
 
@@ -160,7 +169,7 @@ public class LoginController {
 
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
-        String verifyLogin = "SELECT account_id, password, role FROM useraccount WHERE username = ?";
+        String verifyLogin = "SELECT id, password, role FROM useraccount WHERE username = ?";
 
         try {
 
@@ -172,7 +181,7 @@ public class LoginController {
 
                 String hashedPassword = queryResult.getString("password");
                 String role = queryResult.getString("role");
-                int userId = queryResult.getInt("account_id");
+                int userId = queryResult.getInt("id");
 
                 if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
 
@@ -200,11 +209,13 @@ public class LoginController {
                     loginMessageLabel.setText("Invalid login. Please try again.");
                     loginMessageLabel.getStyleClass().clear();
                     loginMessageLabel.getStyleClass().add("warning-label");
+                    setTimeline();
                 }
             } else {
                 loginMessageLabel.setText("Username not found.");
                 loginMessageLabel.getStyleClass().clear();
                 loginMessageLabel.getStyleClass().add("warning-label");
+                setTimeline();
             }
 
         } catch (SQLException e) {
@@ -212,6 +223,7 @@ public class LoginController {
             loginMessageLabel.setText("An error occurred while trying to log in.");
             loginMessageLabel.getStyleClass().clear();
             loginMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
         }
     }
 
@@ -228,5 +240,18 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Create a timeline to clear the message after 10 seconds.
+     */
+    private void setTimeline() {
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(10), event -> {
+            loginMessageLabel.setText("");
+            loginMessageLabel.getStyleClass().clear();
+        }));
+        timeline.setCycleCount(1); // Run only once
+        timeline.play();
     }
 }

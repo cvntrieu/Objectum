@@ -47,7 +47,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Button>
-      <Label fx:id="registerMessageLabel" alignment="CENTER" layoutX="36.0" layoutY="358.0" prefHeight="32.0" prefWidth="794.0" textFill="#07b221">
+      <Label fx:id="registerMessageLabel" alignment="CENTER" layoutX="36.0" layoutY="358.0" prefHeight="32.0" prefWidth="794.0" stylesheets="@../css/LoginStyle.css" textFill="#07b221">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

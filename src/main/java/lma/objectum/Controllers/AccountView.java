@@ -1,12 +1,15 @@
 
 package lma.objectum.Controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -113,7 +116,10 @@ public class AccountView {
         // getInstance() of Singleton
         if (currentUsername == null) {
             editMessageLabel.setText("Please log in first.");
-            return;
+            editMessageLabel.getStyleClass().clear();
+            editMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
+            return; // Hành vi tự động xóa thông báo vẫn được thực hiện ngay cả khi phương thức dừng sớm
         }
 
         String newPassword = newPassTextField.getText();
@@ -122,12 +128,60 @@ public class AccountView {
             editMessageLabel.setText("Blank");
             editMessageLabel.getStyleClass().clear();
             editMessageLabel.getStyleClass().add("warning-label");
-        } else {
+            setTimeline();
+            return;
+        }
+
+        DatabaseConnection connectNow = DatabaseConnection.getInstance();
+        Connection connectDB = connectNow.getConnection();
+        String fetchPasswordQuery = "SELECT password FROM useraccount WHERE username = ?";
+
+        try {
+
+            PreparedStatement fetchStatement = connectDB.prepareStatement(fetchPasswordQuery);
+            fetchStatement.setString(1, currentUsername);
+            ResultSet resultSet = fetchStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String currentHashedPassword = resultSet.getString("password");
+
+                // Kiểm tra mật khẩu mới giống mật khẩu cũ hay không?
+                if (BCrypt.checkpw(newPassword, currentHashedPassword)) {
+
+                    editMessageLabel.setText("Password hasn't been changed!");
+                    editMessageLabel.getStyleClass().clear();
+                    editMessageLabel.getStyleClass().add("warning-label");
+                    setTimeline();
+                    return;
+                }
+            }
+
             updatePassword(currentUsername, newPassword);
-            editMessageLabel.setText("Apply new Password!");
+            editMessageLabel.setText("Password updated successfully!");
             editMessageLabel.getStyleClass().clear();
             editMessageLabel.getStyleClass().add("success-label");
+            setTimeline();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            editMessageLabel.setText("An error occurred while updating the password.");
+            editMessageLabel.getStyleClass().clear();
+            editMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
         }
     }
 
+    /**
+     * Create a timeline to clear the message after 10 seconds.
+     */
+    private void setTimeline() {
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(10), event -> {
+            editMessageLabel.setText("");
+            editMessageLabel.getStyleClass().clear();
+        }));
+        timeline.setCycleCount(1); // Run only once
+        timeline.play();
+    }
 }
