@@ -169,7 +169,7 @@ public class LoginController {
 
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
-        String verifyLogin = "SELECT id, password, role FROM useraccount WHERE username = ?";
+        String verifyLogin = "SELECT account_id, password, role FROM useraccount WHERE username = ?";
 
         try {
 
@@ -181,7 +181,7 @@ public class LoginController {
 
                 String hashedPassword = queryResult.getString("password");
                 String role = queryResult.getString("role");
-                int userId = queryResult.getInt("id");
+                int userId = queryResult.getInt("account_id");
 
                 if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
 
