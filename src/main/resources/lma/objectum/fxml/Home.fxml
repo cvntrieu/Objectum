@@ -44,7 +44,6 @@
                <items>
                   <MenuItem fx:id="borrowBooksItem" onAction="#handleBorrowBooksItem" text="Borrow Books" />
                   <MenuItem fx:id="checkBorrowStatusItem" onAction="#handleReturnBooksItem" text="Return Books" />
-                  <MenuItem text="Check Status" />
                </items>
             </MenuButton>
             <Button fx:id="APIButton" onAction="#handleAPIButtonAction" prefHeight="30.0" prefWidth="82.0" styleClass="sidebar-button" text="API">
