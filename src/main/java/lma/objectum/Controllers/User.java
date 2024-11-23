@@ -112,7 +112,11 @@ public abstract class User {
      */
     protected void loadBorrowedBooks() {
         int userId = SessionManager.getInstance().getCurrentUserId();
-        String query = "SELECT b.title, b.author, t.due_date FROM transactions t JOIN books b ON t.book_id = b.id WHERE t.user_id = ? AND t.status = 'BORROWED' ORDER BY t.due_date";
+        String query = "SELECT b.title, b.author, t.due_date " +
+                "FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "WHERE t.user_id = ? AND t.status = 'BORROWED' " +
+                "ORDER BY t.due_date";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -140,7 +144,11 @@ public abstract class User {
      */
     protected void loadReadBooks() {
         int userId = SessionManager.getInstance().getCurrentUserId();
-        String query = "SELECT b.title, b.author FROM transactions t JOIN books b ON t.book_id = b.id WHERE t.user_id = ? AND t.status = 'RETURNED' ORDER BY t.return_date";
+        String query = "SELECT DISTINCT b.title, b.author " +
+                "FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "WHERE t.user_id = ? AND t.status = 'RETURNED' " +
+                "ORDER BY b.title";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -167,7 +175,11 @@ public abstract class User {
      */
     protected void loadFines() {
         int userId = SessionManager.getInstance().getCurrentUserId();
-        String query = "SELECT b.title, t.fine FROM transactions t JOIN books b ON t.book_id = b.id WHERE t.user_id = ? AND t.fine > 0 ORDER BY t.fine DESC";
+        String query = "SELECT b.title, t.fine " +
+                "FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "WHERE t.user_id = ? AND t.fine > 0 " +
+                "ORDER BY t.fine DESC";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -229,11 +241,11 @@ public abstract class User {
      * Loading fines overtime (miss the deadline / due date).
      */
     protected void loadFinesOverTime() {
-        String query = "SELECT DATE_FORMAT(t.return_date, '%b %Y') AS month, SUM(t.fine) AS total_fine " +
+        String query = "SELECT DATE(t.return_date) AS day, SUM(t.fine) AS total_fine " +
                 "FROM transactions t " +
                 "WHERE t.fine > 0 " +
-                "GROUP BY DATE_FORMAT(t.return_date, '%Y-%m') " +
-                "ORDER BY DATE_FORMAT(t.return_date, '%Y-%m') ASC";
+                "GROUP BY DATE(t.return_date) " +
+                "ORDER BY DATE(t.return_date) ASC";
 
         try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -243,9 +255,9 @@ public abstract class User {
             fineSeries.setName("Fines Collected Over Time");
 
             while (resultSet.next()) {
-                String month = resultSet.getString("month");
+                String day = resultSet.getString("day");
                 double totalFine = resultSet.getDouble("total_fine");
-                fineSeries.getData().add(new XYChart.Data<>(month, totalFine));
+                fineSeries.getData().add(new XYChart.Data<>(day, totalFine));
             }
 
             finesOverTimeChart.getData().clear();

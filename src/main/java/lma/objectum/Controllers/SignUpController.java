@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.StageUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.URL;
@@ -34,19 +35,19 @@ public class SignUpController implements Initializable {
     protected Button backTologinButton;
 
     @FXML
-    protected TextField firstnameTextField;
+    private TextField firstnameTextField;
 
     @FXML
-    protected TextField lastnameTextField;
+    private TextField lastnameTextField;
 
     @FXML
-    protected TextField usernameTextField;
+    private TextField usernameTextField;
 
     @FXML
-    protected PasswordField passwordTextField;
+    private PasswordField passwordTextField;
 
     @FXML
-    protected Label registerMessageLabel;
+    private Label registerMessageLabel;
 
     /**
      * Intializing methods.
@@ -177,8 +178,10 @@ public class SignUpController implements Initializable {
             Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             loginStage.setScene(new Scene(root, 842, 608));
             loginStage.show();
+            loginStage.setTitle("Objectum");
             Stage editStage = (Stage) backTologinButton.getScene().getWindow();
             editStage.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

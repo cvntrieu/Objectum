@@ -15,6 +15,7 @@ public class SessionManager { // Singleton: Lưu trữ thông tin toàn cục
     public String getCurrentUsername() {
         return currentUsername;
     }
+
     public int getCurrentUserId() {
         return currentUserId;
     }
@@ -22,6 +23,7 @@ public class SessionManager { // Singleton: Lưu trữ thông tin toàn cục
     public void setCurrentUsername(String username) {
         this.currentUsername = username;
     }
+
     public void setCurrentUserId(int userId) {
         this.currentUserId = userId;
     }

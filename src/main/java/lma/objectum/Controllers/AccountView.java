@@ -55,7 +55,9 @@ public class AccountView {
     private void loadUserInfo() throws SQLException {
 
         String currentUsername = SessionManager.getInstance().getCurrentUsername();
-        if (currentUsername == null) { return; }
+        if (currentUsername == null) {
+            return;
+        }
 
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -69,9 +71,9 @@ public class AccountView {
 
             if (resultSet.next()) {
                 usernameLabel.setText("Username: " + resultSet.getString("username") + '\n'
-                                    + "First Name: " + resultSet.getString("firstname") + '\n'
-                                    + "Last Name: " + resultSet.getString("lastname") + '\n'
-                                    + "Role: " + resultSet.getString("role"));
+                        + "First Name: " + resultSet.getString("firstname") + '\n'
+                        + "Last Name: " + resultSet.getString("lastname") + '\n'
+                        + "Role: " + resultSet.getString("role"));
             }
 
         } catch (Exception e) {
@@ -83,7 +85,7 @@ public class AccountView {
     /**
      * Changing password.
      *
-     * @param username the username to change its password
+     * @param username    the username to change its password
      * @param newPassword the new password
      */
     private void updatePassword(String username, String newPassword) throws SQLException {
