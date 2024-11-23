@@ -36,33 +36,50 @@ public class BookSearchController implements Initializable {
 
     @FXML
     private TableView<Book> tableView;
+
     @FXML
     private TableColumn<Book, String> isbn, title, author, date, publisher, image;
+
     @FXML
     private TableColumn<Book, Long> isbn_13;
+
     @FXML
     private TableColumn<Book, Double> rating;
+
     @FXML
     private TextField keyWordTextField;
+
     @FXML
     private AnchorPane dynamicIsland;
+
     @FXML
     private Label titleLabel;
+
     @FXML
     private Label authorLabel;
+
     @FXML
     private Label ratingLabel;
+
     @FXML
     private Hyperlink buyLink;
+
     @FXML
     private ComboBox<String> searchCriteriaComboBox;
+
     @FXML
     private Button homeButton;
-    private SearchContext searchContext = new SearchContext();
 
+    private SearchContext searchContext = new SearchContext();
 
     ObservableList<Book> bookList = FXCollections.observableArrayList();
 
+    /**
+     * Initializing the necessary components for Book Searching.
+     *
+     * @param url url
+     * @param resource resource bundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resource) {
         loadBooksFromDatabase();
@@ -400,6 +417,7 @@ public class BookSearchController implements Initializable {
      * Configure table columns.
      */
     private void configureTableColumns() {
+
         isbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         isbn_13.setCellValueFactory(new PropertyValueFactory<>("isbn_13"));
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -417,6 +435,7 @@ public class BookSearchController implements Initializable {
      * Setup image column with zoom effect.
      */
     private void setupImageColumnWithZoomEffect() {
+
         image.setCellFactory(column -> new TableCell<>() {
             private final ImageView imageView = new ImageView();
 

@@ -1,6 +1,8 @@
 
 package lma.objectum.Controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Utils.StageUtils;
 
@@ -24,28 +27,28 @@ import java.sql.SQLException;
 public class EditMembers {
 
     @FXML
-    public ImageView avataImage;
+    protected ImageView avataImage;
 
     @FXML
-    public Button avataButton;
+    protected Button avataButton;
 
     @FXML
-    public Label guideLabel;
+    protected Label guideLabel;
 
     @FXML
-    public TextField editTextField;
+    protected TextField editTextField;
 
     @FXML
-    public Label editMessageLabel;
+    protected Label editMessageLabel;
 
     @FXML
-    public Button toAdminButton;
+    protected Button toAdminButton;
 
     @FXML
-    public Button toMemberButton;
+    protected Button toMemberButton;
 
     @FXML
-    public Button backButton;
+    protected Button backButton;
 
     /**
      * Initializing method.
@@ -80,6 +83,7 @@ public class EditMembers {
                         editMessageLabel.setText("This account has been an admin!");
                         editMessageLabel.getStyleClass().clear();
                         editMessageLabel.getStyleClass().add("warning-label");
+                        setTimeline();
 
                     } else if ("member".equalsIgnoreCase(role)) {
 
@@ -90,6 +94,7 @@ public class EditMembers {
                         editMessageLabel.setText("Role updated to Admin successfully!");
                         editMessageLabel.getStyleClass().clear();
                         editMessageLabel.getStyleClass().add("success-label");
+                        setTimeline();
                     }
 
                 } else {
@@ -97,6 +102,7 @@ public class EditMembers {
                     editMessageLabel.setText("Username not found!");
                     editMessageLabel.getStyleClass().clear();
                     editMessageLabel.getStyleClass().add("warning-label");
+                    setTimeline();
                 }
             } catch (SQLException e) {
 
@@ -104,6 +110,7 @@ public class EditMembers {
                 editMessageLabel.setText("Database error!");
                 editMessageLabel.getStyleClass().clear();
                 editMessageLabel.getStyleClass().add("error-label");
+                setTimeline();
             }
 
         } else {
@@ -111,6 +118,7 @@ public class EditMembers {
             editMessageLabel.setText("Blank!");
             editMessageLabel.getStyleClass().clear();
             editMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
         }
     }
 
@@ -140,6 +148,8 @@ public class EditMembers {
                         editMessageLabel.setText("This account has been a member!");
                         editMessageLabel.getStyleClass().clear();
                         editMessageLabel.getStyleClass().add("warning-label");
+                        setTimeline();
+                        // Ở đây có nên thêm return; hay ko?
                     } else if ("admin".equalsIgnoreCase(role)) {
 
                         PreparedStatement updateStatement = connectDB.prepareStatement(updateQuery);
@@ -149,11 +159,13 @@ public class EditMembers {
                         editMessageLabel.setText("Role updated to Member successfully!");
                         editMessageLabel.getStyleClass().clear();
                         editMessageLabel.getStyleClass().add("success-label");
+                        setTimeline();
                     }
                 } else {
                     editMessageLabel.setText("Username not found!");
                     editMessageLabel.getStyleClass().clear();
                     editMessageLabel.getStyleClass().add("warning-label");
+                    setTimeline();
                 }
 
             } catch (SQLException e) {
@@ -162,21 +174,24 @@ public class EditMembers {
                 editMessageLabel.setText("Database error!");
                 editMessageLabel.getStyleClass().clear();
                 editMessageLabel.getStyleClass().add("error-label");
+                setTimeline();
             }
 
         } else {
             editMessageLabel.setText("Blank!");
             editMessageLabel.getStyleClass().clear();
             editMessageLabel.getStyleClass().add("warning-label");
+            setTimeline();
         }
     }
 
     /**
      * Back Button on action.
      *
-     * @param event e
+     * @param event event
      */
     public void redirectToHome(ActionEvent event) {
+
         try {
             Stage homeStage = StageUtils.loadFXMLStage(
                     "/lma/objectum/fxml/AdminHome.fxml",
@@ -190,6 +205,19 @@ public class EditMembers {
             e.printStackTrace();
             e.getCause();
         }
+    }
+
+    /**
+     * Create a timeline to clear the message after 10 seconds.
+     */
+    private void setTimeline() {
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(10), event -> {
+            editMessageLabel.setText("");
+            editMessageLabel.getStyleClass().clear();
+        }));
+        timeline.setCycleCount(1); // Run only once
+        timeline.play();
     }
 }
 

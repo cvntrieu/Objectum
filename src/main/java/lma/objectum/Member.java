@@ -99,14 +99,13 @@ public class Member extends User {
             );
             accountButton.getScene().getWindow().hide();
             returnStage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Handling api button.
+     * API Button on action.
      */
     @FXML
     public void handleAPIButtonAction() {
@@ -123,6 +122,9 @@ public class Member extends User {
         }
     }
 
+    /**
+     * Handling logout Button.
+     */
     @FXML
     public void handleLogOutButton() {
         try {

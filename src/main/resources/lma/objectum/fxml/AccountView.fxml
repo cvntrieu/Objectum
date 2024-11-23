@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="901.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.AccountView">
     <stylesheets>
-        <String fx:value="@LoginStyle.css" />
+        <String fx:value="@../css/LoginStyle.css" />
     </stylesheets>
     <children>
         <VBox layoutY="94.0" prefHeight="570.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;" />
@@ -36,7 +36,7 @@
             </image>
         </ImageView>
         <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="901.0" style="-fx-background-color: #FFFFE0;" />
-        <Label fx:id="editMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="579.0" prefHeight="38.0" prefWidth="498.0" stylesheets="@LoginStyle.css">
+        <Label fx:id="editMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="579.0" prefHeight="38.0" prefWidth="498.0" stylesheets="@../css/LoginStyle.css">
             <font>
                 <Font name="System Bold" size="20.0" />
             </font></Label>

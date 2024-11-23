@@ -16,7 +16,7 @@ public class DatabaseConnection {
         String databaseName = "objectum";
         String databaseUser = "root";
         String databasePassword = "13082005";
-        String url = "jdbc:mysql://localhost/" + databaseName;
+        String url = "jdbc:mysql://localhost:/" + databaseName;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

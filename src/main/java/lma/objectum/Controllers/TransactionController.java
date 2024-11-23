@@ -41,13 +41,13 @@ public class TransactionController {
     private Button homeButton;
 
     @FXML
-    private Button borrowButton;
+    protected Button borrowButton;
 
     @FXML
     private Button returnButton;
 
     @FXML
-    private ImageView qrImageView;
+    protected ImageView qrImageView;
 
     /**
      * Borrow a book for a user.
@@ -347,7 +347,11 @@ public class TransactionController {
     }
 
     /**
-     * Show a custom alert dialog with a title and message.
+     * Show custom alert.
+     *
+     * @param title title
+     * @param message message
+     * @param isSuccess is success
      */
     private void showCustomAlert(String title, String message, boolean isSuccess) {
         Dialog<Void> dialog = new Dialog<>();

@@ -1,4 +1,5 @@
 module lma.objectum {
+
     requires javafx.controls;
     requires javafx.fxml;
 

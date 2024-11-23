@@ -1,10 +1,19 @@
+
 package lma.objectum.Models;
 
 public class FinedBook {
+
     private String title;
     private double fine;
 
+    /**
+     * Fined book.
+     *
+     * @param title title
+     * @param fine fine
+     */
     public FinedBook(String title, double fine) {
+
         this.title = title;
         this.fine = fine;
     }

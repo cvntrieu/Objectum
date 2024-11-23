@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="657.0" prefWidth="1167.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.DeleteBooksController">
+
+    <!-- Dynamic Island Panel -->
+    <AnchorPane fx:id="dynamicIsland" layoutX="30.0" layoutY="5.0" maxWidth="1100.0" prefHeight="30.0" styleClass="dynamic-island" visible="false">
+        <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <Label fx:id="titleLabel" ellipsisString="..." maxWidth="300.0" styleClass="dynamic-label" text="Title: Book Info" />
+            <Separator orientation="VERTICAL" prefHeight="20.0" styleClass="separator" />
+            <Label fx:id="authorLabel" ellipsisString="..." maxWidth="200.0" styleClass="dynamic-label" text="Author: John Doe" />
+            <Separator orientation="VERTICAL" prefHeight="20.0" styleClass="separator" />
+            <Label fx:id="ratingLabel" ellipsisString="..." maxWidth="100.0" styleClass="dynamic-label" text="Rating: 4.5" />
+            <Separator orientation="VERTICAL" prefHeight="20.0" styleClass="separator" />
+            <Hyperlink fx:id="deleteLink" text="Delete Now" />
+        </HBox>
+    </AnchorPane>
+
+    <!-- Search Field Section -->
+    <VBox layoutX="30.0" layoutY="70.0" spacing="15.0" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.topAnchor="70">
+        <!-- ComboBox to choose search criteria -->
+        <ComboBox fx:id="searchCriteriaComboBox" prefWidth="150.0" promptText="Select Criteria">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Title" />
+                    <String fx:value="Author" />
+                    <String fx:value="ISBN" />
+                    <String fx:value="Year" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <!-- Search TextField -->
+        <TextField fx:id="keyWordTextField" prefHeight="26.0" prefWidth="1090.0" promptText="Search by keyword" styleClass="search-field" />
+    </VBox>
+
+    <!-- Table View -->
+    <TableView fx:id="tableView" layoutX="31.2" layoutY="150.0" prefHeight="443.0" prefWidth="1105.0" styleClass="table-view" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="150">
+        <columns>
+            <TableColumn fx:id="image" prefWidth="100.0" styleClass="table-column" text="Image" />
+            <TableColumn fx:id="isbn" prefWidth="121.0" styleClass="table-column" text="ISBN" />
+            <TableColumn fx:id="isbn_13" prefWidth="128.0" styleClass="table-column" text="ISBN_13" />
+            <TableColumn fx:id="title" prefWidth="179.0" styleClass="table-column" text="Title" />
+            <TableColumn fx:id="author" prefWidth="143.0" styleClass="table-column" text="Authors" />
+            <TableColumn fx:id="rating" prefWidth="106.0" styleClass="table-column" text="Rating" />
+            <TableColumn fx:id="date" prefWidth="101.0" styleClass="table-column" text="Publication Year" />
+            <TableColumn fx:id="publisher" prefWidth="219.0" styleClass="table-column" text="Publisher" />
+        </columns>
+    </TableView>
+   <Button fx:id="HomeButton" layoutX="30.0" layoutY="611.0" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #33ffff;" text="Home" textFill="WHITE">
+      <font>
+         <Font name="System Bold" size="15.0" />
+      </font>
+   </Button>
+</AnchorPane>

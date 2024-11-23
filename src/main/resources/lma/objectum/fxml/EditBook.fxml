@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="923.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.EditBookController">
+    <stylesheets>
+        <String fx:value="@../css/LoginStyle.css" />
+    </stylesheets>
+    <children>
+      <ImageView fitHeight="665.0" fitWidth="826.0" layoutX="93.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Home/main_background.png" />
+         </image>
+      </ImageView>
+          <Button fx:id="avataButton" layoutX="40.0" layoutY="40.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="27.0" />
+        <VBox layoutY="112.0" prefHeight="573.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;" />
+        <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="917.0" style="-fx-background-color: #FFFFE0;" />
+        <TextField fx:id="imageTextField" layoutX="135.0" layoutY="149.0" prefHeight="38.0" prefWidth="611.0" promptText="ImageURL " />
+        <Button fx:id="editButton" layoutX="408.0" layoutY="560.0" mnemonicParsing="false" onAction="#editButtonOnAction" prefHeight="34.0" prefWidth="106.0" style="-fx-background-color: #33ccff;" text="Edit" textFill="WHITE">
+            <font>
+                <Font name="Calibri Bold" size="17.0" />
+            </font>
+        </Button>
+        <Button fx:id="backButton" layoutX="408.0" layoutY="613.0" mnemonicParsing="false" onAction="#redirectToHome" prefHeight="24.0" prefWidth="106.0" style="-fx-background-color: #33ccff;" text="Back" textFill="WHITE">
+            <font>
+                <Font name="Calibri Bold" size="17.0" />
+            </font>
+        </Button>
+        <Label fx:id="editBookMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="510.0" prefHeight="38.0" prefWidth="564.0" stylesheets="@../css/LoginStyle.css">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font></Label>
+        <TextField fx:id="titleTextField" layoutX="135.0" layoutY="202.0" prefHeight="38.0" prefWidth="611.0" promptText="Title" />
+        <TextField fx:id="authorTextField" layoutX="135.0" layoutY="261.0" prefHeight="38.0" prefWidth="611.0" promptText="Author" />
+        <TextField fx:id="publicationYearTextField" layoutX="135.0" layoutY="309.0" prefHeight="38.0" prefWidth="611.0" promptText="Publication Year" />
+        <TextField fx:id="publisherTextField" layoutX="135.0" layoutY="359.0" prefHeight="38.0" prefWidth="611.0" promptText="Publisher" />
+        <TextField fx:id="quantityTextField" layoutX="135.0" layoutY="461.0" prefHeight="38.0" prefWidth="611.0" promptText="Quantity" />
+        <TextField fx:id="ratingTextField" layoutX="135.0" layoutY="409.0" prefHeight="38.0" prefWidth="611.0" promptText="Rating" />
+      <TextField fx:id="isbn13TextField" layoutX="135.0" layoutY="93.0" prefHeight="38.0" prefWidth="611.0" promptText="Isbn13 of edited book (Required)" />
+            <ImageView fx:id="avataImage" fitHeight="92.0" fitWidth="87.0" layoutX="4.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../Home/test-avata.jpg" />
+                </image>
+            </ImageView>
+    </children>
+</AnchorPane>

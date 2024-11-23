@@ -16,7 +16,27 @@ public class BookInAPI {
     private String description;
 
     // Constructor
-    public BookInAPI(String title, String authors, String publisher, String publishedDate, int pageCount, String categories, String language, double averageRating, int ratingsCount, String printType, String previewLink, String description) {
+
+    /**
+     * Constructor.
+     *
+     * @param title title
+     * @param authors authors
+     * @param publisher publisher
+     * @param publishedDate publishedDate
+     * @param pageCount pageCount
+     * @param categories categories
+     * @param language language
+     * @param averageRating averageRating
+     * @param ratingsCount rating count
+     * @param printType print type
+     * @param previewLink preview link
+     * @param description description
+     */
+    public BookInAPI(String title, String authors, String publisher, String publishedDate,
+                     int pageCount, String categories, String language, double averageRating,
+                     int ratingsCount, String printType, String previewLink, String description) {
+
         this.title = title;
         this.authors = authors;
         this.publisher = publisher;
@@ -128,8 +148,14 @@ public class BookInAPI {
         this.description = description;
     }
 
+    /**
+     * Overriding To-string.
+     *
+     * @return info of book
+     */
     @Override
     public String toString() {
+
         return "Title: " + title + "\n" +
                 "Authors: " + authors + "\n" +
                 "Publisher: " + publisher + "\n" +

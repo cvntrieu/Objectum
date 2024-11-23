@@ -1,50 +1,38 @@
 package lma.objectum;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import lma.objectum.Controllers.SessionManager;
 import lma.objectum.Controllers.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
-import lma.objectum.Database.DatabaseConnection;
-import lma.objectum.Models.BorrowedBook;
-import lma.objectum.Models.FinedBook;
-import lma.objectum.Models.ReadBook;
+import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Admin extends User {
 
     @FXML
-    public Button accountButton;
+    private Button accountButton;
 
     @FXML
-    public Button homeButton;
+    private Button homeButton;
 
     @FXML
-    public MenuButton listButton;
+    private MenuButton listButton;
 
     @FXML
-    public Button settingButton;
+    private Button avataButton;
 
     @FXML
-    public Button avataButton;
+    private ImageView avataImage;
 
     @FXML
-    public ImageView avataImage;
-
-    @FXML
-    public MenuItem searchBooksMenuItem;
+    private MenuItem searchBooksMenuItem;
 
     @FXML
     private MenuItem addBooksMenuItem;
@@ -56,13 +44,19 @@ public class Admin extends User {
     private MenuItem editBooksMenuItem;
 
     @FXML
-    private MenuItem addMembersMenuItem;
+    private MenuItem APIButton;
 
     @FXML
     private MenuItem removeMembersMenuItem;
 
     @FXML
     private MenuItem editMembersMenuItem;
+
+    @FXML
+    private Region leftRegion;
+
+    @FXML
+    private Button logoutButton;
 
     /**
      * Handing account viewing button.
@@ -71,12 +65,12 @@ public class Admin extends User {
     public void handleAccountButton() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AccountView.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
+            Stage accountStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AccountView.fxml",
+                    "Account View"
+            );
+            accountStage.show();
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,33 +80,60 @@ public class Admin extends User {
     /**
      * Handling added books.
      */
+    @FXML
     private void handleAddBooks() {
-        showAlert("Add Books", "You have selected to add books.");
-        // Thêm logic thực hiện hành động thêm sách
+
+        try {
+            Stage addBooksStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AddBooks.fxml",
+                    "Add Books"
+            );
+            addBooksStage.setResizable(true); // Cho phép co giãn cửa sổ
+            addBooksStage.show();
+            accountButton.getScene().getWindow().hide();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Handling removed books.
      */
+    @FXML
     private void handleRemoveBooks() {
-        showAlert("Remove Books", "You have selected to remove books.");
-        // Thêm logic thực hiện hành động xóa sách
+
+        try {
+            Stage deleteBookStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/DeleteBooks.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Remove Books"
+            );
+            deleteBookStage.show();
+            accountButton.getScene().getWindow().hide();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Handling edited books.
      */
+    @FXML
     private void handleEditBooks() {
-        showAlert("Edit Books", "You have selected to edit books.");
-        // Thêm logic thực hiện hành động chỉnh sửa sách
-    }
 
-    /**
-     * Handing added members.
-     */
-    public void handleAddMembers() {
-        // showAlert("Add Members", "You have selected to add members.");
-        // Thêm logic thực hiện hành động thêm thành viên
+        try {
+            Stage editBookStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/EditBook.fxml",
+                    "Edit Book"
+            );
+            editBookStage.show();
+            accountButton.getScene().getWindow().hide();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -121,12 +142,12 @@ public class Admin extends User {
     public void handleRemoveMembers() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/RemoveMembers.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
-            accountButton.getScene().getWindow().hide();
+            Stage removeMemberStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/RemoveMembers.fxml",
+                    "Remove Members"
+            );
             removeMemberStage.show();
+            accountButton.getScene().getWindow().hide();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,32 +160,86 @@ public class Admin extends User {
     public void handleEditMembers() { // Member <-> Admin
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/EditMembers.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 842, 608));
-            accountButton.getScene().getWindow().hide();
+            Stage removeMemberStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/EditMembers.fxml",
+                    "Edit Members"
+            );
             removeMemberStage.show();
+
+            accountButton.getScene().getWindow().hide();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Handling borrowed books item.
+     */
     public void handleBorrowBooksItem() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/BookSearch.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 1151, 622);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
-            removeMemberStage.setScene(scene);
+            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/BookSearch.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Borrow Books"
+            );
+            borrowBooksStage.show();
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * API Button on action.
+     */
+    @FXML
+    public void APIButtonOnAction() {
+        try {
+            Stage apiStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/API.fxml",
+                    "API"
+            );
+            apiStage.show();
+            // Đóng màn hình cũ
+            Stage homeStage = (Stage) accountButton.getScene().getWindow();
+            homeStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Logging out.
+     */
+    @FXML
+    public void handleLogoutButton() {
+
+        Alert logoutConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        logoutConfirmation.setTitle("Confirm Logout");
+        logoutConfirmation.setHeaderText("Are you sure you want to log out?");
+        logoutConfirmation.setContentText("You will need to log in again to access your account.");
+
+        if (logoutConfirmation.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+
+            SessionManager.getInstance().clearSession(); // Xóa thông tin phiên đăng nhập
+
+            try {
+                Stage homeStage = StageUtils.loadFXMLStage(
+                        "/lma/objectum/fxml/App.fxml",
+                        "Objectum Library"
+                );
+                homeStage.show();
+
+                Stage adminStage = (Stage) logoutButton.getScene().getWindow();
+                adminStage.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -183,4 +258,3 @@ public class Admin extends User {
         alert.showAndWait();
     }
 }
-
