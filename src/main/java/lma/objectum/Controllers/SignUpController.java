@@ -174,11 +174,11 @@ public class SignUpController implements Initializable {
     @FXML
     private void redirectToLogin(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/App.fxml"));
-            Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            loginStage.setScene(new Scene(root, 842, 608));
+            Stage loginStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/App.fxml",
+                    "Login"
+            );
             loginStage.show();
-            loginStage.setTitle("Objectum");
             Stage editStage = (Stage) backTologinButton.getScene().getWindow();
             editStage.close();
 

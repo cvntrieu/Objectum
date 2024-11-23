@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -147,10 +148,12 @@ public class RemoveMembers {
     public void redirectToHome(ActionEvent event) { // BackButtonOnAction
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
-            Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            loginStage.setScene(new Scene(root, 1200, 800));
-            loginStage.show();
+            Stage homeStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "Admin Home"
+            );
+            homeStage.show();
+
             Stage editStage = (Stage) backButton.getScene().getWindow();
             editStage.close();
         } catch (Exception e) {

@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.StageUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -218,9 +219,11 @@ public class EditBookController {
     public void redirectToHome(ActionEvent event) { // BackButtonOnAction
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
-            Stage homeStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            homeStage.setScene(new Scene(root, 1200, 800));
+
+            Stage homeStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "Admin Home"
+            );
             homeStage.show();
 
             Stage editStage = (Stage) backButton.getScene().getWindow();

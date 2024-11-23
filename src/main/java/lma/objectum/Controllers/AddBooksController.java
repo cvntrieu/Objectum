@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -219,10 +220,10 @@ public class AddBooksController {
     public void redirectToHome(ActionEvent event) { // BackButtonOnAction
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
-            Stage homeStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            homeStage.setScene(new Scene(root, 1200, 800));
-            homeStage.setResizable(true); // Cho phép thay đổi kích thước
+            Stage homeStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "Admin Home"
+            );
             homeStage.show();
 
             Stage searchStage = (Stage) backButton.getScene().getWindow();
