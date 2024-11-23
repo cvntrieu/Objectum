@@ -18,28 +18,28 @@ import java.sql.*;
 public class AccountView {
 
     @FXML
-    public Button avataButton;
+    protected Button avataButton;
 
     @FXML
-    public ImageView avataImage;
+    protected ImageView avataImage;
 
     @FXML
-    public Label editMessageLabel;
+    protected Label editMessageLabel;
 
     @FXML
-    public Label usernameLabel;
+    protected Label usernameLabel;
 
     @FXML
-    public Label changeGuideLabel;
+    protected Label changeGuideLabel;
 
     @FXML
-    public Button applyPassButton;
+    protected Button applyPassButton;
 
     @FXML
-    public PasswordField newPassTextField;
+    protected PasswordField newPassTextField;
 
     @FXML
-    public Label openingLabel;
+    protected Label openingLabel;
 
     /**
      * Intializing the view interface.
@@ -55,7 +55,9 @@ public class AccountView {
     private void loadUserInfo() throws SQLException {
 
         String currentUsername = SessionManager.getInstance().getCurrentUsername();
-        if (currentUsername == null) { return; }
+        if (currentUsername == null) {
+            return;
+        }
 
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
@@ -69,9 +71,9 @@ public class AccountView {
 
             if (resultSet.next()) {
                 usernameLabel.setText("Username: " + resultSet.getString("username") + '\n'
-                                    + "First Name: " + resultSet.getString("firstname") + '\n'
-                                    + "Last Name: " + resultSet.getString("lastname") + '\n'
-                                    + "Role: " + resultSet.getString("role"));
+                        + "First Name: " + resultSet.getString("firstname") + '\n'
+                        + "Last Name: " + resultSet.getString("lastname") + '\n'
+                        + "Role: " + resultSet.getString("role"));
             }
 
         } catch (Exception e) {
@@ -83,7 +85,7 @@ public class AccountView {
     /**
      * Changing password.
      *
-     * @param username the username to change its password
+     * @param username    the username to change its password
      * @param newPassword the new password
      */
     private void updatePassword(String username, String newPassword) throws SQLException {

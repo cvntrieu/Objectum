@@ -1,11 +1,16 @@
 package lma.objectum.Controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -13,11 +18,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Models.Book;
 import lma.objectum.Utils.BasicFine;
 import lma.objectum.Utils.FineStrategy;
+import lma.objectum.Utils.StageUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 
 public class TransactionController {
 
@@ -31,10 +41,13 @@ public class TransactionController {
     private Button homeButton;
 
     @FXML
-    private Button borrowButton;
+    protected Button borrowButton;
 
     @FXML
-    private Button returnButton;
+    protected Button returnButton;
+
+    @FXML
+    protected ImageView qrImageView;
 
     /**
      * Borrow a book for a user.
@@ -131,55 +144,75 @@ public class TransactionController {
     }
 
     /**
+     * Generate a QR code for a book.
+     */
+    public void scanQRCode(Book book) {
+        try {
+            if (book == null) {
+                System.out.println("Book object is null. Please provide a valid book.");
+                return;
+            }
+
+            String bookInfo = String.format(
+                    "ISBN: %s\nISBN13: %s\nTitle: %s\nAuthor: %s\nRating: %.1f\nDate: %s\nPublisher: %s",
+                    Objects.requireNonNullElse(book.getIsbn(), "N/A"),
+                    Objects.requireNonNullElse(book.getIsbn_13(), "N/A"),
+                    Objects.requireNonNullElse(book.getTitle(), "N/A"),
+                    Objects.requireNonNullElse(book.getAuthors(), "N/A"),
+                    book.getRating(),
+                    Objects.requireNonNullElse(book.getDate(), "N/A"),
+                    Objects.requireNonNullElse(book.getPublisher(), "N/A")
+            );
+
+            if (bookInfo.trim().isEmpty()) {
+                System.out.println("Book information is empty. Cannot generate QR code.");
+                return;
+            }
+
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(bookInfo, BarcodeFormat.QR_CODE, 400, 400);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
+
+            if (qrImageView != null) {
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+                Image qrImage = new Image(inputStream);
+                qrImageView.setImage(qrImage);
+                qrImageView.setVisible(true);
+            } else {
+                System.out.println("ImageView is not initialized.");
+            }
+
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Prefill the ISBN13 field with a given value.
      */
     public void prefillData(long isbn13) {
         ISBN13_borrow.setText(String.valueOf(isbn13));
     }
 
+    /**
+     * Handle the home button click event.
+     */
     @FXML
     public void handleHomeButton() {
         try {
-            boolean isAdmin = checkIfAdmin();
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    isAdmin ? "/lma/objectum/fxml/AdminHome.fxml" : "/lma/objectum/fxml/Home.fxml"
-            ));
-            Parent root = loader.load();
-            Stage homeStage = new Stage();
-            homeStage.setScene(new Scene(root));
+            Stage homeStage = StageUtils.loadRoleBasedStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "/lma/objectum/fxml/Home.fxml",
+                    "Home"
+            );
             homeStage.show();
-
-            Stage transacionStage = (Stage) homeButton.getScene().getWindow();
-            transacionStage.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private boolean checkIfAdmin() throws SQLException {
-        DatabaseConnection connectNow = DatabaseConnection.getInstance();
-        Connection connectDB = connectNow.getConnection();
-        String username = SessionManager.getInstance().getCurrentUsername();
-        String query = "SELECT role FROM useraccount WHERE username = ?";
-
-        try {
-            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            ResultSet queryResult = preparedStatement.executeQuery();
-
-            if (queryResult.next()) {
-                String role = queryResult.getString("role");
-                return "admin".equalsIgnoreCase(role);
-            }
-        } catch (SQLException e) {
+            Stage currentStage = (Stage) homeButton.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
-
-        return false;
     }
 
     /**
@@ -220,7 +253,8 @@ public class TransactionController {
      */
     private void createTransaction(int userId, int bookId) throws SQLException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
-        String query = "INSERT INTO transactions (user_id, book_id, borrow_date, due_date, status) VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 DAY), 'BORROWED')";
+        String query = "INSERT INTO transactions (user_id, book_id, borrow_date, due_date, status) " +
+                "VALUES (?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 1 DAY), 'BORROWED')";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
@@ -262,7 +296,9 @@ public class TransactionController {
      */
     private int getTransactionId(long isbn13, int userId) throws SQLException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
-        String query = "SELECT t.id AS transactionId FROM transactions t JOIN books b ON t.book_id = b.id WHERE b.ISBN13 = ? AND t.user_id = ? AND t.status = 'BORROWED'";
+        String query = "SELECT t.id AS transactionId FROM transactions t " +
+                "JOIN books b ON t.book_id = b.id " +
+                "WHERE b.ISBN13 = ? AND t.user_id = ? AND t.status = 'BORROWED'";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, isbn13);
@@ -325,7 +361,9 @@ public class TransactionController {
 
         ImageView icon = new ImageView(
                 new Image(getClass().getResourceAsStream(
-                        isSuccess ? "/lma/objectum/images/success_icon.png" : "/lma/objectum/images/error_icon.png"))
+                        isSuccess ? "/lma/objectum/images/success_icon.png" :
+                                "/lma/objectum/images/error_icon.png")
+                )
         );
         icon.setFitWidth(50);
         icon.setFitHeight(50);
@@ -340,7 +378,9 @@ public class TransactionController {
 
         dialog.getDialogPane().setContent(content);
 
-        dialog.getDialogPane().getStylesheets().add(getClass().getResource("/lma/objectum/css/DiaglogStyle.css").toExternalForm());
+        dialog.getDialogPane().getStylesheets()
+                .add(getClass().getResource("/lma/objectum/css/DiaglogStyle.css")
+                        .toExternalForm());
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.showAndWait();

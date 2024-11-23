@@ -37,28 +37,40 @@ public class DeleteBooksController implements Initializable {
 
     @FXML
     public Button HomeButton;
+
     @FXML
     private TableView<Book> tableView;
+
     @FXML
     private TableColumn<Book, String> isbn, title, author, date, publisher, image;
+
     @FXML
     private TableColumn<Book, Long> isbn_13;
+
     @FXML
     private TableColumn<Book, Double> rating;
+
     @FXML
     private TextField keyWordTextField;
+
     @FXML
     private AnchorPane dynamicIsland;
+
     @FXML
     private Label titleLabel;
+
     @FXML
     private Label authorLabel;
+
     @FXML
     private Label ratingLabel;
+
     @FXML
     private Hyperlink deleteLink;
+
     @FXML
     private ComboBox<String> searchCriteriaComboBox;
+
     private SearchContext searchContext = new SearchContext();
 
     ObservableList<Book> bookList = FXCollections.observableArrayList();

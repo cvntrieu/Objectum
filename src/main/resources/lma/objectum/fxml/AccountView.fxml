@@ -16,7 +16,7 @@
         <String fx:value="@../css/LoginStyle.css" />
     </stylesheets>
     <children>
-        <VBox layoutY="94.0" prefHeight="568.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;" />
+        <VBox layoutY="94.0" prefHeight="570.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;" />
         <HBox alignment="CENTER" layoutY="19.0" prefHeight="74.0" prefWidth="94.0" style="-fx-background-color: #2c3e50;">
             <children>
                 <Button fx:id="avataButton" mnemonicParsing="false" prefHeight="29.0" prefWidth="34.0">

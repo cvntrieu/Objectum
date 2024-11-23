@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -26,28 +27,28 @@ import java.sql.SQLException;
 public class EditMembers {
 
     @FXML
-    public ImageView avataImage;
+    protected ImageView avataImage;
 
     @FXML
-    public Button avataButton;
+    protected Button avataButton;
 
     @FXML
-    public Label guideLabel;
+    protected Label guideLabel;
 
     @FXML
-    public TextField editTextField;
+    protected TextField editTextField;
 
     @FXML
-    public Label editMessageLabel;
+    protected Label editMessageLabel;
 
     @FXML
-    public Button toAdminButton;
+    protected Button toAdminButton;
 
     @FXML
-    public Button toMemberButton;
+    protected Button toMemberButton;
 
     @FXML
-    public Button backButton;
+    protected Button backButton;
 
     /**
      * Initializing method.
@@ -148,7 +149,7 @@ public class EditMembers {
                         editMessageLabel.getStyleClass().clear();
                         editMessageLabel.getStyleClass().add("warning-label");
                         setTimeline();
-
+                        // Ở đây có nên thêm return; hay ko?
                     } else if ("admin".equalsIgnoreCase(role)) {
 
                         PreparedStatement updateStatement = connectDB.prepareStatement(updateQuery);
@@ -192,13 +193,14 @@ public class EditMembers {
     public void redirectToHome(ActionEvent event) {
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
-            Stage loginStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            loginStage.setScene(new Scene(root, 1200, 800));
-            loginStage.show();
+            Stage homeStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "Objectum Library"
+            );
+            homeStage.show();
+
             Stage editStage = (Stage) backButton.getScene().getWindow();
             editStage.close();
-
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();

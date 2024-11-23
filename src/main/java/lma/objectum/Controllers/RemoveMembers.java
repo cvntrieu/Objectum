@@ -23,25 +23,25 @@ import java.sql.SQLException;
 public class RemoveMembers {
 
     @FXML
-    public ImageView avataImage;
+    protected ImageView avataImage;
 
     @FXML
-    public Button avataButton;
+    protected Button avataButton;
 
     @FXML
-    public Label guideLabel;
+    protected Label guideLabel;
 
     @FXML
-    public Button backButton;
+    protected Button backButton;
 
     @FXML
-    public Label deleteMemberMessageLabel;
+    protected Label deleteMemberMessageLabel;
 
     @FXML
-    public Button deleteButton;
+    protected Button deleteButton;
 
     @FXML
-    public TextField deleteTextField;
+    protected TextField deleteTextField;
 
     /**
      * Initializing method.
