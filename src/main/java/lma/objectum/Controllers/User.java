@@ -238,7 +238,11 @@ public abstract class User {
     }
 
     /**
+<<<<<<< HEAD
+     * Handling load fines over time.
+=======
      * Loading fines overtime (miss the deadline / due date).
+>>>>>>> Trieucvn
      */
     protected void loadFinesOverTime() {
         String query = "SELECT DATE(t.return_date) AS day, SUM(t.fine) AS total_fine " +

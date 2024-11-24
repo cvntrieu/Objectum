@@ -462,11 +462,10 @@ public class DeleteBooksController implements Initializable {
     public void handleHomeButton() {
         
         try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AdminHome.fxml"));
-            Parent root = loader.load();
-            Stage homeStage = new Stage();
-            homeStage.setScene(new Scene(root));
+            Stage homeStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "Admin Home"
+            );
             homeStage.show();
 
             Stage searchStage = (Stage) HomeButton.getScene().getWindow();

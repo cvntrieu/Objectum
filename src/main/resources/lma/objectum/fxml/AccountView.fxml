@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.AccountView">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="901.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.AccountView">
     <stylesheets>
         <String fx:value="@../css/LoginStyle.css" />
     </stylesheets>
@@ -30,12 +30,12 @@
                 </Button>
             </children>
         </HBox>
-        <ImageView fitHeight="657.0" fitWidth="846.0" layoutX="96.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="644.0" fitWidth="813.0" layoutX="94.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../Home/main_background.png" />
             </image>
         </ImageView>
-        <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="922.0" style="-fx-background-color: #FFFFE0;" />
+        <HBox layoutY="-4.0" prefHeight="24.0" prefWidth="901.0" style="-fx-background-color: #FFFFE0;" />
         <Label fx:id="editMessageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="579.0" prefHeight="38.0" prefWidth="498.0" stylesheets="@../css/LoginStyle.css">
             <font>
                 <Font name="System Bold" size="20.0" />
@@ -61,7 +61,7 @@
             <Font name="Calibri Bold Italic" size="21.0" />
          </font>
       </Label>
-      <ImageView fitHeight="548.0" fitWidth="308.0" layoutX="608.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="548.0" fitWidth="291.0" layoutX="610.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/MyBook.jpg" />
          </image>

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="657.0" prefWidth="1167.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.DeleteBooksController">
+<AnchorPane prefHeight="657.0" prefWidth="1167.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.DeleteBooksController">
 
     <!-- Dynamic Island Panel -->
     <AnchorPane fx:id="dynamicIsland" layoutX="30.0" layoutY="5.0" maxWidth="1100.0" prefHeight="30.0" styleClass="dynamic-island" visible="false">
@@ -49,7 +49,7 @@
     </VBox>
 
     <!-- Table View -->
-    <TableView fx:id="tableView" layoutX="30.0" layoutY="150.0" prefHeight="431.0" prefWidth="1090.0" styleClass="table-view" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="150">
+    <TableView fx:id="tableView" layoutX="31.2" layoutY="150.0" prefHeight="443.0" prefWidth="1105.0" styleClass="table-view" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="150">
         <columns>
             <TableColumn fx:id="image" prefWidth="100.0" styleClass="table-column" text="Image" />
             <TableColumn fx:id="isbn" prefWidth="121.0" styleClass="table-column" text="ISBN" />
@@ -61,7 +61,7 @@
             <TableColumn fx:id="publisher" prefWidth="219.0" styleClass="table-column" text="Publisher" />
         </columns>
     </TableView>
-   <Button fx:id="HomeButton" layoutX="30.0" layoutY="623.0" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #33ffff;" text="Home" textFill="WHITE">
+   <Button fx:id="HomeButton" layoutX="30.0" layoutY="611.0" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #33ffff;" text="Home" textFill="WHITE">
       <font>
          <Font name="System Bold" size="15.0" />
       </font>

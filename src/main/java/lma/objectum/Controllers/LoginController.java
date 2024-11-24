@@ -160,7 +160,7 @@ public class LoginController {
 
         DatabaseConnection connectNow = DatabaseConnection.getInstance();
         Connection connectDB = connectNow.getConnection();
-        String verifyLogin = "SELECT id, password, role FROM useraccount WHERE username = ?";
+        String verifyLogin = "SELECT account_id, password, role FROM useraccount WHERE username = ?";
 
         try {
 
@@ -172,7 +172,7 @@ public class LoginController {
 
                 String hashedPassword = queryResult.getString("password");
                 String role = queryResult.getString("role");
-                int userId = queryResult.getInt("id");
+                int userId = queryResult.getInt("account_id");
 
                 if (BCrypt.checkpw(passwordTextField.getText(), hashedPassword)) {
 
@@ -229,12 +229,14 @@ public class LoginController {
      */
     private void createAccountForm() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/SignUp.fxml"));
-            Parent root = loader.load();
-            Stage registerStage = new Stage();
-            registerStage.setTitle("Register");
-            registerStage.setScene(new Scene(root, 842, 608));
-            registerStage.show();
+            Stage signUpStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/SignUp.fxml",
+                    "Sign Up"
+            );
+            signUpStage.show();
+
+            Stage loginStage = (Stage) logInButton.getScene().getWindow();
+            loginStage.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

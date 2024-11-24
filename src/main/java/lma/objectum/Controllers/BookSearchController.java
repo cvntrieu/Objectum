@@ -26,7 +26,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 public class BookSearchController implements Initializable {
@@ -234,7 +237,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Handing Home button.
+     * Handle the home button click event.
      */
     @FXML
     public void handleHomeButton() {
@@ -253,7 +256,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Updating searching strategy.
+     * Update the search strategy based on the selected criteria.
      */
     void updateSearchStrategy() {
         String selectedCriteria = searchCriteriaComboBox.getSelectionModel().getSelectedItem();
@@ -276,7 +279,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Loading books from database.
+     * Load books from the database.
      */
     void loadBooksFromDatabase() {
         String query = "SELECT ISBN, ISBN13, Title, Author, Rating, PublicationYear, Publisher, ImageUrlS FROM books";
@@ -301,7 +304,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Setting up filtering and sorting.
+     * Setup filtering and sorting for the table view.
      */
     private void setupFilteringAndSorting() {
         FilteredList<Book> filteredData = new FilteredList<>(bookList, b -> true);
@@ -320,7 +323,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Handling table click.
+     * Set up the table click handler.
      */
     private void setupTableClickHandler() {
         tableView.setOnMouseClicked(event -> {
@@ -332,9 +335,9 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Displaying books' details.
+     * Display book details.
      *
-     * @param selectedBook the book to be selected
+     * @param selectedBook selected book
      */
     private void displayBookDetails(Book selectedBook) {
         titleLabel.setText("Title: " + selectedBook.getTitle());
@@ -348,11 +351,11 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Applying fade transition.
+     * Apply fade transition.
      *
-     * @param pane pane
+     * @param pane      pane
      * @param fromValue from value
-     * @param toValue to value
+     * @param toValue   to value
      */
     private void applyFadeTransition(AnchorPane pane, double fromValue, double toValue) {
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), pane);
@@ -385,9 +388,9 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Setting up image view effects.
+     * Setup image view effects.
      *
-     * @param imageView the imageView
+     * @param imageView image view
      */
     private void setupImageViewEffects(ImageView imageView) {
         imageView.setFitHeight(100);
@@ -398,10 +401,10 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Applying scale transition.
+     * Apply scale transition.
      *
-     * @param imageView imageView
-     * @param scale the scale of transition
+     * @param imageView image view
+     * @param scale     scale
      */
     private void applyScaleTransition(ImageView imageView, double scale) {
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(0.3), imageView);
@@ -411,7 +414,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Configuring table columns.
+     * Configure table columns.
      */
     private void configureTableColumns() {
 
@@ -429,7 +432,7 @@ public class BookSearchController implements Initializable {
     }
 
     /**
-     * Setting up image column with zoom effect.
+     * Setup image column with zoom effect.
      */
     private void setupImageColumnWithZoomEffect() {
 
@@ -483,32 +486,5 @@ public class BookSearchController implements Initializable {
                 }
             }
         });
-    }
-
-    /**
-     * Checking role.
-     *
-     * @return true or false
-     * @throws SQLException dtb exception
-     */
-    private boolean checkIfAdmin() throws SQLException {
-        DatabaseConnection connectNow = DatabaseConnection.getInstance();
-        Connection connectDB = connectNow.getConnection();
-        String username = SessionManager.getInstance().getCurrentUsername();
-        String query = "SELECT role FROM useraccount WHERE username = ?";
-
-        try {
-            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            ResultSet queryResult = preparedStatement.executeQuery();
-
-            if (queryResult.next()) {
-                String role = queryResult.getString("role");
-                return "admin".equalsIgnoreCase(role);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

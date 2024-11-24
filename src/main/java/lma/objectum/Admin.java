@@ -10,6 +10,7 @@ import lma.objectum.Controllers.SessionManager;
 import lma.objectum.Controllers.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
+import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
 
@@ -19,43 +20,43 @@ public class Admin extends User {
     private Button accountButton;
 
     @FXML
-    protected Button homeButton;
+    private Button homeButton;
 
     @FXML
-    protected MenuButton listButton;
+    private MenuButton listButton;
 
     @FXML
-    protected Button avataButton;
+    private Button avataButton;
 
     @FXML
-    protected ImageView avataImage;
+    private ImageView avataImage;
 
     @FXML
-    protected MenuItem searchBooksMenuItem;
+    private MenuItem searchBooksMenuItem;
 
     @FXML
-    protected MenuItem addBooksMenuItem;
+    private MenuItem addBooksMenuItem;
 
     @FXML
-    protected MenuItem removeBooksMenuItem;
+    private MenuItem removeBooksMenuItem;
 
     @FXML
-    protected MenuItem editBooksMenuItem;
+    private MenuItem editBooksMenuItem;
 
     @FXML
-    protected MenuItem APIButton;
+    private MenuItem APIButton;
 
     @FXML
-    protected MenuItem removeMembersMenuItem;
+    private MenuItem removeMembersMenuItem;
 
     @FXML
-    protected MenuItem editMembersMenuItem;
+    private MenuItem editMembersMenuItem;
 
     @FXML
-    protected Region leftRegion;
+    private Region leftRegion;
 
     @FXML
-    protected Button logoutButton;
+    private Button logoutButton;
 
     /**
      * Handing account viewing button.
@@ -64,12 +65,12 @@ public class Admin extends User {
     public void handleAccountButton() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AccountView.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 930, 650));
+            Stage accountStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AccountView.fxml",
+                    "Account View"
+            );
+            accountStage.show();
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,16 +84,13 @@ public class Admin extends User {
     private void handleAddBooks() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/AddBooks.fxml"));
-            Parent root = loader.load();
-            Stage addBooksStage = new Stage();
-            Scene scene = new Scene(root, 950, 700);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
-            addBooksStage.setScene(scene);
-
+            Stage addBooksStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AddBooks.fxml",
+                    "Add Books"
+            );
             addBooksStage.setResizable(true); // Cho phép co giãn cửa sổ
-            accountButton.getScene().getWindow().hide();
             addBooksStage.show();
+            accountButton.getScene().getWindow().hide();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,14 +104,13 @@ public class Admin extends User {
     private void handleRemoveBooks() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/DeleteBooks.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 1150, 650);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
-            removeMemberStage.setScene(scene);
+            Stage deleteBookStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/DeleteBooks.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Remove Books"
+            );
+            deleteBookStage.show();
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,14 +124,12 @@ public class Admin extends User {
     private void handleEditBooks() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/EditBook.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 920, 670);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
-            removeMemberStage.setScene(scene);
+            Stage editBookStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/EditBook.fxml",
+                    "Edit Book"
+            );
+            editBookStage.show();
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -147,12 +142,12 @@ public class Admin extends User {
     public void handleRemoveMembers() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/RemoveMembers.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 930, 700));
-            accountButton.getScene().getWindow().hide();
+            Stage removeMemberStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/RemoveMembers.fxml",
+                    "Remove Members"
+            );
             removeMemberStage.show();
+            accountButton.getScene().getWindow().hide();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -165,12 +160,13 @@ public class Admin extends User {
     public void handleEditMembers() { // Member <-> Admin
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/EditMembers.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            removeMemberStage.setScene(new Scene(root, 930, 700));
-            accountButton.getScene().getWindow().hide();
+            Stage removeMemberStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/EditMembers.fxml",
+                    "Edit Members"
+            );
             removeMemberStage.show();
+
+            accountButton.getScene().getWindow().hide();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -183,14 +179,13 @@ public class Admin extends User {
     public void handleBorrowBooksItem() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/BookSearch.fxml"));
-            Parent root = loader.load();
-            Stage removeMemberStage = new Stage();
-            Scene scene = new Scene(root, 1151, 622);
-            scene.getStylesheets().add(getClass().getResource("/lma/objectum/css/BookSearchStyle.css").toExternalForm());
-            removeMemberStage.setScene(scene);
+            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/BookSearch.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Borrow Books"
+            );
+            borrowBooksStage.show();
             accountButton.getScene().getWindow().hide();
-            removeMemberStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -203,11 +198,10 @@ public class Admin extends User {
     @FXML
     public void APIButtonOnAction() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/API.fxml"));
-            Parent root = loader.load();
-            Stage apiStage = new Stage();
-            Scene scene = new Scene(root);
-            apiStage.setScene(scene);
+            Stage apiStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/API.fxml",
+                    "API"
+            );
             apiStage.show();
             // Đóng màn hình cũ
             Stage homeStage = (Stage) accountButton.getScene().getWindow();
@@ -234,11 +228,14 @@ public class Admin extends User {
             SessionManager.getInstance().clearSession(); // Xóa thông tin phiên đăng nhập
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/App.fxml"));
-                Parent root = loader.load();
-                Stage stage = (Stage) logoutButton.getScene().getWindow();
-                stage.setScene(new Scene(root, 842, 608));
-                stage.show();
+                Stage homeStage = StageUtils.loadFXMLStage(
+                        "/lma/objectum/fxml/App.fxml",
+                        "Objectum Library"
+                );
+                homeStage.show();
+
+                Stage adminStage = (Stage) logoutButton.getScene().getWindow();
+                adminStage.close();
 
             } catch (IOException e) {
                 e.printStackTrace();

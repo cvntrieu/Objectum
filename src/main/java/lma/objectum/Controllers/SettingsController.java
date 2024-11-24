@@ -4,14 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
-import lma.objectum.Database.DatabaseConnection;
 import lma.objectum.Utils.MusicPlayer;
 import lma.objectum.Utils.StageUtils;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SettingsController {
@@ -75,33 +71,5 @@ public class SettingsController {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Check if the current user is an admin.
-     *
-     * @return true if the user is an admin, false otherwise
-     * @throws SQLException exception handling
-     */
-    private boolean checkIfAdmin() throws SQLException {
-        DatabaseConnection connectNow = DatabaseConnection.getInstance();
-        Connection connectDB = connectNow.getConnection();
-        String username = SessionManager.getInstance().getCurrentUsername();
-        String query = "SELECT role FROM useraccount WHERE username = ?";
-
-        try {
-            PreparedStatement preparedStatement = connectDB.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            ResultSet queryResult = preparedStatement.executeQuery();
-
-            if (queryResult.next()) {
-                String role = queryResult.getString("role");
-                return "admin".equalsIgnoreCase(role);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 }

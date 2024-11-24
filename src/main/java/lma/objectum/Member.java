@@ -1,31 +1,16 @@
 
 package lma.objectum;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
-import lma.objectum.Controllers.SessionManager;
-import lma.objectum.Controllers.TransactionController;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import lma.objectum.Controllers.User;
 import lma.objectum.Utils.MusicPlayer;
 import lma.objectum.Utils.StageUtils;
-import lma.objectum.Database.DatabaseConnection;
-import lma.objectum.Models.*;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.io.IOException;
 
 public class Member extends User {
@@ -34,34 +19,34 @@ public class Member extends User {
     private Button accountButton;
 
     @FXML
-    protected Button homeButton;
+    private Button homeButton;
 
     @FXML
-    protected Button logoutButton;
+    private Button logoutButton;
 
     @FXML
-    protected MenuButton listButton;
+    private MenuButton listButton;
 
     @FXML
-    protected Button settingButton;
+    private Button settingButton;
 
     @FXML
-    protected Button avataButton;
+    private Button avataButton;
 
     @FXML
-    protected ImageView avataImage;
+    private ImageView avataImage;
 
     @FXML
-    protected MenuItem borrowBooksItem;
+    private MenuItem borrowBooksItem;
 
     @FXML
-    protected MenuItem returnBooksItem;
+    private MenuItem returnBooksItem;
 
     @FXML
-    protected MenuItem checkBorrowStatusItem;
+    private MenuItem checkBorrowStatusItem;
 
     @FXML
-    protected Button APIButton;
+    private Button APIButton;
 
     /**
      * Handling account viewing button.
@@ -102,7 +87,7 @@ public class Member extends User {
     }
 
     /**
-     * Handling return books item.
+     * Handling return button.
      */
     public void handleReturnBooksItem() {
 
@@ -114,7 +99,6 @@ public class Member extends User {
             );
             accountButton.getScene().getWindow().hide();
             returnStage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

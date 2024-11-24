@@ -44,7 +44,7 @@ public class TransactionController {
     protected Button borrowButton;
 
     @FXML
-    protected Button returnButton;
+    private Button returnButton;
 
     @FXML
     protected ImageView qrImageView;
@@ -345,7 +345,6 @@ public class TransactionController {
 
         throw new SQLException("Due date not found for transaction ID: " + transactionId);
     }
-
 
     /**
      * Show custom alert.
