@@ -225,9 +225,6 @@ public class AddBooksController {
             homeStage.setResizable(true); // Cho phép thay đổi kích thước
             homeStage.show();
 
-            Stage searchStage = (Stage) backButton.getScene().getWindow();
-            searchStage.close();
-
         } catch (Exception e) {
             e.printStackTrace();
             e.getCause();
