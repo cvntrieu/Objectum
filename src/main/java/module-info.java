@@ -1,5 +1,4 @@
 module lma.objectum {
-
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -13,6 +12,8 @@ module lma.objectum {
     requires okhttp3;
     requires java.desktop;
     requires javafx.media;
+    requires org.slf4j;
+    requires jdk.httpserver;
     requires com.google.zxing;
     requires com.google.zxing.javase;
 
