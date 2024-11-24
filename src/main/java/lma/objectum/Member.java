@@ -48,6 +48,9 @@ public class Member extends User {
     @FXML
     private Button APIButton;
 
+    @FXML
+    private Button MusicButton;
+
     /**
      * Handling account viewing button.
      */
@@ -137,6 +140,21 @@ public class Member extends User {
             loginStage.show();
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleMusicButtonAction() {
+        try {
+            Stage musicStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/Music.fxml",
+                    "API View"
+            );
+            accountButton.getScene().getWindow().hide();
+            musicStage.show();
+
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<HBox prefHeight="114.0" prefWidth="234.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.BookCellController">
+   <children>
+      <ImageView fx:id="coverImageView" fitHeight="115.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox prefHeight="74.0" prefWidth="404.0">
+         <children>
+            <Label fx:id="titleLabel" prefHeight="38.0" prefWidth="582.0" text="Label" />
+            <Label fx:id="authorsLabel" prefHeight="38.0" prefWidth="582.0" text="Label" />
+            <Label fx:id="publisherLabel" prefHeight="38.0" prefWidth="582.0" text="Label" />
+         </children>
+      </VBox>
+   </children>
+</HBox>
