@@ -1,4 +1,3 @@
-
 package lma.objectum.Database;
 
 import java.sql.Connection;
@@ -13,10 +12,10 @@ public class DatabaseConnection {
      * Constructor for DatabaseConnection.
      */
     private DatabaseConnection() {
-        String databaseName = "objectum";
+        String databaseName = "db";
         String databaseUser = "root";
-        String databasePassword = "13082005";
-        String url = "jdbc:mysql://localhost:/" + databaseName;
+        String databasePassword = "080305";
+        String url = "jdbc:mysql://localhost:3307/" + databaseName;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

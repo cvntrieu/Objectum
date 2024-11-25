@@ -1,58 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/APIStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.API">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/APIStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.Music">
    <children>
-      <TextField fx:id="searchField" layoutX="254.0" layoutY="44.0" prefHeight="34.0" prefWidth="674.0" promptText="Enter author or title" />
-      <ListView fx:id="suggestionsBox" layoutX="254.0" layoutY="106.0" prefHeight="179.0" prefWidth="673.0" />
-      <Button fx:id="searchBook" layoutX="868.0" layoutY="44.0" mnemonicParsing="false" onAction="#searchBookButtonOnAction" prefHeight="33.0" prefWidth="59.0">
+      <TextField fx:id="searchField" layoutX="212.0" layoutY="50.0" onKeyReleased="#updateSuggestions" prefHeight="37.0" prefWidth="743.0" />
+      <Button fx:id="sreachMusic" layoutX="895.0" layoutY="52.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="59.0">
          <graphic>
-            <ImageView fx:id="bookSreach" fitHeight="20.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Home/search.png" />
                </image>
             </ImageView>
          </graphic>
       </Button>
-      <VBox fx:id="bookDetailBox" layoutX="159.0" layoutY="90.0" prefHeight="606.0" prefWidth="922.0" spacing="10" style="-fx-background-color: #FFFFFF;" visible="false">
-         <children>
-            <ImageView fx:id="bookCoverImage" fitHeight="114.0" fitWidth="100.0" preserveRatio="true" />
-            <Label fx:id="bookTitle" text="Title: " />
-            <Label fx:id="bookAuthors" text="Authors: " />
-            <Label fx:id="bookPublisher" text="Publisher: " />
-            <Label fx:id="bookPublishedDate" text="Published Date: " />
-            <Label fx:id="bookPageCount" text="Page Count: " />
-            <Label fx:id="bookCategories" text="Categories: " />
-            <Label fx:id="bookLanguage" text="Language: " />
-            <Label fx:id="bookAverageRating" text="Average Rating: " />
-            <Label fx:id="bookRatingsCount" text="Ratings Count: " />
-            <Label fx:id="bookPrintType" text="Print Type: " />
-            <Label fx:id="bookPreviewLink" text="Preview Link: " />
-            <TextArea fx:id="bookDescriptionTextArea" editable="false" prefHeight="100.0" prefWidth="604.0" text="Description: " wrapText="true" />
-         </children>
-      </VBox>
-      <ListView fx:id="listView" layoutX="152.0" layoutY="345.0" prefHeight="407.0" prefWidth="919.0">
-         <cellFactory>
-         </cellFactory>
-      </ListView>
-      <Label graphicTextGap="8.0" layoutX="169.0" layoutY="300.0" prefHeight="18.0" prefWidth="224.0" style="-fx-background-color: #FFFFE0; -fx-background-radius: 10px;" text="Book lookup history" textFill="#233271">
-         <font>
-            <Font name="System Bold" size="23.0" />
-         </font>
-      </Label>
+      <ListView fx:id="songListView" layoutX="211.0" layoutY="95.0" prefHeight="218.0" prefWidth="743.0" />
+      <AnchorPane fx:id="musicPlayerContainer" layoutX="304.0" layoutY="334.0" prefHeight="367.0" prefWidth="690.0" />
       <VBox layoutY="-5.0" prefHeight="809.0" prefWidth="135.0" styleClass="sidebar" stylesheets="@../css/HomeStyle.css">
          <children>
             <Button fx:id="homeButton" onAction="#handleHomeButton" prefHeight="30.0" prefWidth="85.0" styleClass="sidebar-button" text="Home">
