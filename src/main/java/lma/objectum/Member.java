@@ -43,9 +43,6 @@ public class Member extends User {
     private MenuItem returnBooksItem;
 
     @FXML
-    private MenuItem checkBorrowStatusItem;
-
-    @FXML
     private Button APIButton;
 
     @FXML
@@ -73,6 +70,7 @@ public class Member extends User {
     /**
      * Handling borrow button.
      */
+    @FXML
     public void handleBorrowBooksItem() {
 
         try {
@@ -92,6 +90,7 @@ public class Member extends User {
     /**
      * Handling return button.
      */
+    @FXML
     public void handleReturnBooksItem() {
 
         try {
@@ -144,6 +143,9 @@ public class Member extends User {
         }
     }
 
+    /**
+     * Handling music button.
+     */
     public void handleMusicButtonAction() {
         try {
             Stage musicStage = StageUtils.loadFXMLStage(
@@ -151,6 +153,7 @@ public class Member extends User {
                     "API View"
             );
             accountButton.getScene().getWindow().hide();
+            MusicPlayer.stopMusic();
             musicStage.show();
 
         }

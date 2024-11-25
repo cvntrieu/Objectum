@@ -1,6 +1,8 @@
 package lma.objectum.Controllers;
 
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,8 +23,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import lma.objectum.Models.BookInAPI;
 import lma.objectum.Database.DatabaseConnection;
+import lma.objectum.Utils.Config;
+import lma.objectum.Utils.StageUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,7 +36,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Optional;
 
 /**
  * Controller for handling interactions with the Google Books API.
@@ -39,6 +43,21 @@ import java.util.Optional;
  * with book details retrieved from the Google Books API or the local database.
  */
 public class API {
+
+    @FXML
+    private Button accountButton;
+
+    @FXML
+    private Button homeButton;
+
+    @FXML
+    private MenuButton listButton;
+
+    @FXML
+    private MenuItem borrowBooksItem;
+
+    @FXML
+    private MenuItem returnBooksItem;
 
     @FXML
     private TextField searchField;
@@ -53,38 +72,116 @@ public class API {
     private VBox bookDetailBox;
 
     @FXML
-    private Button searchBook; // This field is unused
+    private Button searchBook;
 
     @FXML
     private TextArea bookDescriptionTextArea;
 
-    private final String apiKey = "YOUR_API_KEY_HERE"; // Consider storing API keys more securely
+    private static final Config config = new Config("config.properties");
+    private final String apiKey = config.get("google.books.api.key");
     private final OkHttpClient client = new OkHttpClient();
     private final ExecutorService executor = Executors.newFixedThreadPool(5);
-    private DatabaseConnection dbConnection;
     private static final Logger logger = Logger.getLogger(API.class.getName());
 
     /**
-     * Constructor initializes the DatabaseConnection instance.
-     * Checks if the database connection is available, and raises an alert if not.
+     * Constructor for the API controller.
+     * Checks if the API key is present in the configuration file.
+     * If the API key is not found, a runtime exception is thrown.
      */
     public API() {
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new RuntimeException("API key not found in configuration");
+        }
+    }
+
+    /**
+     * Initializes the API controller and sets up event listeners and UI elements.
+     * This method is called automatically after the FXML has been loaded.
+     */
+    @FXML
+    public void initialize() {
+        searchField.setOnKeyReleased(this::updateSuggestions);
+        suggestionsBox.setVisible(false);
+        bookDetailBox.setVisible(false);
+        bookDetailBox.setOnMouseClicked(event -> {
+            bookDetailBox.setVisible(false);
+            suggestionsBox.setVisible(true);
+        });
+        updateListView();
+        listView.setCellFactory(param -> createBookCell());
+        Platform.runLater(this::updateListView);
+    }
+
+    @FXML
+    public void handleAccountButton() {
+
         try {
-            DatabaseConnection tempDbConnection = null;
-            this.dbConnection = DatabaseConnection.getInstance();
-            if (dbConnection == null || dbConnection.getConnection().isClosed()) {
-                logger.log(Level.SEVERE, "Database connection is not available or is closed.");
-                throw new RuntimeException("Unable to perform operation because the database connection is not available or is closed.");
-            }
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error while performing database operation", e);
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Database Error");
-                alert.setHeaderText("Database connection error");
-                alert.setContentText("Unable to perform the database operation. Please check the connection and try again.");
-                alert.showAndWait();
-            });
+            Stage accountStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AccountView.fxml",
+                    "Account View"
+            );
+            accountButton.getScene().getWindow().hide();
+            accountStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handle the home button click event.
+     */
+    @FXML
+    public void handleHomeButton() {
+        try {
+            String fxmlPath = "/lma/objectum/fxml/Home.fxml";
+            String musicPath = getClass().getResource("/lma/objectum/music/music.mp3").toString();
+            Stage homeStage = StageUtils.loadStageWithMusic(fxmlPath, "Main Application", musicPath);
+            homeStage.show();
+
+            Stage currentStage = (Stage) homeButton.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handling borrow button.
+     */
+    @FXML
+    public void handleBorrowBooksItem() {
+
+        try {
+            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/BookSearch.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Borrow Books"
+            );
+            accountButton.getScene().getWindow().hide();
+            borrowBooksStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handling return button.
+     */
+    @FXML
+    public void handleReturnBooksItem() {
+
+        try {
+            Stage returnStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/Transaction.fxml",
+                    "/lma/objectum/css/TransactionStyle.css",
+                    "Return Books"
+            );
+            accountButton.getScene().getWindow().hide();
+            returnStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -125,6 +222,37 @@ public class API {
                 return "{\"error\": \"An error occurred: " + e.getMessage() + "\"}";
             }
         }, executor);
+    }
+
+    /**
+     * Handles KeyEvent for updating book suggestions based on user input.
+     * When the user types in the searchField, this method is triggered to display book suggestions.
+     *
+     * @param event The KeyEvent containing information about the user's key press.
+     */
+    @FXML
+    void updateSuggestions(KeyEvent event) {
+        String query = searchField.getText().trim();
+        if (!query.isEmpty()) {
+            searchBooks(query)
+                    .thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSuggestionList(resultsJson)));
+        } else {
+            suggestionsBox.setVisible(false);
+        }
+    }
+
+    /**
+     * Handles ActionEvent for the search button to search for books based on user input.
+     *
+     * @param e The ActionEvent triggered when the search button is clicked.
+     */
+    @FXML
+    void searchBookButtonOnAction(ActionEvent e) {
+        String query = searchField.getText().trim();
+        if (!query.isEmpty()) {
+            searchBooks(query)
+                    .thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSuggestionList(resultsJson)));
+        }
     }
 
     /**
@@ -180,12 +308,12 @@ public class API {
     private void updateListView() {
         CompletableFuture.runAsync(() -> {
             try {
-                ObservableList<BookInAPI> books = FXCollections.observableArrayList(dbConnection.getLatestBooks(100));
+                ObservableList<BookInAPI> books = FXCollections.observableArrayList(getLatestBooks());
                 Platform.runLater(() -> {
                     listView.setItems(books);
                     listView.setCellFactory(param -> createBookCell());
                 });
-            } catch (Exception e) { // Catch general exception to handle all potential issues
+            } catch (Exception e) {
                 logger.log(Level.SEVERE, "Error while updating list view", e);
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -281,7 +409,7 @@ public class API {
                 }
             }
 
-            dbConnection.saveBook(
+            saveBook(
                     title,
                     authors,
                     publisher,
@@ -297,10 +425,10 @@ public class API {
                     coverImage
             );
 
-            dbConnection.deleteOldBooks(100);
+            deleteOldBooks();
             updateListView();
 
-        } catch (Exception e) { // Catch general exception to handle all potential issues
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Error while saving book", e);
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -313,34 +441,102 @@ public class API {
     }
 
     /**
-     * Handles KeyEvent for updating book suggestions based on user input.
-     * When the user types in the searchField, this method is triggered to display book suggestions.
+     * Saves a book to the database.
      *
-     * @param event The KeyEvent containing information about the user's key press.
+     * @param title Title of the book
+     * @param authors Authors of the book
+     * @param publisher Publisher of the book
+     * @param publishedDate Published date of the book
+     * @param pageCount Number of pages in the book
+     * @param categories Categories of the book
+     * @param language Language of the book
+     * @param averageRating Average rating of the book
+     * @param ratingsCount Number of ratings
+     * @param printType Print type of the book
+     * @param previewLink Preview link of the book
+     * @param description Description of the book
+     * @param coverImage Cover image of the book
      */
-    @FXML
-    void updateSuggestions(KeyEvent event) {
-        String query = searchField.getText().trim();
-        if (!query.isEmpty()) {
-            searchBooks(query)
-                    .thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSuggestionList(resultsJson)));
-        } else {
-            suggestionsBox.setVisible(false);
+    private void saveBook(String title, String authors, String publisher, String publishedDate, int pageCount,
+                         String categories, String language, double averageRating, int ratingsCount,
+                         String printType, String previewLink, String description, byte[] coverImage) throws SQLException {
+
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+        String insertQuery =
+                "INSERT INTO booksInAPI (title, authors, publisher, publishedDate, pageCount, categories, language, " +
+                        "averageRating, ratingsCount, printType, previewLink, description, coverImage) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+            stmt.setString(1, title);
+            stmt.setString(2, authors);
+            stmt.setString(3, publisher);
+            stmt.setString(4, publishedDate);
+            stmt.setInt(5, pageCount);
+            stmt.setString(6, categories);
+            stmt.setString(7, language);
+            stmt.setDouble(8, averageRating);
+            stmt.setInt(9, ratingsCount);
+            stmt.setString(10, printType);
+            stmt.setString(11, previewLink);
+            stmt.setString(12, description);
+            stmt.setBytes(13, coverImage);
+
+            stmt.executeUpdate();
+            logger.info("Book saved to database");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            logger.info("Duplicate entry detected for book");
+            showAlert("Duplicate entry for book: " + title);
+        } catch (SQLException e) {
+            logger.info("Error while saving book to database");
+            showAlert("Unable to save book to database. Error details: "
+                    + e.getMessage());
         }
     }
 
     /**
-     * Handles ActionEvent for the search button to search for books based on user input.
-     *
-     * @param e The ActionEvent triggered when the search button is clicked.
+     * Deletes old books from the database, keeping only the specified number of recent books.
      */
-    @FXML
-    void searchBookButtonOnAction(ActionEvent e) {
-        String query = searchField.getText().trim();
-        if (!query.isEmpty()) {
-            searchBooks(query)
-                    .thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSuggestionList(resultsJson)));
+    private void deleteOldBooks() throws SQLException {
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+        String deleteQuery = "DELETE FROM booksInAPI " +
+                "WHERE id NOT IN (SELECT t.id FROM (SELECT id FROM booksInAPI ORDER BY id DESC LIMIT ?) AS t)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
+            stmt.setInt(1, 100);
+            int rowsAffected = stmt.executeUpdate();
+            logger.info("Old books deleted, rows affected: " + rowsAffected);
+        } catch (SQLException e) {
+            logger.info("Error while deleting old books");
         }
+    }
+
+    /**
+     * Fetches the latest books from the database.
+     *
+     * @return List of BookInAPI objects
+     */
+    private List<BookInAPI> getLatestBooks() throws SQLException {
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+
+        List<BookInAPI> books = new ArrayList<>();
+        String selectQuery = "SELECT title, authors, publisher, coverImage FROM booksInAPI ORDER BY id DESC LIMIT ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(selectQuery)) {
+            stmt.setInt(1, 100);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String title = rs.getString("title");
+                    String authors = rs.getString("authors");
+                    String publisher = rs.getString("publisher");
+                    byte[] coverImage = rs.getBytes("coverImage");
+                    books.add(new BookInAPI(title, authors, publisher, coverImage));
+                }
+            }
+        } catch (SQLException e) {
+            logger.info("Error while fetching latest books");
+        }
+        return books;
     }
 
     /**
@@ -373,20 +569,17 @@ public class API {
     }
 
     /**
-     * Initializes the API controller and sets up event listeners and UI elements.
-     * This method is called automatically after the FXML has been loaded.
+     * Displays an alert dialog with a given title and content.
+     *
+     * @param content Content of the alert
      */
-    @FXML
-    public void initialize() {
-        searchField.setOnKeyReleased(this::updateSuggestions);
-        suggestionsBox.setVisible(false);
-        bookDetailBox.setVisible(false);
-        bookDetailBox.setOnMouseClicked(event -> {
-            bookDetailBox.setVisible(false);
-            suggestionsBox.setVisible(true);
+    private void showAlert(String content) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText(null);
+            alert.setContentText(content);
+            alert.showAndWait();
         });
-        updateListView();
-        listView.setCellFactory(param -> createBookCell());
-        Platform.runLater(this::updateListView);
     }
 }

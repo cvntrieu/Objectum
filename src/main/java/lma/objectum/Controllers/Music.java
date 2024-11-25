@@ -17,6 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import lma.objectum.Utils.Config;
+import lma.objectum.Utils.StageUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,6 +26,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,6 +35,24 @@ import java.util.logging.Logger;
 import com.sun.net.httpserver.HttpServer;
 
 public class Music {
+
+    @FXML
+    private Button accountButton;
+
+    @FXML
+    private Button homeButton;
+
+    @FXML
+    private MenuButton listButton;
+
+    @FXML
+    private MenuItem borrowBooksItem;
+
+    @FXML
+    private MenuItem returnBooksItem;
+
+    @FXML
+    private Button APIButton;
 
     @FXML
     private TextField searchField;
@@ -45,8 +66,9 @@ public class Music {
     @FXML
     private Button searchMusic;
 
-    private final String clientId = "3d101078";
-    private final String clientSecret = "fabb378ce3e07e37ed0b56200ee2edda";
+    private static final Config config = new Config("config.properties");
+    private final String clientId = config.get("clientId");
+    private final String clientSecret = config.get("clientSecret");
     private final OkHttpClient client = new OkHttpClient();
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
     private static final Logger logger = Logger.getLogger(Music.class.getName());
@@ -55,6 +77,100 @@ public class Music {
 
     @FXML
     public void initialize() {
+    }
+
+    /**
+     * Handling account viewing button.
+     */
+    @FXML
+    public void handleAccountButton() {
+
+        try {
+            Stage accountStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AccountView.fxml",
+                    "Account View"
+            );
+            accountButton.getScene().getWindow().hide();
+            accountStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handle the home button click event.
+     */
+    @FXML
+    public void handleHomeButton() {
+        try {
+            String fxmlPath = "/lma/objectum/fxml/Home.fxml";
+            String musicPath = getClass().getResource("/lma/objectum/music/music.mp3").toString();
+            Stage homeStage = StageUtils.loadStageWithMusic(fxmlPath, "Main Application", musicPath);
+            homeStage.show();
+
+            Stage currentStage = (Stage) homeButton.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handling borrow button.
+     */
+    @FXML
+    public void handleBorrowBooksItem() {
+
+        try {
+            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/BookSearch.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Borrow Books"
+            );
+            accountButton.getScene().getWindow().hide();
+            borrowBooksStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handling return button.
+     */
+    @FXML
+    public void handleReturnBooksItem() {
+
+        try {
+            Stage returnStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/Transaction.fxml",
+                    "/lma/objectum/css/TransactionStyle.css",
+                    "Return Books"
+            );
+            accountButton.getScene().getWindow().hide();
+            returnStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * API Button on action.
+     */
+    @FXML
+    public void handleAPIButtonAction() {
+        try {
+            Stage apiStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/API.fxml",
+                    "API View"
+            );
+            accountButton.getScene().getWindow().hide();
+            apiStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -255,10 +371,6 @@ public class Music {
                 controller.setMediaPlayer(mediaPlayer);
                 controller.setSongInfo(songTitle, artistName, albumImageUrl);
 
-             /**   Stage stage = new Stage();
-                stage.setTitle("Music Player");
-                stage.setScene(new Scene(root));
-                stage.show();**/
                 musicPlayerContainer.getChildren().clear(); // Xóa các phần tử trước đó (nếu có)
                 musicPlayerContainer.getChildren().add(root);
 

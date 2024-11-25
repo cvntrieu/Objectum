@@ -16,10 +16,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/HomeStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
+<?import javafx.scene.layout.Region?>
+<AnchorPane prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/HomeStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
    <children>
       <!-- Sidebar -->
-      <VBox layoutY="-14.0" prefHeight="800.0" prefWidth="120.0" styleClass="sidebar">
+      <VBox prefHeight="800.0" prefWidth="120.0" styleClass="sidebar">
          <children>
             <Button fx:id="homeButton" prefHeight="30.0" prefWidth="85.0" styleClass="sidebar-button" text="Home">
                <graphic>
@@ -42,7 +43,7 @@
             <MenuButton fx:id="listButton" styleClass="sidebar-button" text="Options">
                <items>
                   <MenuItem fx:id="borrowBooksItem" onAction="#handleBorrowBooksItem" text="Borrow Books" />
-                  <MenuItem fx:id="checkBorrowStatusItem" onAction="#handleReturnBooksItem" text="Return Books" />
+                  <MenuItem fx:id="returnBooksItem" onAction="#handleReturnBooksItem" text="Return Books" />
                </items>
             </MenuButton>
             <Button fx:id="APIButton" onAction="#handleAPIButtonAction" prefHeight="30.0" prefWidth="82.0" styleClass="sidebar-button" text="API">
@@ -63,6 +64,7 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Region VBox.vgrow="ALWAYS" />
             <Button fx:id="logoutButton" onAction="#handleLogOutButton" prefHeight="30.0" prefWidth="86.0" styleClass="sidebar-button" text="Sign out">
                <graphic>
                   <ImageView fitHeight="20" fitWidth="20">
