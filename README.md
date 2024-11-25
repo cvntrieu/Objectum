@@ -11,7 +11,7 @@ Lớp: 2425I_INT2204_17
 | Student ID | Full Name          | GitHub Profile                       |
 |:----------:|:-------------------|:-------------------------------------|
 |  23021696  | Phạm Anh Tiến | <https://github.com/PhamAnhTienn>        |
-|  2  |       |  |
+|  23021740  | Cao Vũ Nhật Triều | <https://github.com/cvntrieu> |
 |  2  |   |           |
 
 ## Features
