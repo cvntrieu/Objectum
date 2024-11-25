@@ -10,81 +10,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.Region?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.API">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/APIStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.API">
    <children>
-      <ImageView fitHeight="806.0" fitWidth="1069.0" layoutX="132.0" layoutY="-31.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Home/background.jpg" />
-         </image>
-      </ImageView>
-      <VBox layoutY="94.0" prefHeight="674.0" prefWidth="126.0" style="-fx-background-color: #2c3e50;">
-         <children>
-            <Button fx:id="accountButton" contentDisplay="RIGHT" graphicTextGap="5.0" mnemonicParsing="false" onAction="#handleAccountButton" prefHeight="45.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Account">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Home/account.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="18.0" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="45.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Home">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="37.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Home/home.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <MenuButton fx:id="listButton" prefHeight="45.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Options">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <items>
-                  <MenuItem fx:id="borrowBooksItem" onAction="#handleBorrowBooksItem" text="Borrow Books" />
-                  <MenuItem fx:id="returnBooksItem" onAction="#handleReturnBooksItem" text="Return Books" />
-               </items>
-            </MenuButton>
-            <Region VBox.vgrow="ALWAYS" />
-            <Button fx:id="settingButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 15px;" text="Setting" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="20.0" fitWidth="37.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Home/setting.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </VBox>
-      <HBox alignment="CENTER" layoutY="-1.0" prefHeight="94.0" prefWidth="126.0" style="-fx-background-color: #2c3e50;">
-         <children>
-            <Button fx:id="avataButton" mnemonicParsing="false" prefHeight="29.0" prefWidth="34.0">
-               <graphic>
-                  <ImageView fx:id="avataImage" fitHeight="42.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Home/test-avata.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </HBox>
       <TextField fx:id="searchField" layoutX="254.0" layoutY="44.0" prefHeight="34.0" prefWidth="674.0" promptText="Enter author or title" />
       <ListView fx:id="suggestionsBox" layoutX="254.0" layoutY="106.0" prefHeight="179.0" prefWidth="673.0" />
       <Button fx:id="searchBook" layoutX="868.0" layoutY="44.0" mnemonicParsing="false" onAction="#searchBookButtonOnAction" prefHeight="33.0" prefWidth="59.0">
@@ -97,7 +28,6 @@
          </graphic>
       </Button>
       <VBox fx:id="bookDetailBox" layoutX="159.0" layoutY="90.0" prefHeight="606.0" prefWidth="922.0" spacing="10" style="-fx-background-color: #FFFFFF;" visible="false">
-         <!-- Chi tiết sách sẽ được thêm vào đây qua mã Java -->
          <children>
             <ImageView fx:id="bookCoverImage" fitHeight="114.0" fitWidth="100.0" preserveRatio="true" />
             <Label fx:id="bookTitle" text="Title: " />
@@ -114,7 +44,7 @@
             <TextArea fx:id="bookDescriptionTextArea" editable="false" prefHeight="100.0" prefWidth="604.0" text="Description: " wrapText="true" />
          </children>
       </VBox>
-      <ListView fx:id="listView" layoutX="169.0" layoutY="350.0" prefHeight="400.0" prefWidth="902.0">
+      <ListView fx:id="listView" layoutX="152.0" layoutY="345.0" prefHeight="407.0" prefWidth="919.0">
          <cellFactory>
          </cellFactory>
       </ListView>
@@ -123,5 +53,70 @@
             <Font name="System Bold" size="23.0" />
          </font>
       </Label>
+      <VBox layoutY="-5.0" prefHeight="809.0" prefWidth="135.0" styleClass="sidebar" stylesheets="@../css/HomeStyle.css">
+         <children>
+            <Button fx:id="homeButton" onAction="#handleHomeButton" prefHeight="30.0" prefWidth="85.0" styleClass="sidebar-button" text="Home">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/home.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="accountButton" onAction="#handleAccountButton" prefHeight="30.0" prefWidth="84.0" styleClass="sidebar-button" text="Account">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/account.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <MenuButton fx:id="listButton" styleClass="sidebar-button" text="Options">
+               <items>
+                  <MenuItem fx:id="borrowBooksItem" onAction="#handleBorrowBooksItem" text="Borrow Books" />
+                  <MenuItem fx:id="returnBooksItem" onAction="#handleReturnBooksItem" text="Return Books" />
+               </items>
+            </MenuButton>
+            <Button fx:id="APIButton" onAction="#handleAPIButtonAction" prefHeight="30.0" prefWidth="82.0" styleClass="sidebar-button" text="API">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/list.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="MusicButton" onAction="#handleMusicButtonAction" prefHeight="30.0" prefWidth="82.0" styleClass="sidebar-button" text="Music">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/Music.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="logoutButton" onAction="#handleLogOutButton" prefHeight="30.0" prefWidth="86.0" styleClass="sidebar-button" text="Sign out">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/logout-icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="settingButton" onAction="#handleSettingButton" prefHeight="30.0" prefWidth="86.0" styleClass="sidebar-button" text="Setting">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/setting.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

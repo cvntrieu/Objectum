@@ -1,0 +1,60 @@
+
+.root {
+    -fx-background-color: linear-gradient(to bottom, #20232a, #282c34);
+    -fx-padding: 20px;
+}
+
+.label {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 3, 0.7, 0, 0);
+}
+
+#currentTimeLabel, #totalTimeLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #b0b0b0;
+}
+
+#albumCover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0.8, 0, 0);
+    -fx-translate-y: 0;
+    -fx-transition: -fx-translate-y 0.5s;
+}
+#albumCover:hover {
+    -fx-translate-y: -10px;
+}
+
+#progressSlider {
+    -fx-control-inner-background: linear-gradient(to right, #ff6600, #ffcc00);
+    -fx-background-color: #333;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 5px;
+    -fx-opacity: 0.8;
+    -fx-border-color: #ffcc00;
+}
+
+.button {
+    -fx-background-radius: 20;
+    -fx-background-color: #404040;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0.5, 0, 0);
+    -fx-translate-y: 0;
+    -fx-transition: -fx-translate-y 0.2s;
+}
+.button:hover {
+    -fx-background-color: #606060;
+    -fx-translate-y: -5px;
+}
+
+#playPauseButton {
+    -fx-background-color: #ff9900;
+}
+#playPauseButton:hover {
+    -fx-background-color: #ff6600;
+}
+
+#shuffleButton, #previousButton, #nextButton, #repeatButton {
+    -fx-background-color: #404040;
+    -fx-background-radius: 20;
+}

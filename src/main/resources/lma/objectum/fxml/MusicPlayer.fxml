@@ -7,11 +7,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.MusicPlayerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="619.0" stylesheets="@../css/musicplayer.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.MusicPlayerController">
    <children>
       <Label fx:id="songTitle" layoutX="70.0" layoutY="210.0" prefHeight="42.0" prefWidth="234.0" text="Label" />
-      <Label fx:id="currentTimeLabel" layoutX="77.0" layoutY="278.0" prefHeight="24.0" prefWidth="33.0" text="Label" />
-      <Label fx:id="totalTimeLabel" layoutX="505.0" layoutY="278.0" prefHeight="24.0" prefWidth="34.0" text="Label" />
+      <Label fx:id="currentTimeLabel" layoutX="74.0" layoutY="294.0" prefHeight="24.0" prefWidth="33.0" text="Label" />
+      <Label fx:id="totalTimeLabel" layoutX="500.0" layoutY="294.0" prefHeight="24.0" prefWidth="34.0" text="Label" />
       <Button fx:id="previousButton" layoutX="227.0" layoutY="306.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="59.0">
          <graphic>
             <ImageView fitHeight="34.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
@@ -59,6 +59,6 @@
       </Button>
       <ImageView fx:id="albumCover" fitHeight="141.0" fitWidth="176.0" layoutX="225.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="singerName" layoutX="320.0" layoutY="210.0" prefHeight="42.0" prefWidth="248.0" text="Label" />
-      <Slider fx:id="progressSlider" layoutX="77.0" layoutY="266.0" prefHeight="24.0" prefWidth="471.0" />
+      <Slider fx:id="progressSlider" layoutX="74.0" layoutY="253.0" prefHeight="24.0" prefWidth="471.0" />
    </children>
 </AnchorPane>

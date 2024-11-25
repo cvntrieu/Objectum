@@ -14,10 +14,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.Region?>
-<AnchorPane prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/HomeStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
+<AnchorPane prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/HomeStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
    <children>
       <!-- Sidebar -->
       <VBox prefHeight="800.0" prefWidth="120.0" styleClass="sidebar">
@@ -87,7 +87,7 @@
       </VBox>
 
       <!-- Main Content -->
-      <VBox layoutX="120.0" prefHeight="800.0" prefWidth="959.0" styleClass="main-content">
+      <VBox layoutX="213.0" prefHeight="800.0" prefWidth="959.0" styleClass="main-content">
          <children>
             <!-- Header -->
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" styleClass="header">
