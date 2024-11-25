@@ -58,7 +58,7 @@ public class API {
     @FXML
     private TextArea bookDescriptionTextArea;
 
-    private final String apiKey = "YOUR_API_KEY_HERE"; // Consider storing API keys more securely
+    private final String apiKey = "AIzaSyCUB7PSg_v5EqFrzdC13A644v30JhDNT9Q"; // Consider storing API keys more securely
     private final OkHttpClient client = new OkHttpClient();
     private final ExecutorService executor = Executors.newFixedThreadPool(5);
     private DatabaseConnection dbConnection;
