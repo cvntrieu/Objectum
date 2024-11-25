@@ -106,7 +106,6 @@ public class MusicPlayerController {
             progressSlider.setDisable(false);
             songTitle.setText("Sample Song Title");
             singerName.setText("Sample Artist Name");
-            albumCover.setImage(new Image("path/to/default_album_cover.jpg"));
         });
 
         mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {

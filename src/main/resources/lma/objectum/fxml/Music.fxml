@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="806.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.Music">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="727.0" prefWidth="1134.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Controllers.Music">
    <children>
       <TextField fx:id="searchField" layoutX="212.0" layoutY="50.0" onKeyReleased="#updateSuggestions" prefHeight="37.0" prefWidth="743.0" />
       <Button fx:id="sreachMusic" layoutX="895.0" layoutY="52.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="59.0">
@@ -26,9 +26,9 @@
          </graphic>
       </Button>
       <ListView fx:id="songListView" layoutX="211.0" layoutY="95.0" prefHeight="218.0" prefWidth="743.0" />
-      <VBox layoutY="95.0" prefHeight="714.0" prefWidth="126.0" style="-fx-background-color: #2c3e50;">
+      <VBox layoutY="95.0" prefHeight="632.0" prefWidth="126.0" style="-fx-background-color: #2c3e50;">
          <children>
-            <Button fx:id="accountButton" contentDisplay="RIGHT" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Account">
+            <Button fx:id="accountButton" contentDisplay="RIGHT" graphicTextGap="5.0" mnemonicParsing="false" onAction="#handleAccountButton" prefHeight="44.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Account">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -40,7 +40,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="18.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Home">
+            <Button fx:id="homeButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="18.0" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="45.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Home">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -52,17 +52,16 @@
                   </ImageView>
                </graphic>
             </Button>
-            <MenuButton fx:id="listButton" prefHeight="90.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Options">
+            <MenuButton fx:id="listButton" prefHeight="45.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="Options">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
                <items>
-                  <MenuItem fx:id="borrowBooksItem" text="Borrow Books" />
-                  <MenuItem fx:id="returnBooksItem" text="Check Status" />
-                  <MenuItem fx:id="checkBorrowStatusItem" text="Return Books" />
+                  <MenuItem fx:id="borrowBooksItem" onAction="#handleBorrowBooksItem" text="Borrow Books" />
+                  <MenuItem fx:id="returnBooksItem" onAction="#handleReturnBooksItem" text="Return Books" />
                </items>
             </MenuButton>
-            <Button fx:id="APIButton" contentDisplay="RIGHT" graphicTextGap="30.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="API">
+            <Button fx:id="APIButton" onAction="#handleAPIButtonAction" contentDisplay="RIGHT" graphicTextGap="30.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="126.0" style="-fx-background-color: #D3D3D3; -fx-background-radius: 15px;" text="API">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -74,8 +73,8 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Region prefHeight="525.0" prefWidth="94.0" />
-            <Button fx:id="settingButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="132.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 15px;" text="Setting" textFill="WHITE">
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="settingButton" alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="12.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="126.0" style="-fx-background-color: #2c3e50; -fx-background-radius: 15px;" text="Setting" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -89,7 +88,7 @@
             </Button>
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutY="3.0" prefHeight="94.0" prefWidth="126.0" style="-fx-background-color: #2c3e50;">
+      <HBox alignment="CENTER" layoutY="-1.0" prefHeight="96.0" prefWidth="126.0" style="-fx-background-color: #2c3e50;">
          <children>
             <Button fx:id="avataButton" mnemonicParsing="false" prefHeight="29.0" prefWidth="34.0">
                <graphic>
@@ -102,6 +101,6 @@
             </Button>
          </children>
       </HBox>
-      <AnchorPane fx:id="musicPlayerContainer" layoutX="205.0" layoutY="329.0" prefHeight="425.0" prefWidth="798.0" />
+      <AnchorPane fx:id="musicPlayerContainer" layoutX="210.0" layoutY="329.0" prefHeight="378.0" prefWidth="793.0" />
    </children>
 </AnchorPane>

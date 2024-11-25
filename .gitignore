@@ -12,6 +12,9 @@ target/
 *.iml
 *.ipr
 
+# Configuration files
+config.properties
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -36,3 +39,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
