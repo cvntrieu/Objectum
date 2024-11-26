@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/HomeStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
+<AnchorPane prefHeight="800.0" prefWidth="1079.0" stylesheets="@../css/HomeStyle.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lma.objectum.Member">
    <children>
       <!-- Sidebar -->
       <VBox prefHeight="800.0" prefWidth="120.0" styleClass="sidebar">
@@ -87,7 +87,7 @@
       </VBox>
 
       <!-- Main Content -->
-      <VBox layoutX="213.0" prefHeight="800.0" prefWidth="959.0" styleClass="main-content">
+      <VBox layoutX="118.0" prefHeight="800.0" prefWidth="1054.0" styleClass="main-content">
          <children>
             <!-- Header -->
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" styleClass="header">
@@ -108,10 +108,10 @@
             <!-- Content -->
             <HBox alignment="TOP_CENTER" spacing="10.0">
                <!-- Left Section -->
-               <VBox prefHeight="602.0" prefWidth="502.0" spacing="10.0">
+               <VBox prefHeight="602.0" prefWidth="471.0" spacing="10.0">
                   <!-- Currently Reading -->
                   <Label styleClass="section-title" text="Currently Reading" />
-                  <TableView fx:id="borrowedBooksTable" prefHeight="150.0" prefWidth="445.0">
+                  <TableView fx:id="borrowedBooksTable" prefHeight="150.0" prefWidth="475.0">
                      <columns>
                         <TableColumn fx:id="titleColumn" prefWidth="166.0" text="Title" />
                         <TableColumn fx:id="authorColumn" prefWidth="160.0" text="Author" />
