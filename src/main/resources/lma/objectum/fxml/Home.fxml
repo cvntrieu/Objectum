@@ -59,7 +59,16 @@
                <graphic>
                   <ImageView fitHeight="20" fitWidth="20">
                      <image>
-                        <Image url="@../Home/Music.jpg" />
+                        <Image url="@../Home/music.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="gameButton" onAction="#handleGameButton" prefHeight="30.0" prefWidth="84.0" styleClass="sidebar-button" text="Game">
+               <graphic>
+                  <ImageView fitHeight="20" fitWidth="20">
+                     <image>
+                        <Image url="@../Home/game.png" />
                      </image>
                   </ImageView>
                </graphic>

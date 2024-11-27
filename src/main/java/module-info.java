@@ -1,5 +1,4 @@
 module lma.objectum {
-    requires javafx.controls;
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
@@ -10,12 +9,14 @@ module lma.objectum {
     requires jbcrypt;
     requires com.google.gson;
     requires okhttp3;
-    requires java.desktop;
-    requires javafx.media;
     requires org.slf4j;
     requires jdk.httpserver;
     requires com.google.zxing;
     requires com.google.zxing.javase;
+    requires javafx.web;
+    requires java.desktop;
+    requires javafx.media;
+    requires org.jsoup;
 
     opens lma.objectum to javafx.fxml;
     exports lma.objectum;

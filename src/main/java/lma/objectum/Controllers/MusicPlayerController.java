@@ -3,6 +3,7 @@ package lma.objectum.Controllers;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -11,11 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
- * Controller for the Music Player.
- * This class provides methods to control music playback, update UI elements with song information, and manage
- * playback options like shuffle and repeat.
+ * Controller for managing the music player UI and playback functionality.
  */
 public class MusicPlayerController {
 
@@ -52,6 +53,9 @@ public class MusicPlayerController {
     @FXML
     private Button repeatButton;
 
+    @FXML
+    private Canvas waveformCanvas;
+
     private MediaPlayer mediaPlayer;
 
     private boolean isShuffle = false;
@@ -60,24 +64,20 @@ public class MusicPlayerController {
     private RotateTransition rotateTransition;
 
     /**
-     * Initializes the Music Player Controller.
-     * Sets up the album cover, play/pause button, next and previous buttons, and rotation animation.
-     * Adds event listeners to update progress and respond to button clicks.
+     * Initializes the MusicPlayerController, setting up UI elements and event listeners.
      */
     public void initialize() {
-        // Set up the circular image clip
         albumCover.setFitWidth(200);
         albumCover.setFitHeight(200);
         albumCover.setPreserveRatio(true);
         Circle clip = new Circle(100, 100, 100);
         albumCover.setClip(clip);
 
-        // Set up rotation for album cover
         rotateTransition = new RotateTransition(Duration.seconds(10), albumCover);
         rotateTransition.setByAngle(360);
         rotateTransition.setCycleCount(RotateTransition.INDEFINITE);
         rotateTransition.setInterpolator(Interpolator.LINEAR);
-        rotateTransition.play(); // Start rotating the image immediately
+        rotateTransition.play();
 
         playPauseButton.setOnAction(event -> handlePlayPause());
         nextButton.setOnAction(event -> skipForward());
@@ -93,13 +93,41 @@ public class MusicPlayerController {
     }
 
     /**
-     * Sets the MediaPlayer instance for the Music Player.
-     * Configures the media player to update UI elements like song title, duration, and progress.
+     * Draws the waveform of the audio on the canvas.
      *
-     * @param mediaPlayer The MediaPlayer instance to be controlled.
+     * @param magnitudes The magnitudes of the audio spectrum to visualize.
+     */
+    private void drawWaveform(float[] magnitudes) {
+        GraphicsContext gc = waveformCanvas.getGraphicsContext2D();
+        double canvasWidth = waveformCanvas.getWidth();
+        double canvasHeight = waveformCanvas.getHeight();
+
+        gc.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        gc.setStroke(Color.CYAN);
+        gc.setLineWidth(2);
+
+        double xStep = canvasWidth / magnitudes.length * 2;
+        for (int i = 0; i < magnitudes.length - 1; i++) {
+            double x1 = i * xStep;
+            double y1 = canvasHeight / 2 - magnitudes[i];
+            double x2 = (i + 1) * xStep;
+            double y2 = canvasHeight / 2 - magnitudes[i + 1];
+            gc.strokeLine(x1, y1, x2, y2);
+        }
+    }
+
+    /**
+     * Sets the MediaPlayer instance for controlling playback.
+     *
+     * @param mediaPlayer The MediaPlayer to control.
      */
     public void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mediaPlayer = mediaPlayer;
+
+        mediaPlayer.setAudioSpectrumListener((timestamp, duration, magnitudes, phases) -> {
+            drawWaveform(magnitudes);
+        });
 
         mediaPlayer.setOnReady(() -> {
             totalTimeLabel.setText(formatTime(mediaPlayer.getTotalDuration()));
@@ -130,9 +158,7 @@ public class MusicPlayerController {
     }
 
     /**
-     * Handles the play/pause action.
-     * If the media player is playing, pauses it and updates the button text to "Play".
-     * If the media player is paused, plays it and updates the button text to "Pause".
+     * Handles the play/pause functionality for the media player.
      */
     private void handlePlayPause() {
         if (mediaPlayer != null) {
@@ -147,12 +173,11 @@ public class MusicPlayerController {
     }
 
     /**
-     * Sets the song information in the UI.
-     * Updates the song title, artist name, and album cover.
+     * Updates the song information (title, artist, album cover).
      *
-     * @param title The title of the song.
-     * @param artist The artist name.
-     * @param albumImageUrl The URL of the album cover image.
+     * @param title The song's title.
+     * @param artist The artist's name.
+     * @param albumImageUrl The URL for the album cover image.
      */
     public void setSongInfo(String title, String artist, String albumImageUrl) {
         songTitle.setText(title);
@@ -165,10 +190,10 @@ public class MusicPlayerController {
     }
 
     /**
-     * Formats a Duration object into a time string in the format "minutes:seconds".
+     * Formats a Duration object into a time string in "minutes:seconds" format.
      *
-     * @param duration The duration to format.
-     * @return A formatted time string.
+     * @param duration The Duration to format.
+     * @return The formatted time string.
      */
     private String formatTime(Duration duration) {
         int minutes = (int) duration.toMinutes();
@@ -195,8 +220,7 @@ public class MusicPlayerController {
     }
 
     /**
-     * Toggles shuffle mode on or off.
-     * Updates the button style to indicate shuffle status.
+     * Toggles the shuffle mode for the media player.
      */
     private void toggleShuffle() {
         isShuffle = !isShuffle;
@@ -204,8 +228,7 @@ public class MusicPlayerController {
     }
 
     /**
-     * Toggles repeat mode on or off.
-     * Updates the button style to indicate repeat status.
+     * Toggles the repeat mode for the media player.
      */
     private void toggleRepeat() {
         isRepeat = !isRepeat;
@@ -214,10 +237,9 @@ public class MusicPlayerController {
 
     /**
      * Plays a random track from the playlist.
-     * Currently, this method is a placeholder and should be implemented with proper playlist handling.
+     * Placeholder method, should be implemented with actual playlist handling.
      */
     private void playRandomTrack() {
-        // Add logic to play a random track from the playlist
         System.out.println("Playing a random track.");
     }
 }
