@@ -33,8 +33,10 @@ class BookSearchControllerTest extends ApplicationTest {
         controller.setSearchCriteriaComboBox(new ComboBox<>());
 
         bookList = FXCollections.observableArrayList(
-                new Book("123", 1234567890123L, "Effective Java", "Joshua Bloch", 4.9, "2018", "Addison-Wesley", "image1"),
-                new Book("456", 1234567890124L, "Clean Code", "Robert C. Martin", 4.7, "2008", "Prentice Hall", "image2")
+                new Book("123", 1234567890123L, "Effective Java", "Joshua Bloch", 4.9,
+                        "2018", "Addison-Wesley", "image1"),
+                new Book("456", 1234567890124L, "Clean Code", "Robert C. Martin", 4.7,
+                        "2008", "Prentice Hall", "image2")
         );
         controller.setBookList(bookList);
     }

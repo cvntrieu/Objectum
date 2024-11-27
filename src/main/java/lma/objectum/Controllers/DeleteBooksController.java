@@ -137,7 +137,11 @@ public class DeleteBooksController implements Initializable {
                     confirmationAlert.setContentText("This action cannot be undone.");
 
                     if (confirmationAlert.showAndWait().get() == ButtonType.OK) {
-                        deleteBook(selectedBook.getIsbn_13());
+                        try {
+                            deleteBook(selectedBook.getIsbn_13());
+                        } catch (SQLException sqlException) {
+                            throw new RuntimeException(sqlException);
+                        }
                         dynamicIsland.setVisible(false);
                     }
                 });
@@ -363,6 +367,27 @@ public class DeleteBooksController implements Initializable {
     }
 
     /**
+     * Handling home button.
+     */
+    @FXML
+    public void handleHomeButton() {
+
+        try {
+            Stage homeStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
+                    "Admin Home"
+            );
+            homeStage.show();
+
+            Stage searchStage = (Stage) HomeButton.getScene().getWindow();
+            searchStage.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Updating the searching strategy.
      */
     public void updateSearchStrategy() {
@@ -416,34 +441,58 @@ public class DeleteBooksController implements Initializable {
      *
      * @param isbn13 the isbn13 attribute
      */
-    private void deleteBook(Long isbn13) {
+    private void deleteBook(Long isbn13) throws SQLException {
         if (isbn13 == null) {
             return;
         }
 
+        int book_id = getBookIdByIsbn13(isbn13);
+
         String deleteBookQuery = "DELETE FROM books WHERE ISBN13 = ?";
+        String deleteBookTransactionQuery = "DELETE FROM transactions WHERE book_id = ?";
 
-        try (Connection connectDB = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = connectDB.prepareStatement(deleteBookQuery)) {
-            preparedStatement.setLong(1, isbn13);
-            int rowsAffected = preparedStatement.executeUpdate();
+        try (Connection connectDB = DatabaseConnection.getInstance().getConnection()) {
+            connectDB.setAutoCommit(false);
 
-            if (rowsAffected > 0) {
-                // Thay vì removeIf(), hãy xóa trực tiếp khỏi bookList
-                bookList.removeIf(book -> book.getIsbn_13().equals(isbn13));
-                tableView.setItems(bookList); // Cập nhật lại TableView với danh sách đã thay đổi
+            try (
+                    PreparedStatement transactionStatement = connectDB.prepareStatement(deleteBookTransactionQuery);
+                    PreparedStatement bookStatement = connectDB.prepareStatement(deleteBookQuery)
+            ) {
+                // Xóa transactions liên quan đến book_id
+                transactionStatement.setInt(1, book_id);
+                transactionStatement.executeUpdate();
 
-                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                successAlert.setTitle("Success");
-                successAlert.setHeaderText(null);
-                successAlert.setContentText("Book deleted successfully!");
-                successAlert.show();
-            } else {
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error");
-                errorAlert.setHeaderText(null);
-                errorAlert.setContentText("Failed to delete the book. Please try again.");
-                errorAlert.show();
+                // Xóa book khỏi bảng books
+                bookStatement.setLong(1, isbn13);
+                int rowsAffected = bookStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    // Cập nhật danh sách hiển thị
+                    bookList.removeIf(book -> book.getIsbn_13().equals(isbn13));
+                    tableView.setItems(bookList);
+
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("Book deleted successfully!");
+                    successAlert.show();
+                } else {
+                    // Nếu không xóa được sách
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("Failed to delete the book. Please try again.");
+                    errorAlert.show();
+                }
+
+                connectDB.commit();
+            } catch (SQLException e) {
+                // Rollback nếu xảy ra lỗi
+                connectDB.rollback();
+                throw e;
+            } finally {
+                // Khôi phục lại trạng thái autocommit
+                connectDB.setAutoCommit(true);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -456,23 +505,19 @@ public class DeleteBooksController implements Initializable {
     }
 
     /**
-     * Handling home button.
+     * Get the book ID associated with an ISBN13.
      */
-    @FXML
-    public void handleHomeButton() {
-        
-        try {
-            Stage homeStage = StageUtils.loadFXMLStage(
-                    "/lma/objectum/fxml/AdminHome.fxml",
-                    "Admin Home"
-            );
-            homeStage.show();
+    private int getBookIdByIsbn13(long isbn13) throws SQLException {
+        Connection connection = DatabaseConnection.getInstance().getConnection();
+        String query = "SELECT id FROM books WHERE ISBN13 = ?";
 
-            Stage searchStage = (Stage) HomeButton.getScene().getWindow();
-            searchStage.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, isbn13);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
         }
+        throw new SQLException("Book not found.");
     }
 }

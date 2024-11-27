@@ -49,6 +49,54 @@ public class TransactionController {
     @FXML
     protected ImageView qrImageView;
 
+    public TextField getISBN13_borrow() {
+        return ISBN13_borrow;
+    }
+
+    public void setISBN13_borrow(TextField ISBN13_borrow) {
+        this.ISBN13_borrow = ISBN13_borrow;
+    }
+
+    public TextField getISBN13_return() {
+        return ISBN13_return;
+    }
+
+    public void setISBN13_return(TextField ISBN13_return) {
+        this.ISBN13_return = ISBN13_return;
+    }
+
+    public Button getHomeButton() {
+        return homeButton;
+    }
+
+    public void setHomeButton(Button homeButton) {
+        this.homeButton = homeButton;
+    }
+
+    public Button getBorrowButton() {
+        return borrowButton;
+    }
+
+    public void setBorrowButton(Button borrowButton) {
+        this.borrowButton = borrowButton;
+    }
+
+    public Button getReturnButton() {
+        return returnButton;
+    }
+
+    public void setReturnButton(Button returnButton) {
+        this.returnButton = returnButton;
+    }
+
+    public ImageView getQrImageView() {
+        return qrImageView;
+    }
+
+    public void setQrImageView(ImageView qrImageView) {
+        this.qrImageView = qrImageView;
+    }
+
     /**
      * Borrow a book for a user.
      */

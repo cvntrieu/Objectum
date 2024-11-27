@@ -20,6 +20,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RemoveMembers {
 
@@ -81,64 +83,109 @@ public class RemoveMembers {
     /**
      * Logical process for deleting a member.
      *
-     * @throws SQLException exception of database
      */
-    private void deleteProcess(String username) throws SQLException {
+    private void deleteProcess(String username) {
 
         String checkUserQuery = "SELECT * FROM useraccount WHERE username = ?";
         String deleteUserQuery = "DELETE FROM useraccount WHERE username = ?";
+        String selectBookIdsQuery = "SELECT book_id FROM transactions WHERE user_id = ?";
+        String deleteUserTransactionInfoQuery = "DELETE FROM transactions WHERE user_id = ?";
+        String updateBookQuantityQuery = "UPDATE books SET Quantity = Quantity + 1 WHERE id = ?";
 
-        try (Connection connectDB = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement checkUserStatement = connectDB.prepareStatement(checkUserQuery)) {
+        try (Connection connectDB = DatabaseConnection.getInstance().getConnection()) {
+            // Bắt đầu transaction
+            connectDB.setAutoCommit(false);
 
-            checkUserStatement.setString(1, username);
-            ResultSet userResult = checkUserStatement.executeQuery();
+            try (
+                    PreparedStatement checkUserStatement = connectDB.prepareStatement(checkUserQuery);
+            ) {
+                checkUserStatement.setString(1, username);
+                ResultSet userResult = checkUserStatement.executeQuery();
 
-            if (userResult.next()) {
-                String role = userResult.getString("role");
+                if (userResult.next()) {
+                    String role = userResult.getString("role");
+                    int userId = userResult.getInt("account_id");
 
-                if ("admin".equalsIgnoreCase(role)) {
-                    // Ko đc xoá admin!
-                    deleteMemberMessageLabel.setText("Cannot delete an admin!");
-                    deleteMemberMessageLabel.getStyleClass().clear();
-                    deleteMemberMessageLabel.getStyleClass().add("warning-label");
-                    setTimeline();
-
-                } else {
-
-                    PreparedStatement deleteUserStatement = connectDB.prepareStatement(deleteUserQuery);
-                    deleteUserStatement.setString(1, username);
-                    int rowsAffected = deleteUserStatement.executeUpdate();
-
-                    if (rowsAffected > 0) {
-                        deleteMemberMessageLabel.setText("Member deleted successfully!");
-                        deleteMemberMessageLabel.getStyleClass().clear();
-                        deleteMemberMessageLabel.getStyleClass().add("success-label");
-                        setTimeline();
-                    } else {
-                        deleteMemberMessageLabel.setText("Failed to delete member. Please try again.");
+                    if ("admin".equalsIgnoreCase(role)) {
+                        deleteMemberMessageLabel.setText("Cannot delete an admin!");
                         deleteMemberMessageLabel.getStyleClass().clear();
                         deleteMemberMessageLabel.getStyleClass().add("warning-label");
                         setTimeline();
+                        return;
                     }
+
+                    // Lấy danh sách book_id từ bảng transactions
+                    List<Integer> bookIds = new ArrayList<>();
+                    try (PreparedStatement selectBookIdsStatement = connectDB
+                            .prepareStatement(selectBookIdsQuery)) {
+
+                        selectBookIdsStatement.setInt(1, userId);
+                        ResultSet bookIdResults = selectBookIdsStatement.executeQuery();
+
+                        while (bookIdResults.next()) {
+                            bookIds.add(bookIdResults.getInt("book_id"));
+                        }
+                    }
+
+                    // Xóa các giao dịch liên quan đến user_id
+                    try (PreparedStatement deleteTransactionStatement = connectDB
+                            .prepareStatement(deleteUserTransactionInfoQuery)) {
+
+                        deleteTransactionStatement.setInt(1, userId);
+                        deleteTransactionStatement.executeUpdate();
+                    }
+
+                    // Cập nhật số lượng sách cho mỗi book_id
+                    try (PreparedStatement updateBookQuantityStatement = connectDB
+                            .prepareStatement(updateBookQuantityQuery)) {
+
+                        for (Integer bookId : bookIds) {
+                            updateBookQuantityStatement.setInt(1, bookId);
+                            updateBookQuantityStatement.executeUpdate();
+                        }
+                    }
+
+                    // Xóa user khỏi bảng useraccount
+                    try (PreparedStatement deleteUserStatement = connectDB.prepareStatement(deleteUserQuery)) {
+                        deleteUserStatement.setString(1, username);
+                        int rowsAffected = deleteUserStatement.executeUpdate();
+
+                        if (rowsAffected > 0) {
+                            deleteMemberMessageLabel.setText("Member deleted successfully!");
+                            deleteMemberMessageLabel.getStyleClass().clear();
+                            deleteMemberMessageLabel.getStyleClass().add("success-label");
+                            setTimeline();
+                        } else {
+                            throw new SQLException("Failed to delete user record.");
+                        }
+                    }
+
+                    // Commit nếu tất cả thành công
+                    connectDB.commit();
+
+                } else {
+                    deleteMemberMessageLabel.setText("Username not found!");
+                    deleteMemberMessageLabel.getStyleClass().clear();
+                    deleteMemberMessageLabel.getStyleClass().add("warning-label");
+                    setTimeline();
                 }
-            } else {
-                deleteMemberMessageLabel.setText("Username not found!");
-                deleteMemberMessageLabel.getStyleClass().clear();
-                deleteMemberMessageLabel.getStyleClass().add("warning-label");
-                setTimeline();
+
+            } catch (SQLException e) {
+                // Rollback nếu xảy ra lỗi
+                connectDB.rollback();
+                throw e;
+            } finally {
+                // Khôi phục chế độ autocommit
+                connectDB.setAutoCommit(true);
             }
-
         } catch (SQLException e) {
-
             e.printStackTrace();
-            deleteMemberMessageLabel.setText("An error occurred while trying to delete the member.");
+            deleteMemberMessageLabel.setText("An error occurred while trying to delete the member: " + e.getMessage());
             deleteMemberMessageLabel.getStyleClass().clear();
             deleteMemberMessageLabel.getStyleClass().add("warning-label");
             setTimeline();
         }
     }
-
 
     /**
      * Back Button on Action.
