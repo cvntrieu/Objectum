@@ -8,11 +8,11 @@ Lớp: 2425I_INT2204_17
 
 ## Authors
 
-| Student ID | Full Name          | GitHub Profile                       |
-|:----------:|:-------------------|:-------------------------------------|
-|  23021696  | Phạm Anh Tiến | <https://github.com/PhamAnhTienn>        |
-|  23021740  | Cao Vũ Nhật Triều | <https://github.com/cvntrieu> |
-|  2  |   |           |
+| Student ID | Full Name         | GitHub Profile                             |
+|:----------:|:------------------|:-------------------------------------------|
+|  23021696  | Phạm Anh Tiến     | <https://github.com/PhamAnhTienn>          |
+|  23021740  | Cao Vũ Nhật Triều | <https://github.com/cvntrieu>              |
+|  23021652  | Đoàn Khánh Nhật   |  <https://github.com/nhatdoankhanh>        |
 
 ## Features
 
@@ -20,6 +20,7 @@ Lớp: 2425I_INT2204_17
 - Phân biệt Member và Admin
 - Nhạc trong ứng dụng
 - API để tìm sách
+- API để tìm kiếm nhạc
 
 
 ## Tech Stack
@@ -27,11 +28,14 @@ Lớp: 2425I_INT2204_17
 - Java, JavaFX
 - MySQL
 - Google Books APIs
+- Jamendo API
+- URL các trò chơi web
 
 
 ## Documentation
 
 [Google Books APIs](https://developers.google.com/books/docs/overview)
+[Jamendo API](https://developer.jamendo.com/v3.0/docs)
 
 
 ## UML DIAGRAM
@@ -40,9 +44,7 @@ Lớp: 2425I_INT2204_17
 
 #### DATABASE
 
-![image](https://github.com/user-attachments/assets/95111b4b-495f-49b9-b6b0-d7e1cecda3de)
-
-
+![img.png](img.png)
 
 ## Screenshots
 
@@ -53,6 +55,12 @@ Lớp: 2425I_INT2204_17
 ![image](https://github.com/user-attachments/assets/72024df2-e082-4a2e-a2b8-ae3299eae221)
 
 ![image](https://github.com/user-attachments/assets/acf1223c-e414-441d-89ac-7fe0087c6284)
+
+![img_1.png](img_1.png)
+
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
 
 
 
