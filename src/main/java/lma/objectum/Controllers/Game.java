@@ -49,6 +49,7 @@ public class Game {
     /**
      * Handles the action when the Account button is clicked.
      */
+    @FXML
     public void AccountButton() {
         try {
             Stage accountStage = StageUtils.loadFXMLStage(
@@ -153,12 +154,12 @@ public class Game {
      */
     public void HomeButton() {
         try {
-            Stage accountStage = StageUtils.loadFXMLStage(
-                    "/lma/objectum/fxml/Home.fxml",
-                    "Account View"
-            );
+            String fxmlPath = "/lma/objectum/fxml/Home.fxml";
+            String musicPath = getClass().getResource("/lma/objectum/music/music.mp3").toString();
+            Stage homeStage = StageUtils.loadStageWithMusic(fxmlPath, "Main Application", musicPath);
+
             accountButton.getScene().getWindow().hide();
-            accountStage.show();
+            homeStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

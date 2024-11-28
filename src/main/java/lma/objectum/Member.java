@@ -181,6 +181,9 @@ public class Member extends User {
         }
     }
 
+    /**
+     * Handling game button.
+     */
     public void handleGameButton() {
         try {
             Stage settingStage = StageUtils.loadFXMLStage(
@@ -188,6 +191,7 @@ public class Member extends User {
                     "Game"
             );
             accountButton.getScene().getWindow().hide();
+            MusicPlayer.stopMusic();
             settingStage.show();
 
         } catch (IOException e) {

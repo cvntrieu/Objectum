@@ -37,6 +37,13 @@ public class Book {
         this.imageUrl = imageUrl;
     }
 
+    /**
+     * Default constructor.
+     */
+    public Book() {
+
+    }
+
     public String getIsbn() {
         return isbn;
     }

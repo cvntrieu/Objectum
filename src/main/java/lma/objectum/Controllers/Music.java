@@ -95,7 +95,10 @@ public class Music {
     public void handleAccountButton() {
 
         try {
-            Stage accountStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/AccountView.fxml", "Account View");
+            Stage accountStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/AccountView.fxml",
+                    "Account View"
+            );
             accountButton.getScene().getWindow().hide();
             accountStage.show();
 
@@ -112,7 +115,11 @@ public class Music {
     public void handleBorrowBooksItem() {
 
         try {
-            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS("/lma/objectum/fxml/BookSearch.fxml", "/lma/objectum/css/BookSearchStyle.css", "Borrow Books");
+            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/BookSearch.fxml",
+                    "/lma/objectum/css/BookSearchStyle.css",
+                    "Borrow Books"
+            );
             accountButton.getScene().getWindow().hide();
             borrowBooksStage.show();
 
@@ -129,9 +136,12 @@ public class Music {
     public void handleHomeButton() {
 
         try {
-            Stage accountStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/Home.fxml", "Account View");
+            String fxmlPath = "/lma/objectum/fxml/Home.fxml";
+            String musicPath = getClass().getResource("/lma/objectum/music/music.mp3").toString();
+            Stage homeStage = StageUtils.loadStageWithMusic(fxmlPath, "Main Application", musicPath);
+
             accountButton.getScene().getWindow().hide();
-            accountStage.show();
+            homeStage.show();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,7 +156,11 @@ public class Music {
     public void handleReturnBooksItem() {
 
         try {
-            Stage returnStage = StageUtils.loadFXMLStageWithCSS("/lma/objectum/fxml/Transaction.fxml", "/lma/objectum/css/TransactionStyle.css", "Return Books");
+            Stage returnStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/Transaction.fxml",
+                    "/lma/objectum/css/TransactionStyle.css",
+                    "Return Books"
+            );
             accountButton.getScene().getWindow().hide();
             returnStage.show();
         } catch (IOException e) {
@@ -161,7 +175,10 @@ public class Music {
     @FXML
     public void handleAPIButtonAction() {
         try {
-            Stage apiStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/API.fxml", "API View");
+            Stage apiStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/API.fxml",
+                    "API View"
+            );
             accountButton.getScene().getWindow().hide();
             apiStage.show();
 
@@ -177,7 +194,10 @@ public class Music {
     @FXML
     public void handleLogOutButton() {
         try {
-            Stage loginStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/App.fxml", "Main Application");
+            Stage loginStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/App.fxml",
+                    "Main Application"
+            );
             accountButton.getScene().getWindow().hide();
             MusicPlayer.stopMusic();
             loginStage.show();
@@ -194,7 +214,10 @@ public class Music {
     @FXML
     public void handleMusicButtonAction() {
         try {
-            Stage musicStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/Music.fxml", "API View");
+            Stage musicStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/Music.fxml",
+                    "API View"
+            );
             accountButton.getScene().getWindow().hide();
             musicStage.show();
 
@@ -210,7 +233,10 @@ public class Music {
     @FXML
     public void handleGameButton() {
         try {
-            Stage settingStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/Game.fxml", "Game");
+            Stage settingStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/Game.fxml",
+                    "Game"
+            );
             accountButton.getScene().getWindow().hide();
             settingStage.show();
 
@@ -226,7 +252,11 @@ public class Music {
     @FXML
     public void handleSettingButton() {
         try {
-            Stage settingStage = StageUtils.loadFXMLStageWithCSS("/lma/objectum/fxml/Setting.fxml", "/lma/objectum/css/SettingStyle.css", "Settings");
+            Stage settingStage = StageUtils.loadFXMLStageWithCSS(
+                    "/lma/objectum/fxml/Setting.fxml",
+                    "/lma/objectum/css/SettingStyle.css",
+                    "Settings"
+            );
             accountButton.getScene().getWindow().hide();
             settingStage.show();
 
@@ -242,7 +272,9 @@ public class Music {
      */
     @FXML
     private void startOAuthProcess() {
-        String authUrl = "https://api.jamendo.com/v3.0/oauth/authorize?client_id=" + clientId + "&redirect_uri=http://localhost:8080&response_type=code";
+        String authUrl = "https://api.jamendo.com/v3.0/oauth/authorize?client_id="
+                + clientId
+                + "&redirect_uri=http://localhost:8080&response_type=code";
         CompletableFuture.runAsync(() -> {
             try {
                 HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
@@ -275,7 +307,9 @@ public class Music {
      */
     private void getAccessToken(String code) {
         String tokenUrl = "https://api.jamendo.com/v3.0/oauth/access_token";
-        String url = tokenUrl + "?client_id=" + clientId + "&client_secret=" + clientSecret + "&code=" + code + "&grant_type=authorization_code&redirect_uri=http://localhost:8080";
+        String url = tokenUrl + "?client_id="
+                + clientId + "&client_secret=" + clientSecret
+                + "&code=" + code + "&grant_type=authorization_code&redirect_uri=http://localhost:8080";
 
         Request request = new Request.Builder().url(url).post(okhttp3.RequestBody.create(new byte[0])).build();
 
@@ -322,7 +356,8 @@ public class Music {
                             JsonObject track = tracks.get(i).getAsJsonObject();
                             String songTitle = track.get("name").getAsString();
                             String artistName = track.get("artist_name").getAsString();
-                            String albumImageUrl = track.has("album_image") ? track.get("album_image").getAsString() : null;
+                            String albumImageUrl = track.has("album_image") ?
+                                    track.get("album_image").getAsString() : null;
                             String audioUrl = track.has("audio") ? track.get("audio").getAsString() : null;
 
                             if (audioUrl == null || audioUrl.isEmpty()) {
@@ -374,7 +409,8 @@ public class Music {
     private void updateSuggestions(KeyEvent event) {
         String query = searchField.getText().trim();
         if (!query.isEmpty()) {
-            searchTracks(query).thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSongList(resultsJson)), executor);
+            searchTracks(query)
+                    .thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSongList(resultsJson)), executor);
         }
     }
 
@@ -387,7 +423,8 @@ public class Music {
      * @return A CompletableFuture that will complete with the JSON string containing the search results.
      */
     private CompletableFuture<String> searchTracks(String query) {
-        String url = "https://api.jamendo.com/v3.0/tracks/?client_id=" + clientId + "&format=json&limit=10&name=" + query;
+        String url = "https://api.jamendo.com/v3.0/tracks/?client_id="
+                + clientId + "&format=json&limit=10&name=" + query;
 
         Request request = new Request.Builder().url(url).build();
 
@@ -414,16 +451,21 @@ public class Music {
      */
     private void updateSongList(String resultsJson) {
         JsonObject jsonObject = JsonParser.parseString(resultsJson).getAsJsonObject();
-        JsonArray items = jsonObject.has("results") ? jsonObject.getAsJsonArray("results") : null;
+        JsonArray items = jsonObject.has("results") ?
+                jsonObject.getAsJsonArray("results") : null;
 
         if (items != null) {
             songListView.getItems().clear();
             for (int i = 0; i < items.size(); i++) {
                 JsonObject item = items.get(i).getAsJsonObject();
-                String audioUrl = item.has("audio") ? item.get("audio").getAsString() : null;
-                String title = item.has("name") ? item.get("name").getAsString() : "No Title Available";
-                String artists = item.has("artist_name") ? item.get("artist_name").getAsString() : "Unknown Artist";
-                String albumImageUrl = item.has("album_image") ? item.get("album_image").getAsString() : null;
+                String audioUrl = item.has("audio") ?
+                        item.get("audio").getAsString() : null;
+                String title = item.has("name") ?
+                        item.get("name").getAsString() : "No Title Available";
+                String artists = item.has("artist_name") ?
+                        item.get("artist_name").getAsString() : "Unknown Artist";
+                String albumImageUrl = item.has("album_image") ?
+                        item.get("album_image").getAsString() : null;
 
                 HBox songItem = new HBox();
                 songItem.setSpacing(10);
@@ -461,7 +503,8 @@ public class Music {
                     mediaPlayer.dispose();
                 }
                 mediaPlayer = new MediaPlayer(media);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/MusicPlayer.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                        "/lma/objectum/fxml/MusicPlayer.fxml"));
                 Parent root = loader.load();
                 MusicPlayerController controller = loader.getController();
                 controller.setMediaPlayer(mediaPlayer);

@@ -133,7 +133,7 @@ public class TransactionController {
             showCustomAlert("Success", "Book borrowed successfully!", true);
 
         } catch (SQLException e) {
-            showCustomAlert("Error", "Database error: " + e.getMessage(), false);
+            showCustomAlert("Error",  e.getMessage(), false);
             e.printStackTrace();
         } catch (Exception e) {
             showCustomAlert("Error", "An unexpected error occurred.", false);
@@ -183,7 +183,7 @@ public class TransactionController {
                 showCustomAlert("Success", "Book returned successfully!", true);
             }
         } catch (SQLException e) {
-            showCustomAlert("Error", "Database error: " + e.getMessage(), false);
+            showCustomAlert("Error", e.getMessage(), false);
             e.printStackTrace();
         } catch (Exception e) {
             showCustomAlert("Error", "An unexpected error occurred: " + e.getMessage(), false);
@@ -342,7 +342,7 @@ public class TransactionController {
     /**
      * Get the book ID associated with a transaction.
      */
-    private int getTransactionId(long isbn13, int userId) throws SQLException {
+    int getTransactionId(long isbn13, int userId) throws SQLException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
         String query = "SELECT t.id AS transactionId FROM transactions t " +
                 "JOIN books b ON t.book_id = b.id " +
@@ -379,7 +379,7 @@ public class TransactionController {
     /**
      * Get the due date of a transaction.
      */
-    private Date getDueDate(int transactionId) throws SQLException {
+    Date getDueDate(int transactionId) throws SQLException {
         Connection connection = DatabaseConnection.getInstance().getConnection();
         String query = "SELECT due_date FROM transactions WHERE id = ?";
 
@@ -401,7 +401,7 @@ public class TransactionController {
      * @param message message
      * @param isSuccess is success
      */
-    private void showCustomAlert(String title, String message, boolean isSuccess) {
+    void showCustomAlert(String title, String message, boolean isSuccess) {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle(title);
         dialog.initStyle(StageStyle.UNDECORATED);

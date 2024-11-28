@@ -159,15 +159,17 @@ public class API {
     public void handleHomeButton() {
 
         try {
-            Stage accountStage = StageUtils.loadFXMLStage(
+            Stage homeStage = StageUtils.loadRoleBasedStage(
+                    "/lma/objectum/fxml/AdminHome.fxml",
                     "/lma/objectum/fxml/Home.fxml",
-                    "Account View"
+                    "Home"
             );
             accountButton.getScene().getWindow().hide();
-            accountStage.show();
-
+            homeStage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
