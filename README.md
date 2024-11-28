@@ -49,7 +49,7 @@ Lớp: 2425I_INT2204_17
 
 #### DATABASE
 
-![img.png](img.png)
+![image](https://github.com/user-attachments/assets/69606b81-21cd-4357-a66a-a333b126ca06)
 
 ## Screenshots
 
