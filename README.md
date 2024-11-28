@@ -35,12 +35,17 @@ Lớp: 2425I_INT2204_17
 ## Documentation
 
 [Google Books APIs](https://developers.google.com/books/docs/overview)
+
 [Jamendo API](https://developer.jamendo.com/v3.0/docs)
 
 
 ## UML DIAGRAM
 
 #### LIBRARY MANAGEMENT SYSTEM
+
+![image](https://github.com/user-attachments/assets/bcaba0cc-a5f0-48ca-b11e-0fe87d226fab)
+
+![image](https://github.com/user-attachments/assets/4baa18ad-51d4-40e2-8156-dd97d46d4c10)
 
 #### DATABASE
 
@@ -56,11 +61,12 @@ Lớp: 2425I_INT2204_17
 
 ![image](https://github.com/user-attachments/assets/acf1223c-e414-441d-89ac-7fe0087c6284)
 
-![img_1.png](img_1.png)
+![image](https://github.com/user-attachments/assets/ea5e59bc-bd10-45bd-90fa-fca031ff6f72)
 
-![img_2.png](img_2.png)
+![image](https://github.com/user-attachments/assets/67bedadf-c628-4e17-acb8-aaba9ec9d3b0)
 
-![img_3.png](img_3.png)
+![image](https://github.com/user-attachments/assets/2b0211a0-953a-4f2e-9aff-2bcf297d6bb2)
+
 
 
 
