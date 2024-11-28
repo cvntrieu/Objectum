@@ -237,6 +237,21 @@ public class API {
         }
     }
 
+
+    public void handleGameButton() {
+        try {
+            Stage settingStage = StageUtils.loadFXMLStage(
+                    "/lma/objectum/fxml/Game.fxml",
+                    "Game"
+            );
+            accountButton.getScene().getWindow().hide();
+            settingStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Handling setting button.
      */

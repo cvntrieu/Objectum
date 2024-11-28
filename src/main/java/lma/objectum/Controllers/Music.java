@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import com.sun.net.httpserver.HttpServer;
 
 public class Music {
@@ -86,13 +87,15 @@ public class Music {
     public void initialize() {
     }
 
+    /**
+     * Handles the Account button action.
+     * Opens the Account View window.
+     */
+    @FXML
     public void handleAccountButton() {
 
         try {
-            Stage accountStage = StageUtils.loadFXMLStage(
-                    "/lma/objectum/fxml/AccountView.fxml",
-                    "Account View"
-            );
+            Stage accountStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/AccountView.fxml", "Account View");
             accountButton.getScene().getWindow().hide();
             accountStage.show();
 
@@ -101,15 +104,15 @@ public class Music {
         }
     }
 
-
+    /**
+     * Handles the Borrow Books menu item action.
+     * Opens the Borrow Books window.
+     */
+    @FXML
     public void handleBorrowBooksItem() {
 
         try {
-            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS(
-                    "/lma/objectum/fxml/BookSearch.fxml",
-                    "/lma/objectum/css/BookSearchStyle.css",
-                    "Borrow Books"
-            );
+            Stage borrowBooksStage = StageUtils.loadFXMLStageWithCSS("/lma/objectum/fxml/BookSearch.fxml", "/lma/objectum/css/BookSearchStyle.css", "Borrow Books");
             accountButton.getScene().getWindow().hide();
             borrowBooksStage.show();
 
@@ -118,13 +121,15 @@ public class Music {
         }
     }
 
+    /**
+     * Handles the Home button action.
+     * Opens the Home View window.
+     */
+    @FXML
     public void handleHomeButton() {
 
         try {
-            Stage accountStage = StageUtils.loadFXMLStage(
-                    "/lma/objectum/fxml/Home.fxml",
-                    "Account View"
-            );
+            Stage accountStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/Home.fxml", "Account View");
             accountButton.getScene().getWindow().hide();
             accountStage.show();
 
@@ -133,14 +138,15 @@ public class Music {
         }
     }
 
+    /**
+     * Handles the Return Books menu item action.
+     * Opens the Return Books window.
+     */
+    @FXML
     public void handleReturnBooksItem() {
 
         try {
-            Stage returnStage = StageUtils.loadFXMLStageWithCSS(
-                    "/lma/objectum/fxml/Transaction.fxml",
-                    "/lma/objectum/css/TransactionStyle.css",
-                    "Return Books"
-            );
+            Stage returnStage = StageUtils.loadFXMLStageWithCSS("/lma/objectum/fxml/Transaction.fxml", "/lma/objectum/css/TransactionStyle.css", "Return Books");
             accountButton.getScene().getWindow().hide();
             returnStage.show();
         } catch (IOException e) {
@@ -149,15 +155,13 @@ public class Music {
     }
 
     /**
-     * API Button on action.
+     * Handles the API button action.
+     * Opens the API View window.
      */
     @FXML
     public void handleAPIButtonAction() {
         try {
-            Stage apiStage = StageUtils.loadFXMLStage(
-                    "/lma/objectum/fxml/API.fxml",
-                    "API View"
-            );
+            Stage apiStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/API.fxml", "API View");
             accountButton.getScene().getWindow().hide();
             apiStage.show();
 
@@ -165,16 +169,15 @@ public class Music {
             e.printStackTrace();
         }
     }
+
     /**
-     * Handling logout Button.
+     * Handles the Logout button action.
+     * Logs out the user and opens the Main Application window.
      */
     @FXML
     public void handleLogOutButton() {
         try {
-            Stage loginStage = StageUtils.loadFXMLStage(
-                    "/lma/objectum/fxml/App.fxml",
-                    "Main Application"
-            );
+            Stage loginStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/App.fxml", "Main Application");
             accountButton.getScene().getWindow().hide();
             MusicPlayer.stopMusic();
             loginStage.show();
@@ -184,32 +187,30 @@ public class Music {
         }
     }
 
+    /**
+     * Handles the Music button action.
+     * Opens the Music View window.
+     */
+    @FXML
     public void handleMusicButtonAction() {
         try {
-            Stage musicStage = StageUtils.loadFXMLStage(
-                    "/lma/objectum/fxml/Music.fxml",
-                    "API View"
-            );
+            Stage musicStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/Music.fxml", "API View");
             accountButton.getScene().getWindow().hide();
             musicStage.show();
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Handling setting button.
+     * Handles the Game button action.
+     * Opens the Game window.
      */
     @FXML
-    public void handleSettingButton() {
+    public void handleGameButton() {
         try {
-            Stage settingStage = StageUtils.loadFXMLStageWithCSS(
-                    "/lma/objectum/fxml/Setting.fxml",
-                    "/lma/objectum/css/SettingStyle.css",
-                    "Settings"
-            );
+            Stage settingStage = StageUtils.loadFXMLStage("/lma/objectum/fxml/Game.fxml", "Game");
             accountButton.getScene().getWindow().hide();
             settingStage.show();
 
@@ -218,6 +219,27 @@ public class Music {
         }
     }
 
+    /**
+     * Handles the Setting button action.
+     * Opens the Settings window.
+     */
+    @FXML
+    public void handleSettingButton() {
+        try {
+            Stage settingStage = StageUtils.loadFXMLStageWithCSS("/lma/objectum/fxml/Setting.fxml", "/lma/objectum/css/SettingStyle.css", "Settings");
+            accountButton.getScene().getWindow().hide();
+            settingStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Starts the OAuth process to authorize the application with the Jamendo API.
+     * This method opens a new window for the user to grant authorization and
+     * retrieves the authorization code to exchange for an access token.
+     */
     @FXML
     private void startOAuthProcess() {
         String authUrl = "https://api.jamendo.com/v3.0/oauth/authorize?client_id=" + clientId + "&redirect_uri=http://localhost:8080&response_type=code";
@@ -244,14 +266,18 @@ public class Music {
         }, executor);
     }
 
+    /**
+     * Retrieves an access token from the Jamendo API using the provided authorization code.
+     * This method makes a POST request to the Jamendo API to exchange the code for an access token,
+     * which is then used to authenticate subsequent requests.
+     *
+     * @param code The authorization code obtained from the OAuth process.
+     */
     private void getAccessToken(String code) {
         String tokenUrl = "https://api.jamendo.com/v3.0/oauth/access_token";
         String url = tokenUrl + "?client_id=" + clientId + "&client_secret=" + clientSecret + "&code=" + code + "&grant_type=authorization_code&redirect_uri=http://localhost:8080";
 
-        Request request = new Request.Builder()
-                .url(url)
-                .post(okhttp3.RequestBody.create(new byte[0]))
-                .build();
+        Request request = new Request.Builder().url(url).post(okhttp3.RequestBody.create(new byte[0])).build();
 
         CompletableFuture.runAsync(() -> {
             try (Response response = client.newCall(request).execute()) {
@@ -267,12 +293,17 @@ public class Music {
         }, executor);
     }
 
+    /**
+     * Fetches a list of songs from the Jamendo API using the provided access token.
+     * This method makes a GET request to the Jamendo API to retrieve a list of tracks,
+     * which is then parsed and displayed in the songListView.
+     *
+     * @param accessToken The access token used to authenticate the request.
+     */
     private void fetchSongList(String accessToken) {
         String url = "https://api.jamendo.com/v3.0/tracks/?access_token=" + accessToken + "&format=json&limit=10";
 
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+        Request request = new Request.Builder().url(url).build();
 
         CompletableFuture.runAsync(() -> {
             try (Response response = client.newCall(request).execute()) {
@@ -315,7 +346,6 @@ public class Music {
 
                             songItem.getChildren().addAll(albumCover, songLabel);
 
-                            // Set click event to play track and open MusicPlayer
                             songItem.setOnMouseClicked(event -> {
                                 System.out.println("Track selected: " + songTitle);
                                 openMusicPlayer(audioUrl, songTitle, artistName, albumImageUrl);
@@ -333,21 +363,33 @@ public class Music {
         }, executor);
     }
 
+    /**
+     * Updates the song list based on the search query entered by the user.
+     * This method is triggered by a KeyEvent and fetches a list of tracks
+     * matching the query from the Jamendo API.
+     *
+     * @param event The KeyEvent that triggered this method.
+     */
     @FXML
     private void updateSuggestions(KeyEvent event) {
         String query = searchField.getText().trim();
         if (!query.isEmpty()) {
-            searchTracks(query)
-                    .thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSongList(resultsJson)), executor);
+            searchTracks(query).thenAcceptAsync(resultsJson -> Platform.runLater(() -> updateSongList(resultsJson)), executor);
         }
     }
 
+    /**
+     * Searches for tracks matching the given query from the Jamendo API.
+     * This method makes a GET request to the Jamendo API to retrieve a list of tracks
+     * matching the query.
+     *
+     * @param query The search query entered by the user.
+     * @return A CompletableFuture that will complete with the JSON string containing the search results.
+     */
     private CompletableFuture<String> searchTracks(String query) {
         String url = "https://api.jamendo.com/v3.0/tracks/?client_id=" + clientId + "&format=json&limit=10&name=" + query;
 
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
+        Request request = new Request.Builder().url(url).build();
 
         return CompletableFuture.supplyAsync(() -> {
             try (Response response = client.newCall(request).execute()) {
@@ -363,6 +405,13 @@ public class Music {
         }, executor);
     }
 
+    /**
+     * Updates the songListView with the search results obtained from the Jamendo API.
+     * This method parses the JSON string containing the search results and creates
+     * HBox elements for each track, which are then added to the songListView.
+     *
+     * @param resultsJson The JSON string containing the search results.
+     */
     private void updateSongList(String resultsJson) {
         JsonObject jsonObject = JsonParser.parseString(resultsJson).getAsJsonObject();
         JsonArray items = jsonObject.has("results") ? jsonObject.getAsJsonArray("results") : null;
@@ -399,6 +448,11 @@ public class Music {
         }
     }
 
+    /**
+     * Opens the music player and plays the selected track.
+     * This method creates a new MediaPlayer instance for the given audio URL,
+     * loads the MusicPlayer.fxml file to display the music.
+     */
     private void openMusicPlayer(String audioUrl, String songTitle, String artistName, String albumImageUrl) {
         if (audioUrl != null && !audioUrl.isEmpty()) {
             try {
@@ -406,21 +460,16 @@ public class Music {
                 if (mediaPlayer != null) {
                     mediaPlayer.dispose();
                 }
-
                 mediaPlayer = new MediaPlayer(media);
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/lma/objectum/fxml/MusicPlayer.fxml"));
                 Parent root = loader.load();
-
                 MusicPlayerController controller = loader.getController();
                 controller.setMediaPlayer(mediaPlayer);
                 controller.setSongInfo(songTitle, artistName, albumImageUrl);
 
-                musicPlayerContainer.getChildren().clear(); // Xóa các phần tử trước đó (nếu có)
+                musicPlayerContainer.getChildren().clear();
                 musicPlayerContainer.getChildren().add(root);
-
                 mediaPlayer.play();
-
             } catch (Exception e) {
                 System.out.println("Error opening music player: " + e.getMessage());
                 e.printStackTrace();
@@ -428,5 +477,6 @@ public class Music {
         } else {
             System.out.println("No valid audio URL available.");
         }
+
     }
 }
