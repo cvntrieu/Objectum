@@ -13,11 +13,12 @@ import lma.objectum.Models.BorrowedBook;
 import lma.objectum.Models.FinedBook;
 import lma.objectum.Models.ReadBook;
 import javafx.scene.chart.*;
+import lma.objectum.Utils.BasicFine;
+import lma.objectum.Utils.FineStrategy;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class User {
 
@@ -78,6 +79,8 @@ public abstract class User {
     @FXML
     protected NumberAxis yAxisFines;
 
+    protected static final Logger logger = Logger.getLogger(User.class.getName());
+
     /**
      * Handling account button.
      */
@@ -105,6 +108,7 @@ public abstract class User {
         loadFines();
         loadTopBorrowedBooks();
         loadFinesOverTime();
+        checkOverDueBooks();
     }
 
     /**
@@ -269,6 +273,76 @@ public abstract class User {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Checking overdue books and processing fines.
+     */
+    protected void checkOverDueBooks() {
+        int userId = SessionManager.getInstance().getCurrentUserId();
+
+        String transactionQuery = "SELECT book_id, due_date FROM transactions " +
+                "WHERE DATEDIFF(CURDATE(), due_date) > 21 AND user_id = ? AND status = 'BORROWED'";
+        String updateTransactionQuery = "UPDATE transactions " +
+                "SET return_date = CURDATE(), fine = ?, status = 'RETURNED' " +
+                "WHERE book_id = ? AND user_id = ?";
+        String updateBookQuantityQuery = "UPDATE books SET Quantity = Quantity + 1 WHERE id = ?";
+
+        try (Connection connectDB = DatabaseConnection.getInstance().getConnection()) {
+            connectDB.setAutoCommit(false);
+
+            try (
+                    PreparedStatement transactionStatement = connectDB.prepareStatement(transactionQuery);
+                    PreparedStatement updateTransactionStatement = connectDB.prepareStatement(updateTransactionQuery);
+                    PreparedStatement updateBookQuantityStatement = connectDB.prepareStatement(updateBookQuantityQuery)
+            ) {
+                // Lấy danh sách book_id từ các giao dịch quá hạn
+                transactionStatement.setInt(1, userId);
+                try (ResultSet resultSet = transactionStatement.executeQuery()) {
+                    boolean hasOverdue = false;
+
+                    while (resultSet.next()) {
+                        hasOverdue = true;
+
+                        int bookId = resultSet.getInt("book_id");
+                        Date dueDate = resultSet.getDate("due_date");
+
+                        // Tính tiền phạt
+                        FineStrategy fineStrategy = new BasicFine();
+                        double fine = fineStrategy.calculateFine((Date) new java.util.Date(), dueDate);
+
+                        // Cập nhật số lượng sách
+                        updateBookQuantityStatement.setInt(1, bookId);
+                        updateBookQuantityStatement.executeUpdate();
+
+                        // Cập nhật thông tin giao dịch
+                        updateTransactionStatement.setDouble(1, fine);
+                        updateTransactionStatement.setInt(2, bookId);
+                        updateTransactionStatement.setInt(3, userId);
+                        updateTransactionStatement.executeUpdate();
+                    }
+
+                    if (!hasOverdue) {
+                        logger.log(Level.INFO, "No overdue transactions for user ID {0}.", userId);
+                    }
+                }
+
+                // Commit nếu không có lỗi
+                connectDB.commit();
+                logger.log(Level.INFO, "Overdue transactions processed successfully for user ID {0}.", userId);
+
+            } catch (SQLException e) {
+                // Rollback nếu có lỗi
+                connectDB.rollback();
+                logger.log(Level.SEVERE, "Error processing overdue transactions for user ID " + userId, e);
+                throw e;
+            } finally {
+                // Khôi phục lại trạng thái autocommit
+                connectDB.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "An error occurred while processing overdue transactions.", e);
         }
     }
 }
